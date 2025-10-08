@@ -1,20 +1,30 @@
 package com.ums.system;
 
+import com.ums.system.model.Admin;
+import com.ums.system.model.Role;
+import com.ums.system.service.AdminService;
+import com.ums.system.service.AdminServiceImpl;
 import com.ums.system.utils.DatabaseConnection;
+
 import java.sql.Connection;
 
 public class Main {
-     static void main() {
-        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
-        Connection conn = dbConnection.getConnection();
+    public static void main(String[] args) {
+        try {
+            Connection conn = DatabaseConnection.getInstance().getConnection();
+            AdminService adminService = new AdminServiceImpl(conn);
 
-        if (conn != null) {
-            System.out.println("Connection test successful!");
-            DatabaseConnection dbConnection2 = DatabaseConnection.getInstance();
-            System.out.println("Same instance? " + (dbConnection == dbConnection2));
-            dbConnection.closeConnection();
-        } else {
-            System.out.println("Connection test failed!");
+            Admin admin = new Admin("Marwan", "marwan@example.com", "12345", Role.ADMIN);
+            adminService.addAdmin(admin);
+            System.out.println("Admin inserted.");
+
+            adminService.getAllAdmins().forEach(a ->
+                    System.out.println(a.getName() + " - " + a.getEmail())
+            );
+
+            DatabaseConnection.getInstance().closeConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
