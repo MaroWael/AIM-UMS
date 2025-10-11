@@ -25,7 +25,7 @@ public class Main {
 
             StudentService studentService = new StudentServiceImpl(conn);
             InstructorService instructorService = new InstructorServiceImpl(conn);
-            QuizService quizService = new QuizServiceImpl(quizDAO);
+            QuizService quizService = new QuizServiceImpl(conn);
 
             // Insert Admin (skip if already exists)
             try (var ps = conn.prepareStatement(

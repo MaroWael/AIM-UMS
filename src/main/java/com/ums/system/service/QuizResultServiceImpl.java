@@ -1,16 +1,18 @@
 package com.ums.system.service;
 
-import com.ums.system.dao.QuizResultDAO;
+import com.ums.system.dao.QuizResultDAOImpl;
 import com.ums.system.model.QuizResult;
 import com.ums.system.service.QuizResultService;
+
+import java.sql.Connection;
 import java.util.List;
 
 public class QuizResultServiceImpl implements QuizResultService {
 
-    private final QuizResultDAO quizResultDAO;
+    private final QuizResultDAOImpl quizResultDAO;
 
-    public QuizResultServiceImpl(QuizResultDAO quizResultDAO) {
-        this.quizResultDAO = quizResultDAO;
+    public QuizResultServiceImpl(Connection connection) {
+        this.quizResultDAO = new QuizResultDAOImpl(connection);
     }
 
     @Override

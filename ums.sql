@@ -92,3 +92,11 @@ CREATE TABLE quiz_answers (
                               FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
 );
 
+CREATE TABLE student_courses (
+                                 student_id INT,
+                                 course_code VARCHAR(10),
+                                 PRIMARY KEY (student_id, course_code),
+                                 FOREIGN KEY (student_id) REFERENCES students(user_id) ON DELETE CASCADE,
+                                 FOREIGN KEY (course_code) REFERENCES courses(code) ON DELETE CASCADE
+);
+
