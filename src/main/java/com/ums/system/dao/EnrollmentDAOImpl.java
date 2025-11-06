@@ -37,6 +37,30 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
                 return;
             }
 
+            // ✅ Get student and course details to validate level and major
+            Student student = studentDAO.getById(studentId);
+            Course course = courseDAO.getByCode(courseCode);
+
+            if (student == null || course == null) {
+                System.err.println("Cannot enroll: Unable to retrieve student or course details.");
+                return;
+            }
+
+            // ✅ Check if student's level matches course level
+            String studentLevel = String.valueOf(student.getLevel());
+            if (!studentLevel.equals(course.getLevel())) {
+                System.err.println("❌ Cannot enroll: Course level (" + course.getLevel() +
+                                 ") does not match student's level (" + studentLevel + ").");
+                return;
+            }
+
+            // ✅ Check if student's major matches course major
+            if (!student.getMajor().equalsIgnoreCase(course.getMajor())) {
+                System.err.println("❌ Cannot enroll: Course major (" + course.getMajor() +
+                                 ") does not match student's major (" + student.getMajor() + ").");
+                return;
+            }
+
             // ✅ Check if already enrolled
             String checkSql = "SELECT COUNT(*) FROM student_courses WHERE student_id=? AND course_code=?";
             try (PreparedStatement checkPs = connection.prepareStatement(checkSql)) {
@@ -44,7 +68,7 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
                 checkPs.setString(2, courseCode);
                 ResultSet rs = checkPs.executeQuery();
                 if (rs.next() && rs.getInt(1) > 0) {
-                    System.err.println("Student " + studentId + " is already enrolled in course " + courseCode);
+                    System.err.println("Student is already enrolled in course " + courseCode);
                     return;
                 }
             }
@@ -55,6 +79,7 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
                 ps.setInt(1, studentId);
                 ps.setString(2, courseCode);
                 ps.executeUpdate();
+                System.out.println("Student " + studentId + " enrolled in course " + courseCode + " successfully.");
             }
         } catch (SQLException e) {
             System.err.println("Error enrolling student " + studentId + " in course " + courseCode);

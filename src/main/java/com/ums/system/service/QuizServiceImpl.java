@@ -1,8 +1,10 @@
 package com.ums.system.service;
 
+import com.ums.system.dao.CourseDAOImpl;
 import com.ums.system.dao.QuestionDAOImpl;
 import com.ums.system.dao.QuizDAO;
 import com.ums.system.dao.QuizDAOImpl;
+import com.ums.system.model.Course;
 import com.ums.system.model.Quiz;
 import com.ums.system.service.QuizService;
 
@@ -12,14 +14,30 @@ import java.util.List;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizDAOImpl quizDAO;
+    private final CourseDAOImpl courseDAO;
 
     public QuizServiceImpl(Connection connection) {
-        this.quizDAO = new QuizDAOImpl(connection,new QuestionDAOImpl(connection));
+        this.quizDAO = new QuizDAOImpl(connection, new QuestionDAOImpl(connection));
+        this.courseDAO = new CourseDAOImpl(connection);
     }
 
     @Override
-    public void createQuiz(Quiz quiz) {
+    public boolean createQuiz(Quiz quiz, int instructorId) {
+        // Business logic: Validate that instructor can only create quiz for their assigned courses
+        Course course = courseDAO.getByCode(quiz.getCourseCode());
+
+        if (course == null) {
+            System.out.println("⚠️ Course with code " + quiz.getCourseCode() + " does not exist.");
+            return false;
+        }
+
+        if (course.getInstructorId() != instructorId) {
+            System.out.println("⚠️ You can only create quizzes for courses assigned to you.");
+            return false;
+        }
+
         quizDAO.insert(quiz);
+        return true;
     }
 
     @Override

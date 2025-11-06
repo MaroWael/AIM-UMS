@@ -68,7 +68,6 @@ public class AdminDAOImpl implements UserDAO<Admin> {
                     int userId = rs.getInt(1);
                     psAdmin.setInt(1, userId);
                     psAdmin.executeUpdate();
-                    System.out.println("✅ Admin inserted successfully with user_id=" + userId);
                 } else {
                     System.out.println("❌ Failed to retrieve generated user ID.");
                 }
@@ -189,5 +188,31 @@ public class AdminDAOImpl implements UserDAO<Admin> {
             e.printStackTrace();
         }
         return admins;
+    }
+
+    public Admin getByEmail(String email) {
+        String sql = """
+            SELECT u.*
+            FROM users u
+            JOIN admins a ON u.id = a.user_id
+            WHERE u.email = ? AND u.role = 'ADMIN'
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Admin(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        Role.valueOf(rs.getString("role"))
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

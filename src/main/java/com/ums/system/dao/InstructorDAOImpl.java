@@ -18,7 +18,7 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
 
     // ----------------- Helper Methods -----------------
 
-    private boolean instructorExistsById(int id) {
+    public boolean instructorExistsById(int id) {
         String sql = "SELECT COUNT(*) FROM instructors WHERE user_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -72,7 +72,6 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
                     psInstructor.setInt(1, userId);
                     psInstructor.setString(2, i.getDepartment().toString());
                     psInstructor.executeUpdate();
-                    System.out.println("✅ Instructor inserted successfully with user_id=" + userId);
                 } else {
                     System.out.println("❌ Failed to retrieve generated user ID.");
                 }
@@ -204,5 +203,33 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public Instructor getByEmail(String email) {
+        String sql = """
+            SELECT u.*, i.department
+            FROM users u
+            JOIN instructors i ON u.id = i.user_id
+            WHERE u.email = ? AND u.role = 'INSTRUCTOR'
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Instructor(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            Role.valueOf(rs.getString("role")),
+                            Department.valueOf(rs.getString("department"))
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

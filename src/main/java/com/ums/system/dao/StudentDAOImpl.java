@@ -192,4 +192,36 @@ public class StudentDAOImpl implements UserDAO<Student> {
         }
         return list;
     }
+
+    public Student getByEmail(String email) {
+        String sql = """
+            SELECT u.*, s.level, s.major, s.grade, s.department
+            FROM users u
+            JOIN students s ON u.id = s.user_id
+            WHERE u.email = ?
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Student(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        Role.valueOf(rs.getString("role")),
+                        rs.getInt("level"),
+                        rs.getString("major"),
+                        null,
+                        0,
+                        Department.valueOf(rs.getString("department")),
+                        rs.getDouble("grade")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
