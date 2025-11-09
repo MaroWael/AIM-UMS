@@ -32,12 +32,4 @@ public class Quiz {
         return questions;
     }
 
-    @Override
-    public String toString() {
-        return "Quiz{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", questions=" + questions +
-                '}';
-    }
 }

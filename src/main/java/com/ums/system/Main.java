@@ -67,21 +67,18 @@ private static User login() {
     System.out.print("Password: ");
     String password = scanner.nextLine().trim();
 
-    // Try to find admin by email
     Admin admin = adminService.getAdminByEmail(email);
     if (admin != null && admin.getPassword().equals(password)) {
         System.out.println("\nLogin successful! Welcome " + admin.getName());
         return admin;
     }
 
-    // Try to find instructor by email
     Instructor instructor = instructorService.getInstructorByEmail(email);
     if (instructor != null && instructor.getPassword().equals(password)) {
         System.out.println("\nLogin successful! Welcome " + instructor.getName());
         return instructor;
     }
 
-    // Try to find student by email
     Student student = studentService.getStudentByEmail(email);
     if (student != null && student.getPassword().equals(password)) {
         System.out.println("\nLogin successful! Welcome " + student.getName());
@@ -237,7 +234,6 @@ private static void createCourse() {
     System.out.print("Lecture Time: ");
     String lectureTime = scanner.nextLine().trim();
 
-    // Display available instructors
     System.out.println("\n--- Available Instructors ---");
     List<Instructor> instructors = instructorService.getAllInstructors();
     if (instructors.isEmpty()) {
@@ -257,12 +253,12 @@ private static void createCourse() {
         Course course = new Course(code, name, level, major, lectureTime, null, null, instructorId);
         boolean success = courseService.addCourse(course);
         if (success) {
-            System.out.println("✅ Course created successfully!");
+            System.out.println("Course created successfully!");
         }
     } catch (NumberFormatException e) {
-        System.out.println("❌ Error: Invalid instructor ID format.");
+        System.out.println("Error: Invalid instructor ID format.");
     } catch (Exception e) {
-        System.out.println("❌ Error creating course: " + e.getMessage());
+        System.out.println("Error creating course: " + e.getMessage());
     }
 }
 
@@ -273,11 +269,10 @@ private static void deleteCourse() {
     String code = scanner.nextLine().trim();
     Course course = courseService.getCourseByCode(code);
     if (course == null) {
-        System.out.println("⚠️ course not found with Course Code: " + code);
+        System.out.println("course not found with Course Code: " + code);
         return;
     }
 
-    // Display instructor information
     System.out.println("\n--- Course Information ---");
     System.out.println("Course Code: " + course.getCode());
     System.out.println("Course Name: " + course.getCourseName());
@@ -286,14 +281,14 @@ private static void deleteCourse() {
     System.out.println("Lecture Time: " + course.getLectureTime());
 
     // Confirmation
-    System.out.print("\n⚠️ Are you sure you want to delete this Course? (yes/no): ");
+    System.out.print("\nAre you sure you want to delete this Course? (yes/no): ");
     String CourseConfirm = scanner.nextLine().trim().toLowerCase();
 
     if (CourseConfirm.equals("yes") || CourseConfirm.equals("y")) {
         courseService.deleteCourse(code);
-        System.out.println("✅ Course deleted successfully!");
+        System.out.println("Course deleted successfully!");
     } else {
-        System.out.println("❌ Course deletion cancelled.");
+        System.out.println("Course deletion cancelled.");
     }
 }
 
@@ -319,7 +314,7 @@ private static void createUser() {
                 Admin admin = new Admin(0, name, email, password, Role.ADMIN);
                 boolean adminCreated = adminService.addAdmin(admin);
                 if (adminCreated) {
-                    System.out.println("✅ Admin created successfully!");
+                    System.out.println("Admin created successfully!");
                 }
                 break;
             case "2":
@@ -329,7 +324,7 @@ private static void createUser() {
                 Instructor instructor = new Instructor(0, name, email, password, Role.INSTRUCTOR, dept);
                 boolean instructorCreated = instructorService.addInstructor(instructor);
                 if (instructorCreated) {
-                    System.out.println("✅ Instructor created successfully!");
+                    System.out.println("Instructor created successfully!");
                 }
                 break;
             case "3":
@@ -350,7 +345,7 @@ private static void createUser() {
                 System.out.println("Invalid choice!");
         }
     } catch (Exception e) {
-        System.out.println("❌ Error creating user: " + e.getMessage());
+        System.out.println("Error creating user: " + e.getMessage());
     }
 }
 
@@ -369,42 +364,38 @@ private static void deleteUser() {
     try {
         int id = Integer.parseInt(idStr);
 
-        // Fetch user information based on type
         switch (choice) {
             case "1":
                 Admin admin = adminService.getAdminById(id);
                 if (admin == null) {
-                    System.out.println("⚠️ Admin not found with ID: " + id);
+                    System.out.println(" Admin not found with ID: " + id);
                     return;
                 }
 
-                // Display admin information
                 System.out.println("\n--- Admin Information ---");
                 System.out.println("ID: " + admin.getId());
                 System.out.println("Name: " + admin.getName());
                 System.out.println("Email: " + admin.getEmail());
                 System.out.println("Role: " + admin.getRole());
 
-                // Confirmation
-                System.out.print("\n⚠️ Are you sure you want to delete this admin? (yes/no): ");
+                System.out.print("\nAre you sure you want to delete this admin? (yes/no): ");
                 String adminConfirm = scanner.nextLine().trim().toLowerCase();
 
                 if (adminConfirm.equals("yes") || adminConfirm.equals("y")) {
                     adminService.deleteAdmin(id);
-                    System.out.println("✅ Admin deleted successfully!");
+                    System.out.println("Admin deleted successfully!");
                 } else {
-                    System.out.println("❌ Admin deletion cancelled.");
+                    System.out.println("Admin deletion cancelled.");
                 }
                 break;
 
             case "2":
                 Instructor instructor = instructorService.getInstructorById(id);
                 if (instructor == null) {
-                    System.out.println("⚠️ Instructor not found with ID: " + id);
+                    System.out.println("Instructor not found with ID: " + id);
                     return;
                 }
 
-                // Display instructor information
                 System.out.println("\n--- Instructor Information ---");
                 System.out.println("ID: " + instructor.getId());
                 System.out.println("Name: " + instructor.getName());
@@ -412,26 +403,24 @@ private static void deleteUser() {
                 System.out.println("Role: " + instructor.getRole());
                 System.out.println("Department: " + instructor.getDepartment());
 
-                // Confirmation
-                System.out.print("\n⚠️ Are you sure you want to delete this instructor? (yes/no): ");
+                System.out.print("\n Are you sure you want to delete this instructor? (yes/no): ");
                 String instructorConfirm = scanner.nextLine().trim().toLowerCase();
 
                 if (instructorConfirm.equals("yes") || instructorConfirm.equals("y")) {
                     instructorService.deleteInstructor(id);
-                    System.out.println("✅ Instructor deleted successfully!");
+                    System.out.println("Instructor deleted successfully!");
                 } else {
-                    System.out.println("❌ Instructor deletion cancelled.");
+                    System.out.println("Instructor deletion cancelled.");
                 }
                 break;
 
             case "3":
                 Student student = studentService.getStudentById(id);
                 if (student == null) {
-                    System.out.println("⚠️ Student not found with ID: " + id);
+                    System.out.println("Student not found with ID: " + id);
                     return;
                 }
 
-                // Display student information
                 System.out.println("\n--- Student Information ---");
                 System.out.println("ID: " + student.getId());
                 System.out.println("Name: " + student.getName());
@@ -442,15 +431,14 @@ private static void deleteUser() {
                 System.out.println("Department: " + student.getDepartmentName());
                 System.out.println("Grade: " + student.getGrade());
 
-                // Confirmation
-                System.out.print("\n⚠️ Are you sure you want to delete this student? (yes/no): ");
+                System.out.print("\nAre you sure you want to delete this student? (yes/no): ");
                 String studentConfirm = scanner.nextLine().trim().toLowerCase();
 
                 if (studentConfirm.equals("yes") || studentConfirm.equals("y")) {
                     studentService.deleteStudent(id);
-                    System.out.println("✅ Student deleted successfully!");
+                    System.out.println(" Student deleted successfully!");
                 } else {
-                    System.out.println("❌ Student deletion cancelled.");
+                    System.out.println(" Student deletion cancelled.");
                 }
                 break;
 
@@ -458,9 +446,9 @@ private static void deleteUser() {
                 System.out.println("Invalid choice!");
         }
     } catch (NumberFormatException e) {
-        System.out.println("❌ Error: Invalid ID format.");
+        System.out.println(" Error: Invalid ID format.");
     } catch (Exception e) {
-        System.out.println("❌ Error deleting user: " + e.getMessage());
+        System.out.println("Error deleting user: " + e.getMessage());
     }
 }
 
@@ -504,7 +492,6 @@ private static void viewAllUsers() {
 private static void createQuiz(Instructor instructor) {
     System.out.println("\n--- Create Quiz ---");
 
-    // First, show instructor's assigned courses
     System.out.println("\n--- Your Assigned Courses ---");
     List<Course> assignedCourses = courseService.getCoursesByInstructorId(instructor.getId());
 
@@ -522,15 +509,14 @@ private static void createQuiz(Instructor instructor) {
     System.out.print("Course Code: ");
     String courseCode = scanner.nextLine().trim();
 
-    // Validate course code BEFORE asking for questions
     Course selectedCourse = courseService.getCourseByCode(courseCode);
     if (selectedCourse == null) {
-        System.out.println("⚠️ Course with code " + courseCode + " does not exist.");
+        System.out.println("Course with code " + courseCode + " does not exist.");
         return;
     }
 
     if (selectedCourse.getInstructorId() != instructor.getId()) {
-        System.out.println("⚠️ You can only create quizzes for courses assigned to you.");
+        System.out.println("You can only create quizzes for courses assigned to you.");
         return;
     }
 
@@ -562,10 +548,10 @@ private static void createQuiz(Instructor instructor) {
         Quiz quiz = new Quiz(0, title, courseCode, questions);
         boolean success = quizService.createQuiz(quiz, instructor.getId());
         if (success) {
-            System.out.println("✅ Quiz created successfully!");
+            System.out.println("Quiz created successfully!");
         }
     } catch (Exception e) {
-        System.out.println("❌ Error creating quiz: " + e.getMessage());
+        System.out.println("Error creating quiz: " + e.getMessage());
     }
 }
 
@@ -601,7 +587,6 @@ private static void viewAllQuizzes(Instructor instructor) {
 private static void registerForCourse(Student student) {
     System.out.println("\n--- Register for Course ---");
 
-    // Show only eligible courses (matching student's level and major)
     System.out.println("Courses available for your level (" + student.getLevel() + ") and major (" + student.getMajor() + "):");
     List<Course> allCourses = courseService.getAllCourses();
     List<Course> eligibleCourses = new ArrayList<>();
@@ -617,7 +602,7 @@ private static void registerForCourse(Student student) {
     }
 
     if (eligibleCourses.isEmpty()) {
-        System.out.println("⚠️ No courses available for your level and major.");
+        System.out.println("No courses available for your level and major.");
         return;
     }
 
@@ -627,7 +612,7 @@ private static void registerForCourse(Student student) {
     try {
         enrollmentDAO.enrollStudentInCourse(student.getId(), courseCode);
     } catch (Exception e) {
-        System.out.println("❌ Error registering for course: " + e.getMessage());
+        System.out.println(" Error registering for course: " + e.getMessage());
     }
 }
 

@@ -11,7 +11,6 @@ public class StudentDAOImpl implements UserDAO<Student> {
         this.connection = connection;
     }
 
-    // ✅ Check if a student exists by email
     boolean existsByEmail(String email) {
         String sql = "SELECT 1 FROM users WHERE email = ? AND role = 'STUDENT' LIMIT 1";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -24,7 +23,6 @@ public class StudentDAOImpl implements UserDAO<Student> {
         return false;
     }
 
-    // ✅ Check if a student exists by ID
     boolean existsById(int id) {
         String sql = "SELECT 1 FROM users WHERE id = ? AND role = 'STUDENT' LIMIT 1";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -40,7 +38,7 @@ public class StudentDAOImpl implements UserDAO<Student> {
     @Override
     public void insert(Student s) {
         if (existsByEmail(s.getEmail())) {
-            System.out.println("⚠️ Student with this email already exists: " + s.getEmail());
+            System.out.println("Student with this email already exists: " + s.getEmail());
             return;
         }
 
@@ -51,19 +49,16 @@ public class StudentDAOImpl implements UserDAO<Student> {
                 PreparedStatement psUser = connection.prepareStatement(userSql, Statement.RETURN_GENERATED_KEYS);
                 PreparedStatement psStudent = connection.prepareStatement(studentSql)
         ) {
-            // Insert into users
             psUser.setString(1, s.getName());
             psUser.setString(2, s.getEmail());
             psUser.setString(3, s.getPassword());
             psUser.setString(4, s.getRole().toString());
             psUser.executeUpdate();
 
-            // Get generated user_id
             ResultSet rs = psUser.getGeneratedKeys();
             int userId = 0;
             if (rs.next()) userId = rs.getInt(1);
 
-            // Insert into students
             psStudent.setInt(1, userId);
             psStudent.setInt(2, s.getLevel());
             psStudent.setString(3, s.getMajor());
@@ -71,7 +66,7 @@ public class StudentDAOImpl implements UserDAO<Student> {
             psStudent.setString(5, s.getDepartmentName().toString());
             psStudent.executeUpdate();
 
-            System.out.println("✅ Student inserted successfully.");
+            System.out.println("Student inserted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,7 +75,7 @@ public class StudentDAOImpl implements UserDAO<Student> {
     @Override
     public void update(Student s) {
         if (!existsById(s.getId())) {
-            System.out.println("⚠️ Cannot update: student not found with ID " + s.getId());
+            System.out.println("Cannot update: student not found with ID " + s.getId());
             return;
         }
 
@@ -105,7 +100,7 @@ public class StudentDAOImpl implements UserDAO<Student> {
             psStudent.setInt(5, s.getId());
             psStudent.executeUpdate();
 
-            System.out.println("✅ Student updated successfully.");
+            System.out.println("Student updated successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,14 +109,14 @@ public class StudentDAOImpl implements UserDAO<Student> {
     @Override
     public void delete(int id) {
         if (!existsById(id)) {
-            System.out.println("⚠️ Student with ID " + id + " does not exist.");
+            System.out.println("Student with ID " + id + " does not exist.");
             return;
         }
 
         try (PreparedStatement ps = connection.prepareStatement("DELETE FROM users WHERE id=?")) {
             ps.setInt(1, id);
             ps.executeUpdate();
-            System.out.println("✅ Student deleted successfully.");
+            System.out.println("Student deleted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -15,14 +15,12 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public boolean addInstructor(Instructor instructor) {
-        // Check if instructor with this email already exists before insertion
         Instructor existing = instructorDAO.getByEmail(instructor.getEmail());
         if (existing != null) {
-            System.out.println("⚠️ Instructor with email " + instructor.getEmail() + " already exists.");
-            return false; // Email already exists, creation failed
+            System.out.println("Instructor with email " + instructor.getEmail() + " already exists.");
+            return false;
         }
         instructorDAO.insert(instructor);
-        // Verify the instructor was actually created
         Instructor created = instructorDAO.getByEmail(instructor.getEmail());
         return created != null;
     }

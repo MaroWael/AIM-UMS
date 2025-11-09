@@ -33,7 +33,7 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public void update(Course c) {
         if (!existsByCode(c.getCode())) {
-            System.out.println("⚠️ No course found with code " + c.getCode());
+            System.out.println(" No course found with code " + c.getCode());
             return;
         }
 
@@ -46,7 +46,7 @@ public class CourseDAOImpl implements CourseDAO {
             ps.setInt(5, c.getInstructorId());
             ps.setString(6, c.getCode());
             ps.executeUpdate();
-            System.out.println("✅ Course updated successfully.");
+            System.out.println("Course updated successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -148,7 +148,7 @@ public class CourseDAOImpl implements CourseDAO {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
-            return rs.next(); // true if found
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }

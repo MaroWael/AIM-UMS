@@ -49,7 +49,7 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
     @Override
     public void insert(Instructor i) {
         if (emailExists(i.getEmail())) {
-            System.out.println("⚠️ Instructor with email " + i.getEmail() + " already exists.");
+            System.out.println("⚠Instructor with email " + i.getEmail() + " already exists.");
             return;
         }
 
@@ -73,7 +73,7 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
                     psInstructor.setString(2, i.getDepartment().toString());
                     psInstructor.executeUpdate();
                 } else {
-                    System.out.println("❌ Failed to retrieve generated user ID.");
+                    System.out.println(" Failed to retrieve generated user ID.");
                 }
             }
         } catch (SQLException e) {
@@ -84,7 +84,7 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
     @Override
     public void update(Instructor i) {
         if (!instructorExistsById(i.getId())) {
-            System.out.println("⚠️ Instructor with ID " + i.getId() + " does not exist.");
+            System.out.println("Instructor with ID " + i.getId() + " does not exist.");
             return;
         }
 
@@ -105,7 +105,7 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
             psInstructor.setInt(2, i.getId());
             psInstructor.executeUpdate();
 
-            System.out.println("✅ Instructor updated successfully.");
+            System.out.println(" Instructor updated successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,7 +114,7 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
     @Override
     public void delete(int id) {
         if (!instructorExistsById(id)) {
-            System.out.println("⚠️ Instructor with ID " + id + " does not exist.");
+            System.out.println(" Instructor with ID " + id + " does not exist.");
             return;
         }
 
@@ -135,7 +135,7 @@ public class InstructorDAOImpl implements UserDAO<Instructor> {
                 psUser.executeUpdate();
 
                 connection.commit();
-                System.out.println("✅ Instructor deleted successfully.");
+                System.out.println("Instructor deleted successfully.");
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;

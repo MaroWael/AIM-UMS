@@ -26,33 +26,28 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
     public void enrollStudentInCourse(int studentId, String courseCode) {
         try {
 
-            // ✅ Check if course exists
             if (!courseDAO.existsByCode(courseCode)) {
                 System.err.println("Cannot enroll: Course with code " + courseCode + " does not exist.");
                 return;
             }
 
-            // ✅ Get student and course details to validate level and major
             Student student = studentDAO.getById(studentId);
             Course course = courseDAO.getByCode(courseCode);
 
 
-            // ✅ Check if student's level matches course level
             String studentLevel = String.valueOf(student.getLevel());
             if (!studentLevel.equals(course.getLevel())) {
-                System.err.println("❌ Cannot enroll: Course level (" + course.getLevel() +
+                System.err.println("Cannot enroll: Course level (" + course.getLevel() +
                                  ") does not match student's level (" + studentLevel + ").");
                 return;
             }
 
-            // ✅ Check if student's major matches course major
             if (!student.getMajor().equalsIgnoreCase(course.getMajor())) {
-                System.err.println("❌ Cannot enroll: Course major (" + course.getMajor() +
+                System.err.println("Cannot enroll: Course major (" + course.getMajor() +
                                  ") does not match student's major (" + student.getMajor() + ").");
                 return;
             }
 
-            // ✅ Check if already enrolled
             String checkSql = "SELECT COUNT(*) FROM student_courses WHERE student_id=? AND course_code=?";
             try (PreparedStatement checkPs = connection.prepareStatement(checkSql)) {
                 checkPs.setInt(1, studentId);
@@ -64,7 +59,6 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
                 }
             }
 
-            // ✅ Enroll student
             String sql = "INSERT INTO student_courses (student_id, course_code) VALUES (?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1, studentId);
@@ -81,7 +75,6 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
     @Override
     public void removeStudentFromCourse(int studentId, String courseCode) {
         try {
-            // ✅ Check if enrollment exists
             String checkSql = "SELECT COUNT(*) FROM student_courses WHERE student_id=? AND course_code=?";
             try (PreparedStatement checkPs = connection.prepareStatement(checkSql)) {
                 checkPs.setInt(1, studentId);
@@ -93,7 +86,6 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
                 }
             }
 
-            // ✅ Remove enrollment
             String sql = "DELETE FROM student_courses WHERE student_id=? AND course_code=?";
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1, studentId);

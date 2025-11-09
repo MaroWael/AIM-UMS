@@ -31,13 +31,4 @@ public class QuizResult {
         return answers;
     }
 
-    @Override
-    public String toString() {
-        return "QuizResult{" +
-                "student=" + student +
-                ", quiz=" + quiz +
-                ", score=" + score +
-                ", answers=" + answers +
-                '}';
-    }
 }

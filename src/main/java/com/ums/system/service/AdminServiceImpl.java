@@ -15,14 +15,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean addAdmin(Admin admin) {
-        // Check if admin with this email already exists before insertion
         Admin existing = adminDAO.getByEmail(admin.getEmail());
         if (existing != null) {
-            System.out.println("⚠️ Admin with email " + admin.getEmail() + " already exists.");
-            return false; // Email already exists, creation failed
+            System.out.println("Admin with email " + admin.getEmail() + " already exists.");
+            return false;
         }
         adminDAO.insert(admin);
-        // Verify the admin was actually created
         Admin created = adminDAO.getByEmail(admin.getEmail());
         return created != null;
     }

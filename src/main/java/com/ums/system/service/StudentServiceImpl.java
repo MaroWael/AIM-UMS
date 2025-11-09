@@ -15,14 +15,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public boolean addStudent(Student student) {
-        // Check if student with this email already exists before insertion
         Student existing = studentDAO.getByEmail(student.getEmail());
         if (existing != null) {
-            System.out.println("⚠️ Student with email " + student.getEmail() + " already exists.");
-            return false; // Email already exists, creation failed
+            System.out.println(" Student with email " + student.getEmail() + " already exists.");
+            return false;
         }
         studentDAO.insert(student);
-        // Verify the student was actually created
         Student created = studentDAO.getByEmail(student.getEmail());
         return created != null;
     }

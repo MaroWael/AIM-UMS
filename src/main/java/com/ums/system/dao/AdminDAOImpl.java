@@ -46,7 +46,7 @@ public class AdminDAOImpl implements UserDAO<Admin> {
     @Override
     public void insert(Admin admin) {
         if (emailExists(admin.getEmail())) {
-            System.out.println("⚠️ Admin with email " + admin.getEmail() + " already exists.");
+            System.out.println("Admin with email " + admin.getEmail() + " already exists.");
             return;
         }
 
@@ -69,7 +69,7 @@ public class AdminDAOImpl implements UserDAO<Admin> {
                     psAdmin.setInt(1, userId);
                     psAdmin.executeUpdate();
                 } else {
-                    System.out.println("❌ Failed to retrieve generated user ID.");
+                    System.out.println("Failed to retrieve generated user ID.");
                 }
             }
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class AdminDAOImpl implements UserDAO<Admin> {
     @Override
     public void update(Admin admin) {
         if (!adminExistsById(admin.getId())) {
-            System.out.println("⚠️ Admin with ID " + admin.getId() + " does not exist.");
+            System.out.println("Admin with ID " + admin.getId() + " does not exist.");
             return;
         }
 
@@ -93,9 +93,9 @@ public class AdminDAOImpl implements UserDAO<Admin> {
             int updated = ps.executeUpdate();
 
             if (updated > 0)
-                System.out.println("✅ Admin updated successfully.");
+                System.out.println("Admin updated successfully.");
             else
-                System.out.println("❌ Failed to update admin (check ID or role).");
+                System.out.println("Failed to update admin (check ID or role).");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -104,7 +104,7 @@ public class AdminDAOImpl implements UserDAO<Admin> {
     @Override
     public void delete(int id) {
         if (!adminExistsById(id)) {
-            System.out.println("⚠️ Admin with ID " + id + " does not exist.");
+            System.out.println("Admin with ID " + id + " does not exist.");
             return;
         }
 
@@ -112,7 +112,7 @@ public class AdminDAOImpl implements UserDAO<Admin> {
         String deleteUser = "DELETE FROM users WHERE id=? AND role='ADMIN'";
 
         try {
-            connection.setAutoCommit(false); // Begin transaction
+            connection.setAutoCommit(false);
 
             try (PreparedStatement psAdmin = connection.prepareStatement(deleteAdmin);
                  PreparedStatement psUser = connection.prepareStatement(deleteUser)) {
@@ -124,7 +124,7 @@ public class AdminDAOImpl implements UserDAO<Admin> {
                 psUser.executeUpdate();
 
                 connection.commit();
-                System.out.println("✅ Admin deleted successfully.");
+                System.out.println("Admin deleted successfully.");
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;

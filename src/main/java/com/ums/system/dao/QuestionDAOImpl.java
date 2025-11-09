@@ -98,7 +98,6 @@ public class QuestionDAOImpl implements QuestionDAO {
         return questions;
     }
 
-    // ✅ Helper: Check if a question exists by ID
     public boolean existsById(int id) {
         String sql = "SELECT 1 FROM questions WHERE id=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {

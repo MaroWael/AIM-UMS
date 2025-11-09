@@ -23,16 +23,15 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public boolean createQuiz(Quiz quiz, int instructorId) {
-        // Business logic: Validate that instructor can only create quiz for their assigned courses
         Course course = courseDAO.getByCode(quiz.getCourseCode());
 
         if (course == null) {
-            System.out.println("⚠️ Course with code " + quiz.getCourseCode() + " does not exist.");
+            System.out.println("Course with code " + quiz.getCourseCode() + " does not exist.");
             return false;
         }
 
         if (course.getInstructorId() != instructorId) {
-            System.out.println("⚠️ You can only create quizzes for courses assigned to you.");
+            System.out.println("You can only create quizzes for courses assigned to you.");
             return false;
         }
 
@@ -67,7 +66,6 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public List<Quiz> getQuizzesByInstructor(int instructorId) {
-        // Business logic: Get all quizzes for courses taught by this instructor
         return quizDAO.getByInstructorId(instructorId);
     }
 }

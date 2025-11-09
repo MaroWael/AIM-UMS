@@ -19,11 +19,4 @@ public class Instructor extends User{
         return AssignedCourses;
     }
 
-    @Override
-    public String toString() {
-        return "Instructor{" +
-                "Department=" + Department +
-                ", AssignedCourses=" + AssignedCourses +
-                '}';
-    }
 }
