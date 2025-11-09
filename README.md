@@ -667,9 +667,11 @@ Distributed under the MIT License. See `LICENSE` file for more information.
 
 ## 👥 Authors
 
-**Your Name** - [@yourusername](https://github.com/yourusername)
+- **Marwan Weal** - [@MaroWael](https://github.com/MaroWael)
+- **Islam Ali** - [@IslamAli-0](https://github.com/IslamAli-0)
+- **Abdulrahman Saeed** - [@AbdelrahmanSaid00](https://github.com/AbdelrahmanSaid00)
 
-Project Link: [https://github.com/yourusername/AIM-UMS](https://github.com/yourusername/AIM-UMS)
+Project Link: [https://github.com/MaroWael/AIM-UMS](https://github.com/yourusername/AIM-UMS)
 
 ---
 
