@@ -19,13 +19,6 @@ public class ValidationUtil {
         return matcher.matches();
     }
 
-    public static boolean isValidPassword(String password) {
-        if (password == null || password.trim().isEmpty()) {
-            return false;
-        }
-        Matcher matcher = PASSWORD_PATTERN.matcher(password);
-        return matcher.matches();
-    }
 
     public static String getPasswordRequirements() {
         return "Password Requirements:\n" +
@@ -34,6 +27,39 @@ public class ValidationUtil {
                "  - At least one lowercase letter (a-z)\n" +
                "  - At least one digit (0-9)\n" +
                "  - At least one special character (@#$%^&+=!*)";
+    }
+
+
+    public static String validateEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return "Email cannot be empty.";
+        }
+        if (!isValidEmail(email)) {
+            return "Invalid email format. Please use format: user@example.com";
+        }
+        return null;
+    }
+
+    public static String validatePassword(String password) {
+        if (password == null || password.trim().isEmpty()) {
+            return "Password cannot be empty.";
+        }
+        if (password.length() < 8) {
+            return "Password must be at least 8 characters long.";
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            return "Password must contain at least one uppercase letter.";
+        }
+        if (!password.matches(".*[a-z].*")) {
+            return "Password must contain at least one lowercase letter.";
+        }
+        if (!password.matches(".*\\d.*")) {
+            return "Password must contain at least one digit.";
+        }
+        if (!password.matches(".*[@#$%^&+=!*].*")) {
+            return "Password must contain at least one special character (@#$%^&+=!*).";
+        }
+        return null;
     }
 
 }

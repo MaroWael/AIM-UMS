@@ -4,6 +4,7 @@ import com.ums.system.model.*;
 import com.ums.system.service.*;
 import com.ums.system.utils.DatabaseConnection;
 import com.ums.system.utils.ReportGenerator;
+import com.ums.system.utils.PasswordUtil;
 import com.ums.system.dao.*;
 
 import java.sql.Connection;
@@ -70,22 +71,38 @@ private static User login() {
     System.out.print("Password: ");
     String password = scanner.nextLine().trim();
 
+    if (email.isEmpty()) {
+        System.out.println("Email cannot be empty!");
+        return null;
+    }
+
+    if (password.isEmpty()) {
+        System.out.println("Password cannot be empty!");
+        return null;
+    }
+
     Admin admin = adminService.getAdminByEmail(email);
-    if (admin != null && admin.getPassword().equals(password)) {
-        System.out.println("\nLogin successful! Welcome " + admin.getName());
-        return admin;
+    if (admin != null) {
+        if (PasswordUtil.verifyPassword(password, admin.getPassword())) {
+            System.out.println("\nLogin successful! Welcome " + admin.getName());
+            return admin;
+        }
     }
 
     Instructor instructor = instructorService.getInstructorByEmail(email);
-    if (instructor != null && instructor.getPassword().equals(password)) {
-        System.out.println("\nLogin successful! Welcome " + instructor.getName());
-        return instructor;
+    if (instructor != null) {
+        if (PasswordUtil.verifyPassword(password, instructor.getPassword())) {
+            System.out.println("\nLogin successful! Welcome " + instructor.getName());
+            return instructor;
+        }
     }
 
     Student student = studentService.getStudentByEmail(email);
-    if (student != null && student.getPassword().equals(password)) {
-        System.out.println("\nLogin successful! Welcome " + student.getName());
-        return student;
+    if (student != null) {
+        if (PasswordUtil.verifyPassword(password, student.getPassword())) {
+            System.out.println("\nLogin successful! Welcome " + student.getName());
+            return student;
+        }
     }
 
     System.out.println("Invalid email or password!");

@@ -3,6 +3,7 @@ package com.ums.system.service;
 import com.ums.system.dao.InstructorDAOImpl;
 import com.ums.system.model.Instructor;
 import com.ums.system.utils.ValidationUtil;
+import com.ums.system.utils.PasswordUtil;
 
 import java.sql.Connection;
 import java.util.List;
@@ -16,14 +17,17 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public boolean addInstructor(Instructor instructor) {
-        if (!ValidationUtil.isValidEmail(instructor.getEmail())) {
-            System.out.println("Invalid email format! Please provide a valid email address (e.g., user@example.com)");
+        String emailError = ValidationUtil.validateEmail(instructor.getEmail());
+        if (emailError != null) {
+            System.out.println(emailError);
             return false;
         }
 
-        if (!ValidationUtil.isValidPassword(instructor.getPassword())) {
-            System.out.println("Password does not meet security requirements!");
-            System.out.println(ValidationUtil.getPasswordRequirements());
+        String passwordError = ValidationUtil.validatePassword(instructor.getPassword());
+        if (passwordError != null) {
+            System.out.println("Password validation failed:");
+            System.out.println("  " + passwordError);
+            System.out.println("\n" + ValidationUtil.getPasswordRequirements());
             return false;
         }
 
@@ -32,6 +36,9 @@ public class InstructorServiceImpl implements InstructorService {
             System.out.println("Instructor with email " + instructor.getEmail() + " already exists.");
             return false;
         }
+
+        String hashedPassword = PasswordUtil.hashPassword(instructor.getPassword());
+        instructor.setPassword(hashedPassword);
 
         instructorDAO.insert(instructor);
         Instructor created = instructorDAO.getByEmail(instructor.getEmail());

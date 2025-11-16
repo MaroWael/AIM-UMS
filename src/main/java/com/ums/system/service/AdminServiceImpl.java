@@ -5,6 +5,7 @@ import com.ums.system.dao.StudentDAOImpl;
 import com.ums.system.model.Admin;
 import com.ums.system.model.Student;
 import com.ums.system.utils.ValidationUtil;
+import com.ums.system.utils.PasswordUtil;
 
 import java.sql.Connection;
 import java.util.List;
@@ -20,14 +21,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean addAdmin(Admin admin) {
-        if (!ValidationUtil.isValidEmail(admin.getEmail())) {
-            System.out.println("Invalid email format! Please provide a valid email address (e.g., user@example.com)");
+        String emailError = ValidationUtil.validateEmail(admin.getEmail());
+        if (emailError != null) {
+            System.out.println(emailError);
             return false;
         }
 
-        if (!ValidationUtil.isValidPassword(admin.getPassword())) {
-            System.out.println("Password does not meet security requirements!");
-            System.out.println(ValidationUtil.getPasswordRequirements());
+        String passwordError = ValidationUtil.validatePassword(admin.getPassword());
+        if (passwordError != null) {
+            System.out.println("Password validation failed:");
+            System.out.println("  " + passwordError);
+            System.out.println("\n" + ValidationUtil.getPasswordRequirements());
             return false;
         }
 
@@ -36,6 +40,9 @@ public class AdminServiceImpl implements AdminService {
             System.out.println("Admin with email " + admin.getEmail() + " already exists.");
             return false;
         }
+
+        String hashedPassword = PasswordUtil.hashPassword(admin.getPassword());
+        admin.setPassword(hashedPassword);
 
         adminDAO.insert(admin);
         Admin created = adminDAO.getByEmail(admin.getEmail());

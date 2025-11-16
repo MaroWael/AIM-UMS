@@ -3,6 +3,7 @@ package com.ums.system.service;
 import com.ums.system.dao.StudentDAOImpl;
 import com.ums.system.model.Student;
 import com.ums.system.utils.ValidationUtil;
+import com.ums.system.utils.PasswordUtil;
 
 import java.sql.Connection;
 import java.util.List;
@@ -16,14 +17,17 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public boolean addStudent(Student student) {
-        if (!ValidationUtil.isValidEmail(student.getEmail())) {
-            System.out.println("Invalid email format! Please provide a valid email address (e.g., user@example.com)");
+        String emailError = ValidationUtil.validateEmail(student.getEmail());
+        if (emailError != null) {
+            System.out.println(emailError);
             return false;
         }
 
-        if (!ValidationUtil.isValidPassword(student.getPassword())) {
-            System.out.println("Password does not meet security requirements!");
-            System.out.println(ValidationUtil.getPasswordRequirements());
+        String passwordError = ValidationUtil.validatePassword(student.getPassword());
+        if (passwordError != null) {
+            System.out.println("Password validation failed:");
+            System.out.println("  " + passwordError);
+            System.out.println("\n" + ValidationUtil.getPasswordRequirements());
             return false;
         }
 
@@ -37,6 +41,9 @@ public class StudentServiceImpl implements StudentService {
             System.out.println("Student with email " + student.getEmail() + " already exists.");
             return false;
         }
+
+        String hashedPassword = PasswordUtil.hashPassword(student.getPassword());
+        student.setPassword(hashedPassword);
 
         studentDAO.insert(student);
         Student created = studentDAO.getByEmail(student.getEmail());
