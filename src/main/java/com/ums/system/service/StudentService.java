@@ -10,4 +10,5 @@ public interface StudentService {
     Student getStudentById(int id);
     Student getStudentByEmail(String email);
     List<Student> getAllStudents();
+    void updateStudentGrade(int studentId, double grade);
 }

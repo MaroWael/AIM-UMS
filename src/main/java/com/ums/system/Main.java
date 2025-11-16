@@ -190,12 +190,20 @@ private static void showInstructorMenu(Instructor instructor) {
 private static void showStudentMenu(Student student) {
     boolean running = true;
     while (running) {
+        Student updatedStudent = studentService.getStudentById(student.getId());
+        if (updatedStudent != null) {
+            student = updatedStudent;
+        }
+
         System.out.println("\n========== STUDENT MENU ==========");
+        System.out.println("Student: " + student.getName() + " | Current Grade: " + String.format("%.2f", student.getGrade()) + "%");
+        System.out.println("==================================");
         System.out.println("1. Register for Course");
         System.out.println("2. View My Courses");
         System.out.println("3. View Course Details");
         System.out.println("4. Take Quiz");
-        System.out.println("5. Logout");
+        System.out.println("5. View My Quiz Results");
+        System.out.println("6. Logout");
         System.out.print("Choose an option: ");
 
         String choice = scanner.nextLine().trim();
@@ -214,6 +222,9 @@ private static void showStudentMenu(Student student) {
                 takeQuiz(student);
                 break;
             case "5":
+                viewMyQuizResults(student);
+                break;
+            case "6":
                 System.out.println("Logging out...");
                 running = false;
                 break;
@@ -432,7 +443,7 @@ private static void deleteUser() {
                 System.out.println("Level: " + student.getLevel());
                 System.out.println("Major: " + student.getMajor());
                 System.out.println("Department: " + student.getDepartmentName());
-                System.out.println("Grade: " + student.getGrade());
+                System.out.println("Grade: " + String.format("%.2f", student.getGrade()) + "%");
 
                 System.out.print("\nAre you sure you want to delete this student? (yes/no): ");
                 String studentConfirm = scanner.nextLine().trim().toLowerCase();
@@ -811,6 +822,36 @@ private static void takeQuiz(Student student) {
         System.out.println("Invalid input. Please enter a number.");
     } catch (Exception e) {
         System.out.println("Error during quiz: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+
+private static void viewMyQuizResults(Student student) {
+    System.out.println("\n--- My Quiz Results ---");
+    try {
+        List<QuizResult> results = quizResultService.getResultsByStudentId(student.getId());
+
+        if (results.isEmpty()) {
+            System.out.println("You haven't taken any quizzes yet.");
+            System.out.println("Your current grade: 0.00%");
+        } else {
+            System.out.println("\nYour Quiz Scores:");
+            int totalScore = 0;
+            for (QuizResult result : results) {
+                totalScore += result.getScore();
+                System.out.println("  - Score: " + result.getScore() + " points");
+            }
+
+            Student updatedStudent = studentService.getStudentById(student.getId());
+            if (updatedStudent != null) {
+                System.out.println("\n=== Overall Performance ===");
+                System.out.println("Number of quizzes taken: " + results.size());
+                System.out.println("Total points earned: " + totalScore);
+                System.out.println("Overall Grade: " + String.format("%.2f", updatedStudent.getGrade()) + "%");
+            }
+        }
+    } catch (Exception e) {
+        System.out.println("Error fetching quiz results: " + e.getMessage());
         e.printStackTrace();
     }
 }

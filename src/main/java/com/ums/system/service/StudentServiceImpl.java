@@ -67,4 +67,9 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getAllStudents() {
         return studentDAO.getAll();
     }
+
+    @Override
+    public void updateStudentGrade(int studentId, double grade) {
+        studentDAO.updateGrade(studentId, grade);
+    }
 }

@@ -76,4 +76,30 @@ public class QuizResultDAOImpl implements QuizResultDAO {
         }
         return list;
     }
+
+    @Override
+    public double calculateAverageGrade(int studentId) {
+        String sql = """
+            SELECT
+                AVG(
+                    (CAST(qr.score AS DECIMAL(10,2)) / 
+                    (SELECT COUNT(*) FROM questions WHERE quiz_id = qr.quiz_id)) * 100
+                ) as average_grade
+            FROM quiz_results qr
+            WHERE qr.student_id = ?
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    double avg = rs.getDouble("average_grade");
+                    return rs.wasNull() ? 0.0 : avg;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
 }

@@ -7,4 +7,5 @@ public interface QuizResultDAO {
     void insert(QuizResult result);
     List<QuizResult> getByStudentId(int studentId);
     List<QuizResult> getByQuizId(int quizId);
+    double calculateAverageGrade(int studentId);
 }

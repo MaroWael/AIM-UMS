@@ -188,6 +188,22 @@ public class StudentDAOImpl implements UserDAO<Student> {
         return list;
     }
 
+    public void updateGrade(int studentId, double grade) {
+        if (!existsById(studentId)) {
+            System.out.println("Cannot update grade: student not found with ID " + studentId);
+            return;
+        }
+
+        String sql = "UPDATE students SET grade = ? WHERE user_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setDouble(1, grade);
+            ps.setInt(2, studentId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Student getByEmail(String email) {
         String sql = """
             SELECT u.*, s.level, s.major, s.grade, s.department
