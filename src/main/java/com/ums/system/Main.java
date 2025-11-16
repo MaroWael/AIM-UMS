@@ -284,7 +284,6 @@ private static void deleteCourse() {
     System.out.println("Level: " + course.getLevel() );
     System.out.println("Lecture Time: " + course.getLectureTime());
 
-    // Confirmation
     System.out.print("\nAre you sure you want to delete this Course? (yes/no): ");
     String CourseConfirm = scanner.nextLine().trim().toLowerCase();
 
@@ -794,9 +793,9 @@ private static void takeQuiz(Student student) {
 
                 if (answerIndex == question.getCorrectOptionIndex()) {
                     score++;
-                    System.out.println("✓ Correct!");
+                    System.out.println("Correct!");
                 } else {
-                    System.out.println("✗ Incorrect. The correct answer was: " + options.get(question.getCorrectOptionIndex()));
+                    System.out.println("Incorrect. The correct answer was: " + options.get(question.getCorrectOptionIndex()));
                 }
             } else {
                 System.out.println("Invalid answer. Marking as incorrect.");
