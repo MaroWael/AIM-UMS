@@ -1,116 +1,158 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-
 <!--
-login.fxml - Login screen UI
-Clean and simple login interface
+login.fxml - Enhanced Modern Login UI
+Beautiful and professional login interface for University Management System
 -->
 
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.ums.system.controller.LoginController"
-      alignment="CENTER"
-      spacing="20"
-      style="-fx-background-color: linear-gradient(to bottom, #2193b0, #6dd5ed);">
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.Region?>
 
-    <padding>
-        <Insets top="50" right="50" bottom="50" left="50"/>
-    </padding>
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.ums.system.controller.LoginController"
+           prefHeight="700" prefWidth="1000"
+           style="-fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);">
 
-    <!-- Login Card -->
-    <VBox alignment="CENTER" spacing="25" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 5);" maxWidth="350">
-        <padding>
-            <Insets top="40" right="40" bottom="40" left="40"/>
-        </padding>
+    <VBox alignment="CENTER" spacing="0">
 
-        <!-- Title -->
-        <VBox alignment="CENTER" spacing="5">
-            <Label text="University Management System" style="-fx-font-weight: bold; -fx-text-fill: #2193b0;">
+        <!-- Main Login Card with Modern Design -->
+        <VBox alignment="CENTER" spacing="15"
+              style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 25, 0, 0, 10);"
+              maxWidth="420" minWidth="420">
+            <padding>
+                <Insets top="30" right="40" bottom="30" left="40"/>
+            </padding>
+
+            <!-- Logo/Icon Section with gradient background -->
+            <VBox alignment="CENTER" spacing="5"
+                  style="-fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2); -fx-background-radius: 15; -fx-padding: 15;">
+                <Label text="🎓" style="-fx-font-size: 36px;"/>
+            </VBox>
+
+            <!-- Title Section -->
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="Welcome Back!"
+                       style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2d3748;"/>
+                <Label text="University Management System"
+                       style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: 500;"/>
+                <Label text="Sign in to continue your journey"
+                       style="-fx-font-size: 12px; -fx-text-fill: #a0aec0;"/>
+            </VBox>
+
+            <!-- Email Field with Icon -->
+            <VBox spacing="6" style="-fx-padding: 0;">
+                <Label text="📧 Email Address"
+                       style="-fx-font-weight: bold; -fx-text-fill: #4a5568; -fx-font-size: 12px;"/>
+                <TextField fx:id="emailField"
+                          promptText="Enter your email address"
+                          style="-fx-background-color: #f7fafc; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-border-width: 2; -fx-padding: 10; -fx-font-size: 13px; -fx-prompt-text-fill: #a0aec0;">
+                    <font>
+                        <Font size="13"/>
+                    </font>
+                </TextField>
+            </VBox>
+
+            <!-- Password Field with Icon -->
+            <VBox spacing="6" style="-fx-padding: 0;">
+                <Label text="🔒 Password"
+                       style="-fx-font-weight: bold; -fx-text-fill: #4a5568; -fx-font-size: 12px;"/>
+                <PasswordField fx:id="passwordField"
+                              promptText="Enter your password"
+                              style="-fx-background-color: #f7fafc; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-border-width: 2; -fx-padding: 10; -fx-font-size: 13px; -fx-prompt-text-fill: #a0aec0;">
+                    <font>
+                        <Font size="13"/>
+                    </font>
+                </PasswordField>
+            </VBox>
+
+            <!-- Error Label with better styling -->
+            <Label fx:id="errorLabel"
+                   text=""
+                   style="-fx-text-fill: #e53e3e; -fx-font-size: 12px; -fx-font-weight: 500; -fx-background-color: #fff5f5; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #feb2b2; -fx-border-radius: 8; -fx-border-width: 1;"
+                   wrapText="true"
+                   maxWidth="350"
+                   visible="false"/>
+
+            <!-- Login Button with Gradient -->
+            <Button fx:id="loginButton"
+                    text="🚀 Sign In"
+                    onAction="#handleLogin"
+                    defaultButton="true"
+                    maxWidth="Infinity"
+                    style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 12; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 15, 0, 0, 5);">
                 <font>
-                    <Font size="18"/>
+                    <Font size="14"/>
                 </font>
-            </Label>
-            <Label text="Login to continue" style="-fx-text-fill: #666666;">
-                <font>
-                    <Font size="12"/>
-                </font>
-            </Label>
+            </Button>
+
+            <!-- Progress Indicator -->
+            <ProgressIndicator fx:id="progressIndicator"
+                              prefWidth="40"
+                              prefHeight="40"
+                              visible="false"
+                              style="-fx-progress-color: #667eea;"/>
+
+            <!-- Divider -->
+            <HBox alignment="CENTER" spacing="10" style="-fx-padding: 5 0 5 0;">
+                <Region prefHeight="1" prefWidth="80" style="-fx-background-color: #e2e8f0;"/>
+                <Label text="Test Accounts" style="-fx-text-fill: #a0aec0; -fx-font-size: 10px; -fx-font-weight: 600;"/>
+                <Region prefHeight="1" prefWidth="80" style="-fx-background-color: #e2e8f0;"/>
+            </HBox>
+
+            <!-- Info Cards for Test Credentials -->
+            <VBox spacing="8" style="-fx-padding: 0;">
+
+                <!-- Admin Card -->
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      style="-fx-background-color: linear-gradient(to right, #e0e7ff, #f0e7ff); -fx-padding: 8; -fx-background-radius: 8; -fx-border-color: #c7d2fe; -fx-border-radius: 8; -fx-border-width: 1;">
+                    <Label text="👨‍💼" style="-fx-font-size: 20px;"/>
+                    <VBox spacing="1">
+                        <Label text="Admin Account" style="-fx-font-weight: bold; -fx-text-fill: #4c51bf; -fx-font-size: 11px;"/>
+                        <Label text="admin@gmail.com" style="-fx-text-fill: #5a67d8; -fx-font-size: 10px;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Student Card -->
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      style="-fx-background-color: linear-gradient(to right, #dbeafe, #e0f2fe); -fx-padding: 8; -fx-background-radius: 8; -fx-border-color: #bfdbfe; -fx-border-radius: 8; -fx-border-width: 1;">
+                    <Label text="🎓" style="-fx-font-size: 20px;"/>
+                    <VBox spacing="1">
+                        <Label text="Student Account" style="-fx-font-weight: bold; -fx-text-fill: #2563eb; -fx-font-size: 11px;"/>
+                        <Label text="student@gmail.com" style="-fx-text-fill: #3b82f6; -fx-font-size: 10px;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Instructor Card -->
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      style="-fx-background-color: linear-gradient(to right, #d1fae5, #d1f5e4); -fx-padding: 8; -fx-background-radius: 8; -fx-border-color: #a7f3d0; -fx-border-radius: 8; -fx-border-width: 1;">
+                    <Label text="👨‍🏫" style="-fx-font-size: 20px;"/>
+                    <VBox spacing="1">
+                        <Label text="Instructor Account" style="-fx-font-weight: bold; -fx-text-fill: #059669; -fx-font-size: 11px;"/>
+                        <Label text="instructor@gmail.com" style="-fx-text-fill: #10b981; -fx-font-size: 10px;"/>
+                    </VBox>
+                </HBox>
+
+            </VBox>
+
         </VBox>
 
-        <!-- Email Field -->
-        <VBox spacing="8">
-            <Label text="Email Address" style="-fx-font-weight: bold; -fx-text-fill: #333333;">
-                <font>
-                    <Font size="12"/>
-                </font>
-            </Label>
-            <TextField fx:id="emailField"
-                      promptText="Enter your email"
-                      style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 10;">
-                <font>
-                    <Font size="13"/>
-                </font>
-            </TextField>
-        </VBox>
+        <!-- Floating Footer -->
+        <HBox alignment="CENTER" spacing="5" style="-fx-padding: 15 0 0 0;">
+            <Label text="©" style="-fx-text-fill: white; -fx-font-size: 12px;"/>
+            <Label text="2024 University Management System"
+                   style="-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: 600; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);"/>
+            <Label text="• All Rights Reserved" style="-fx-text-fill: rgba(255,255,255,0.8); -fx-font-size: 12px;"/>
+        </HBox>
 
-        <!-- Password Field -->
-        <VBox spacing="8">
-            <Label text="Password" style="-fx-font-weight: bold; -fx-text-fill: #333333;">
-                <font>
-                    <Font size="12"/>
-                </font>
-            </Label>
-            <PasswordField fx:id="passwordField"
-                          promptText="Enter your password"
-                          style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 10;">
-                <font>
-                    <Font size="13"/>
-                </font>
-            </PasswordField>
-        </VBox>
-
-        <!-- Error Label -->
-        <Label fx:id="errorLabel"
-               text=""
-               style="-fx-text-fill: red; -fx-font-size: 11px;"
-               wrapText="true"
-               maxWidth="270"/>
-
-        <!-- Login Button -->
-        <Button fx:id="loginButton"
-                text="Login"
-                onAction="#handleLogin"
-                defaultButton="true"
-                maxWidth="Infinity"
-                style="-fx-background-color: #2193b0; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12; -fx-cursor: hand; -fx-font-weight: bold;">
-            <font>
-                <Font size="14"/>
-            </font>
-        </Button>
-
-        <!-- Progress Indicator -->
-        <ProgressIndicator fx:id="progressIndicator"
-                          prefWidth="40"
-                          prefHeight="40"
-                          visible="false"/>
-
-        <!-- Info Text -->
-        <VBox alignment="CENTER" spacing="5" style="-fx-padding: 10 0 0 0;">
-            <Label text="Test Credentials:" style="-fx-text-fill: #666666; -fx-font-size: 10px; -fx-font-weight: bold;"/>
-            <Label text="Admin: admin@ums.edu / Student: student@ums.edu" style="-fx-text-fill: #999999; -fx-font-size: 9px;"/>
-        </VBox>
     </VBox>
 
-    <!-- Footer -->
-    <Label text="© 2024 University Management System" style="-fx-text-fill: white; -fx-font-size: 11px;">
-        <VBox.margin>
-            <Insets top="20"/>
-        </VBox.margin>
-    </Label>
-
-</VBox>
+</StackPane>
 
