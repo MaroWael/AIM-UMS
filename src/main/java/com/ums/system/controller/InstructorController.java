@@ -33,12 +33,6 @@ public class InstructorController {
     @FXML private TableColumn<Course, Integer> courseStudentsColumn;
     @FXML private TableColumn<Course, Integer> courseQuizzesColumn;
 
-    // All Courses Tab
-    @FXML private TableView<Course> allCoursesTable;
-    @FXML private TableColumn<Course, Integer> allCourseIdColumn;
-    @FXML private TableColumn<Course, String> allCourseNameColumn;
-    @FXML private TableColumn<Course, String> allCourseCodeColumn;
-
     // Students Tab
     @FXML private ComboBox<Course> courseCombo;
     @FXML private TableView<Student> studentsTable;
@@ -46,6 +40,8 @@ public class InstructorController {
     @FXML private TableColumn<Student, String> studentNameColumn;
     @FXML private TableColumn<Student, String> studentEmailColumn;
     @FXML private TableColumn<Student, String> studentLevelColumn;
+    @FXML private TableColumn<Student, String> studentMajorColumn;
+    @FXML private TableColumn<Student, String> studentDepartmentColumn;
 
     // Quizzes Tab
     @FXML private TableView<Quiz> quizzesTable;
@@ -58,10 +54,12 @@ public class InstructorController {
 
     // Quiz Results Tab
     @FXML private TableView<QuizResult> resultsTable;
-    @FXML private TableColumn<QuizResult, Integer> resultIdColumn;
-    @FXML private TableColumn<QuizResult, Integer> resultStudentColumn;
-    @FXML private TableColumn<QuizResult, Integer> resultQuizColumn;
-    @FXML private TableColumn<QuizResult, Double> resultScoreColumn;
+    @FXML private TableColumn<QuizResult, Integer> resultStudentIdColumn;
+    @FXML private TableColumn<QuizResult, String> resultStudentNameColumn;
+    @FXML private TableColumn<QuizResult, Integer> resultQuizIdColumn;
+    @FXML private TableColumn<QuizResult, String> resultQuizTitleColumn;
+    @FXML private TableColumn<QuizResult, String> resultCourseCodeColumn;
+    @FXML private TableColumn<QuizResult, Integer> resultScoreColumn;
     @FXML private ComboBox<Quiz> resultQuizCombo;
 
     // Services
@@ -87,10 +85,92 @@ public class InstructorController {
 
         // Set up tables
         setupMyCoursesTable();
-        setupAllCoursesTable();
         setupStudentsTable();
         setupQuizzesTable();
         setupResultsTable();
+
+        // Set up combo boxes with custom display
+        setupCourseComboBoxes();
+    }
+
+    /**
+     * Setup combo boxes to display course code and name
+     */
+    private void setupCourseComboBoxes() {
+        // Setup courseCombo (Students Tab)
+        courseCombo.setCellFactory(param -> new ListCell<Course>() {
+            @Override
+            protected void updateItem(Course course, boolean empty) {
+                super.updateItem(course, empty);
+                if (empty || course == null) {
+                    setText(null);
+                } else {
+                    setText(course.getCode() + " - " + course.getCourseName());
+                }
+            }
+        });
+
+        courseCombo.setButtonCell(new ListCell<Course>() {
+            @Override
+            protected void updateItem(Course course, boolean empty) {
+                super.updateItem(course, empty);
+                if (empty || course == null) {
+                    setText(null);
+                } else {
+                    setText(course.getCode() + " - " + course.getCourseName());
+                }
+            }
+        });
+
+        // Setup quizCourseCombo (Quizzes Tab)
+        quizCourseCombo.setCellFactory(param -> new ListCell<Course>() {
+            @Override
+            protected void updateItem(Course course, boolean empty) {
+                super.updateItem(course, empty);
+                if (empty || course == null) {
+                    setText(null);
+                } else {
+                    setText(course.getCode() + " - " + course.getCourseName());
+                }
+            }
+        });
+
+        quizCourseCombo.setButtonCell(new ListCell<Course>() {
+            @Override
+            protected void updateItem(Course course, boolean empty) {
+                super.updateItem(course, empty);
+                if (empty || course == null) {
+                    setText(null);
+                } else {
+                    setText(course.getCode() + " - " + course.getCourseName());
+                }
+            }
+        });
+
+        // Setup resultQuizCombo (Quiz Results Tab)
+        resultQuizCombo.setCellFactory(param -> new ListCell<Quiz>() {
+            @Override
+            protected void updateItem(Quiz quiz, boolean empty) {
+                super.updateItem(quiz, empty);
+                if (empty || quiz == null) {
+                    setText(null);
+                } else {
+                    setText(quiz.getId() + " - " + quiz.getTitle());
+                }
+            }
+        });
+
+        resultQuizCombo.setButtonCell(new ListCell<Quiz>() {
+            @Override
+            protected void updateItem(Quiz quiz, boolean empty) {
+                super.updateItem(quiz, empty);
+                if (empty || quiz == null) {
+                    setText(null);
+                } else {
+                    setText(quiz.getId() + " - " + quiz.getTitle());
+                }
+            }
+        });
     }
 
     /**
@@ -104,7 +184,6 @@ public class InstructorController {
 
         // Load initial data
         loadMyCourses();
-        loadAllCourses();
         loadMyQuizzes();
     }
 
@@ -121,17 +200,20 @@ public class InstructorController {
         courseQuizzesColumn.setCellValueFactory(new PropertyValueFactory<>("quizCount"));
     }
 
-    private void setupAllCoursesTable() {
-        allCourseIdColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        allCourseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
-        allCourseCodeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-    }
-
     private void setupStudentsTable() {
-        studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         studentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         studentEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         studentLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        studentMajorColumn.setCellValueFactory(new PropertyValueFactory<>("major"));
+
+        // Department is an object, need to extract the name
+        studentDepartmentColumn.setCellValueFactory(cellData -> {
+            Student student = cellData.getValue();
+            Department dept = student.getDepartmentName();
+            String deptName = (dept != null) ? dept.name() : "N/A";
+            return new javafx.beans.property.SimpleStringProperty(deptName);
+        });
     }
 
     private void setupQuizzesTable() {
@@ -147,24 +229,35 @@ public class InstructorController {
     }
 
     private void setupResultsTable() {
-        // QuizResult has student and quiz objects, not IDs
-        resultIdColumn.setCellValueFactory(cellData -> {
-            QuizResult result = cellData.getValue();
-            return new javafx.beans.property.SimpleIntegerProperty(result.hashCode()).asObject();
-        });
-        resultStudentColumn.setCellValueFactory(cellData -> {
+        resultStudentIdColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
             int id = result.getStudent() != null ? result.getStudent().getId() : 0;
             return new javafx.beans.property.SimpleIntegerProperty(id).asObject();
         });
-        resultQuizColumn.setCellValueFactory(cellData -> {
+        resultStudentNameColumn.setCellValueFactory(cellData -> {
+            QuizResult result = cellData.getValue();
+            String name = result.getStudent() != null ? result.getStudent().getName() : "";
+            return new javafx.beans.property.SimpleStringProperty(name);
+        });
+        resultQuizIdColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
             int id = result.getQuiz() != null ? result.getQuiz().getId() : 0;
             return new javafx.beans.property.SimpleIntegerProperty(id).asObject();
         });
+        resultQuizTitleColumn.setCellValueFactory(cellData -> {
+            QuizResult result = cellData.getValue();
+            String title = result.getQuiz() != null ? result.getQuiz().getTitle() : "";
+            return new javafx.beans.property.SimpleStringProperty(title);
+        });
+        resultCourseCodeColumn.setCellValueFactory(cellData -> {
+            QuizResult result = cellData.getValue();
+            String code = result.getQuiz() != null && result.getQuiz().getCourseCode() != null ?
+                    result.getQuiz().getCourseCode() : "";
+            return new javafx.beans.property.SimpleStringProperty(code);
+        });
         resultScoreColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
-            return new javafx.beans.property.SimpleDoubleProperty(result.getScore()).asObject();
+            return new javafx.beans.property.SimpleIntegerProperty(result.getScore()).asObject();
         });
     }
 
@@ -182,20 +275,6 @@ public class InstructorController {
             quizCourseCombo.setItems(coursesList);
 
             System.out.println("Loaded " + courses.size() + " courses for instructor");
-        } catch (Exception e) {
-            showError("Error loading courses: " + e.getMessage());
-        }
-    }
-
-    // ==================== ALL COURSES TAB ====================
-
-    @FXML
-    private void loadAllCourses() {
-        try {
-            List<Course> courses = courseService.getAllCourses();
-            ObservableList<Course> coursesList = FXCollections.observableArrayList(courses);
-            allCoursesTable.setItems(coursesList);
-            System.out.println("Loaded " + courses.size() + " courses");
         } catch (Exception e) {
             showError("Error loading courses: " + e.getMessage());
         }
@@ -303,8 +382,17 @@ public class InstructorController {
             List<QuizResult> results = quizResultService.getResultsByQuizId(selectedQuiz.getId());
             ObservableList<QuizResult> resultsList = FXCollections.observableArrayList(results);
             resultsTable.setItems(resultsList);
+
+            // Debug logging
             System.out.println("Loaded " + results.size() + " results for quiz: " + selectedQuiz.getTitle());
+            for (QuizResult result : results) {
+                System.out.println("Result - Student: " +
+                    (result.getStudent() != null ? result.getStudent().getName() : "NULL") +
+                    ", Quiz: " + (result.getQuiz() != null ? result.getQuiz().getTitle() : "NULL") +
+                    ", Score: " + result.getScore());
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             showError("Error loading results: " + e.getMessage());
         }
     }
@@ -322,8 +410,17 @@ public class InstructorController {
             }
 
             resultsTable.setItems(allResults);
+
+            // Debug logging
             System.out.println("Loaded " + allResults.size() + " total results");
+            for (QuizResult result : allResults) {
+                System.out.println("Result - Student: " +
+                    (result.getStudent() != null ? result.getStudent().getName() : "NULL") +
+                    ", Quiz: " + (result.getQuiz() != null ? result.getQuiz().getTitle() : "NULL") +
+                    ", Score: " + result.getScore());
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             showError("Error loading all results: " + e.getMessage());
         }
     }

@@ -66,28 +66,6 @@ Provides tabs for viewing courses, students, managing quizzes and results
                 </VBox>
             </Tab>
 
-            <!-- ALL COURSES TAB -->
-            <Tab text="All Courses">
-                <VBox spacing="15" style="-fx-padding: 20;">
-
-                    <Label text="All Available Courses" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-
-                    <HBox spacing="10">
-                        <Label text="View all courses in the system" style="-fx-font-size: 12px; -fx-text-fill: #666;"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="Refresh" onAction="#loadAllCourses" style="-fx-cursor: hand;"/>
-                    </HBox>
-
-                    <TableView fx:id="allCoursesTable" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="allCourseIdColumn" text="ID" prefWidth="50"/>
-                            <TableColumn fx:id="allCourseNameColumn" text="Course Name" prefWidth="500"/>
-                            <TableColumn fx:id="allCourseCodeColumn" text="Code" prefWidth="200"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
-
             <!-- STUDENTS TAB -->
             <Tab text="Students">
                 <VBox spacing="15" style="-fx-padding: 20;">
@@ -102,10 +80,12 @@ Provides tabs for viewing courses, students, managing quizzes and results
 
                     <TableView fx:id="studentsTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="studentIdColumn" text="ID" prefWidth="50"/>
-                            <TableColumn fx:id="studentNameColumn" text="Name" prefWidth="300"/>
-                            <TableColumn fx:id="studentEmailColumn" text="Email" prefWidth="300"/>
-                            <TableColumn fx:id="studentLevelColumn" text="Level" prefWidth="150"/>
+                            <TableColumn fx:id="studentIdColumn" text="ID" prefWidth="60"/>
+                            <TableColumn fx:id="studentNameColumn" text="Name" prefWidth="200"/>
+                            <TableColumn fx:id="studentEmailColumn" text="Email" prefWidth="220"/>
+                            <TableColumn fx:id="studentLevelColumn" text="Level" prefWidth="80"/>
+                            <TableColumn fx:id="studentMajorColumn" text="Major" prefWidth="150"/>
+                            <TableColumn fx:id="studentDepartmentColumn" text="Department" prefWidth="150"/>
                         </columns>
                     </TableView>
                 </VBox>
@@ -164,10 +144,12 @@ Provides tabs for viewing courses, students, managing quizzes and results
 
                     <TableView fx:id="resultsTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="resultIdColumn" text="ID" prefWidth="50"/>
-                            <TableColumn fx:id="resultStudentColumn" text="Student ID" prefWidth="100"/>
-                            <TableColumn fx:id="resultQuizColumn" text="Quiz ID" prefWidth="100"/>
-                            <TableColumn fx:id="resultScoreColumn" text="Score" prefWidth="100"/>
+                            <TableColumn fx:id="resultStudentIdColumn" text="Student ID" prefWidth="80"/>
+                            <TableColumn fx:id="resultStudentNameColumn" text="Student Name" prefWidth="180"/>
+                            <TableColumn fx:id="resultQuizIdColumn" text="Quiz ID" prefWidth="70"/>
+                            <TableColumn fx:id="resultQuizTitleColumn" text="Quiz Title" prefWidth="200"/>
+                            <TableColumn fx:id="resultCourseCodeColumn" text="Course Code" prefWidth="100"/>
+                            <TableColumn fx:id="resultScoreColumn" text="Score" prefWidth="80"/>
                         </columns>
                     </TableView>
                 </VBox>
@@ -177,4 +159,3 @@ Provides tabs for viewing courses, students, managing quizzes and results
     </center>
 
 </BorderPane>
-

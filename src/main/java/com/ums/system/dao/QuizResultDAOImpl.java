@@ -160,12 +160,41 @@ public class QuizResultDAOImpl implements QuizResultDAO {
     @Override
     public List<QuizResult> getByQuizId(int quizId) {
         List<QuizResult> list = new ArrayList<>();
-        String sql = "SELECT * FROM quiz_results WHERE quiz_id = ?";
+        String sql = "SELECT qr.*, q.title, q.course_code, " +
+                     "u.id as student_id, u.name as student_name, u.email as student_email, " +
+                     "st.level as student_level, st.major as student_major, st.department as student_department " +
+                     "FROM quiz_results qr " +
+                     "JOIN quizzes q ON qr.quiz_id = q.id " +
+                     "JOIN students st ON qr.student_id = st.user_id " +
+                     "JOIN users u ON st.user_id = u.id " +
+                     "WHERE qr.quiz_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, quizId);
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new QuizResult(null, null, rs.getInt("score"), null));
+                    int resultId = rs.getInt("id");
+
+                    // Load actual questions from database
+                    List<Question> questions = loadQuestionsByQuizId(quizId);
+
+                    // Load student's answers from database
+                    Map<Question, String> answers = loadAnswersByResultId(resultId, questions);
+
+                    // Create Quiz object
+                    Quiz quiz = new Quiz(
+                        quizId,
+                        rs.getString("title"),
+                        rs.getString("course_code"),
+                        questions
+                    );
+
+                    // Create Student object using StudentDAOImpl to get proper Department enum
+                    StudentDAOImpl studentDAO = new StudentDAOImpl(connection);
+                    com.ums.system.model.Student student = studentDAO.getById(rs.getInt("student_id"));
+
+                    QuizResult result = new QuizResult(student, quiz, rs.getInt("score"), answers);
+                    list.add(result);
                 }
             }
         } catch (SQLException e) {
