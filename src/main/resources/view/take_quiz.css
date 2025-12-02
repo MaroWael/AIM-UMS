@@ -1,0 +1,180 @@
+/* Take Quiz CSS */
+
+.root {
+    -fx-background-color: #f5f7fa;
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.header-section {
+    -fx-background-color: linear-gradient(to bottom, #667eea, #764ba2);
+    -fx-border-color: #5568d3;
+    -fx-border-width: 0 0 2 0;
+}
+
+.quiz-title {
+    -fx-text-fill: white;
+}
+
+.course-label {
+    -fx-text-fill: #e0e0e0;
+}
+
+.timer-label {
+    -fx-text-fill: white;
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-background-radius: 8;
+    -fx-padding: 8 15 8 15;
+}
+
+.progress-label {
+    -fx-text-fill: white;
+}
+
+.question-progress {
+    -fx-accent: white;
+}
+
+.question-progress > .track {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-background-radius: 4;
+}
+
+.question-progress > .bar {
+    -fx-background-color: white;
+    -fx-background-radius: 4;
+    -fx-background-insets: 0;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.question-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 3);
+    -fx-border-color: #e1e4e8;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+.question-header {
+    -fx-text-fill: #667eea;
+}
+
+.question-text {
+    -fx-text-fill: #2c3e50;
+    -fx-line-spacing: 1.5;
+}
+
+.options-header {
+    -fx-text-fill: #5a6c7d;
+}
+
+.option-radio {
+    -fx-cursor: hand;
+}
+
+.option-box {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 8;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-padding: 15 20 15 20;
+    -fx-cursor: hand;
+}
+
+.option-box:hover {
+    -fx-background-color: #e9ecef;
+    -fx-border-color: #667eea;
+}
+
+.option-box-selected {
+    -fx-background-color: #e7f3ff;
+    -fx-border-color: #667eea;
+    -fx-border-width: 2;
+}
+
+.option-letter {
+    -fx-text-fill: #667eea;
+    -fx-font-weight: bold;
+}
+
+.option-text {
+    -fx-text-fill: #2c3e50;
+}
+
+.button-bar {
+    -fx-background-color: white;
+    -fx-border-color: #e1e4e8;
+    -fx-border-width: 2 0 0 0;
+}
+
+.nav-button {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 12 30 12 30;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.nav-button:hover {
+    -fx-background-color: #5568d3;
+}
+
+.nav-button:disabled {
+    -fx-background-color: #ccc;
+    -fx-opacity: 0.6;
+}
+
+.submit-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 12 40 12 40;
+    -fx-cursor: hand;
+}
+
+.submit-button:hover {
+    -fx-background-color: #218838;
+}
+
+.cancel-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 12 30 12 30;
+    -fx-cursor: hand;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #c82333;
+}
+
+.radio-button {
+    -fx-cursor: hand;
+}
+
+.radio-button .radio {
+    -fx-background-color: white;
+    -fx-border-color: #667eea;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-padding: 5;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: #667eea;
+}
+
+.radio-button .dot {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+}
+

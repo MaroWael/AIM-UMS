@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ums.system.controller.QuizResultDetailController"
+            prefHeight="700.0" prefWidth="900.0" styleClass="root"
+            stylesheets="@quiz_result_detail.css">
+
+    <!-- Top Section: Quiz Header -->
+    <top>
+        <VBox styleClass="header-section" spacing="10">
+            <padding>
+                <Insets top="20" right="30" bottom="20" left="30"/>
+            </padding>
+
+            <Label text="Quiz Result Details" styleClass="main-title">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+
+            <Separator/>
+
+            <GridPane hgap="20" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="150" prefWidth="150"/>
+                    <ColumnConstraints hgrow="ALWAYS" minWidth="200"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="150" prefWidth="150"/>
+                    <ColumnConstraints hgrow="ALWAYS" minWidth="200"/>
+                </columnConstraints>
+
+                <Label text="📝 Quiz:" styleClass="info-label" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <font><Font name="System Bold" size="14"/></font>
+                </Label>
+                <Label fx:id="quizTitleLabel" text="Quiz Title" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <font><Font size="14"/></font>
+                </Label>
+
+                <Label text="📚 Course:" styleClass="info-label" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                    <font><Font name="System Bold" size="14"/></font>
+                </Label>
+                <Label fx:id="courseLabel" text="Course Name" styleClass="info-value" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                    <font><Font size="14"/></font>
+                </Label>
+
+                <Label text="👤 Student:" styleClass="info-label" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <font><Font name="System Bold" size="14"/></font>
+                </Label>
+                <Label fx:id="studentLabel" text="Student Name" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font><Font size="14"/></font>
+                </Label>
+
+                <Label text="📅 Date:" styleClass="info-label" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                    <font><Font name="System Bold" size="14"/></font>
+                </Label>
+                <Label fx:id="dateLabel" text="N/A" styleClass="info-value" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                    <font><Font size="14"/></font>
+                </Label>
+            </GridPane>
+        </VBox>
+    </top>
+
+    <!-- Center: Performance Summary and Questions -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="scroll-pane">
+            <VBox spacing="20">
+                <padding>
+                    <Insets top="20" right="30" bottom="20" left="30"/>
+                </padding>
+
+                <!-- Performance Summary Card -->
+                <VBox styleClass="summary-card" spacing="15">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <Label text="📊 Performance Summary" styleClass="section-title">
+                        <font><Font name="System Bold" size="20"/></font>
+                    </Label>
+
+                    <HBox spacing="30" alignment="CENTER_LEFT">
+                        <!-- Score Circle -->
+                        <VBox alignment="CENTER" styleClass="score-container" spacing="5">
+                            <StackPane>
+                                <VBox alignment="CENTER" styleClass="score-circle">
+                                    <Label fx:id="percentageLabel" text="0%" styleClass="percentage-text">
+                                        <font><Font name="System Bold" size="36"/></font>
+                                    </Label>
+                                </VBox>
+                            </StackPane>
+                            <Label text="Overall Score" styleClass="score-subtitle">
+                                <font><Font size="12"/></font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Statistics -->
+                        <VBox spacing="15" HBox.hgrow="ALWAYS">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="✅" styleClass="stat-icon">
+                                    <font><Font size="20"/></font>
+                                </Label>
+                                <VBox>
+                                    <Label text="Correct Answers" styleClass="stat-label">
+                                        <font><Font size="12"/></font>
+                                    </Label>
+                                    <Label fx:id="correctAnswersLabel" text="0 out of 0" styleClass="stat-value">
+                                        <font><Font name="System Bold" size="16"/></font>
+                                    </Label>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="🎯" styleClass="stat-icon">
+                                    <font><Font size="20"/></font>
+                                </Label>
+                                <VBox>
+                                    <Label text="Grade" styleClass="stat-label">
+                                        <font><Font size="12"/></font>
+                                    </Label>
+                                    <Label fx:id="gradeLabel" text="N/A" styleClass="stat-value">
+                                        <font><Font name="System Bold" size="16"/></font>
+                                    </Label>
+                                </VBox>
+                            </HBox>
+
+                            <ProgressBar fx:id="scoreProgressBar" progress="0" prefWidth="400" prefHeight="25" styleClass="score-progress"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Questions Review Section -->
+                <VBox spacing="10">
+                    <Label text="❓ Detailed Question Review" styleClass="section-title">
+                        <font><Font name="System Bold" size="20"/></font>
+                    </Label>
+
+                    <VBox fx:id="questionsContainer" spacing="15"/>
+                </VBox>
+
+                <!-- Tips Section -->
+                <VBox styleClass="tips-card" spacing="10">
+                    <padding>
+                        <Insets top="15" right="20" bottom="15" left="20"/>
+                    </padding>
+                    <Label text="💡 Study Tips" styleClass="tips-title">
+                        <font><Font name="System Bold" size="16"/></font>
+                    </Label>
+                    <Label text="Review the incorrect answers to improve your understanding. Focus on the topics where you made mistakes."
+                           wrapText="true" styleClass="tips-text">
+                        <font><Font size="13"/></font>
+                    </Label>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+    <!-- Bottom: Action Buttons -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="button-bar">
+            <padding>
+                <Insets top="15" right="30" bottom="15" left="30"/>
+            </padding>
+            <Button text="Close" onAction="#handleClose" styleClass="primary-button">
+                <font><Font size="13"/></font>
+            </Button>
+        </HBox>
+    </bottom>
+
+</BorderPane>

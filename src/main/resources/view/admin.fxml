@@ -52,12 +52,23 @@ Provides tabs for managing courses, users, students, and instructors
                     <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 5;">
                         <Label text="Create New Course" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
 
-                        <HBox spacing="10">
-                            <TextField fx:id="courseNameField" promptText="Course Name" HBox.hgrow="ALWAYS"/>
-                            <TextField fx:id="courseCodeField" promptText="Course Code" prefWidth="150"/>
-                            <TextField fx:id="courseCreditsField" promptText="Credits" prefWidth="100"/>
-                            <Button text="Create Course" onAction="#handleCreateCourse" style="-fx-background-color: #2193b0; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
-                        </HBox>
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="25"/>
+                                <ColumnConstraints percentWidth="25"/>
+                                <ColumnConstraints percentWidth="25"/>
+                                <ColumnConstraints percentWidth="25"/>
+                            </columnConstraints>
+
+                            <TextField fx:id="courseCodeField" promptText="Course Code" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <TextField fx:id="courseNameField" promptText="Course Name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <ComboBox fx:id="courseMajorCombo" promptText="Select Major" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                            <TextField fx:id="courseLevelField" promptText="Level (1-4)" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+
+                            <TextField fx:id="courseLectureTimeField" promptText="Lecture Time" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <ComboBox fx:id="courseInstructorCombo" promptText="Select Instructor" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
+                            <Button text="Create Course" onAction="#handleCreateCourse" style="-fx-background-color: #2193b0; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                        </GridPane>
                     </VBox>
 
                     <!-- Courses Table -->
@@ -71,10 +82,12 @@ Provides tabs for managing courses, users, students, and instructors
 
                         <TableView fx:id="coursesTable" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="courseIdColumn" text="ID" prefWidth="50"/>
-                                <TableColumn fx:id="courseNameColumn" text="Course Name" prefWidth="300"/>
-                                <TableColumn fx:id="courseCodeColumn" text="Code" prefWidth="150"/>
-                                <TableColumn fx:id="creditsColumn" text="Credits" prefWidth="100"/>
+                                <TableColumn fx:id="courseCodeColumn" text="Code" prefWidth="80"/>
+                                <TableColumn fx:id="courseNameColumn" text="Course Name" prefWidth="200"/>
+                                <TableColumn fx:id="courseLevelColumn" text="Level" prefWidth="60"/>
+                                <TableColumn fx:id="courseMajorColumn" text="Major" prefWidth="150"/>
+                                <TableColumn fx:id="courseLectureTimeColumn" text="Lecture Time" prefWidth="150"/>
+                                <TableColumn fx:id="courseInstructorColumn" text="Instructor" prefWidth="150"/>
                             </columns>
                         </TableView>
                     </VBox>
@@ -91,12 +104,48 @@ Provides tabs for managing courses, users, students, and instructors
                     <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 5;">
                         <Label text="Create New User" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
 
+                        <!-- User Type Selection -->
                         <HBox spacing="10">
+                            <Label text="User Type:" style="-fx-font-size: 12px; -fx-min-width: 80;"/>
                             <ComboBox fx:id="userTypeCombo" prefWidth="120"/>
-                            <TextField fx:id="userNameField" promptText="Full Name" prefWidth="200"/>
-                            <TextField fx:id="userEmailField" promptText="Email" prefWidth="200"/>
-                            <PasswordField fx:id="userPasswordField" promptText="Password" prefWidth="150"/>
-                            <Button text="Create User" onAction="#handleCreateUser" style="-fx-background-color: #2193b0; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        </HBox>
+
+                        <!-- Common Fields -->
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="33"/>
+                                <ColumnConstraints percentWidth="33"/>
+                                <ColumnConstraints percentWidth="34"/>
+                            </columnConstraints>
+
+                            <TextField fx:id="userNameField" promptText="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <TextField fx:id="userEmailField" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <PasswordField fx:id="userPasswordField" promptText="Password" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                        </GridPane>
+
+                        <!-- Dynamic Fields for Student -->
+                        <GridPane fx:id="studentFieldsPane" hgap="10" vgap="10" visible="false" managed="false">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="25"/>
+                                <ColumnConstraints percentWidth="25"/>
+                                <ColumnConstraints percentWidth="25"/>
+                                <ColumnConstraints percentWidth="25"/>
+                            </columnConstraints>
+
+                            <TextField fx:id="studentLevelField" promptText="Level (1-4)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <ComboBox fx:id="studentMajorCombo" promptText="Select Major" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <ComboBox fx:id="studentDepartmentCombo" promptText="Department" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                        </GridPane>
+
+                        <!-- Dynamic Fields for Instructor -->
+                        <HBox fx:id="instructorFieldsPane" spacing="10" visible="false" managed="false">
+                            <Label text="Department:" style="-fx-font-size: 12px; -fx-min-width: 80;"/>
+                            <ComboBox fx:id="instructorDepartmentCombo" promptText="Select Department" prefWidth="200"/>
+                        </HBox>
+
+                        <!-- Create Button -->
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button text="Create User" onAction="#handleCreateUser" style="-fx-background-color: #2193b0; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 30;"/>
                         </HBox>
                     </VBox>
 
@@ -178,4 +227,3 @@ Provides tabs for managing courses, users, students, and instructors
     </center>
 
 </BorderPane>
-

@@ -11,6 +11,8 @@ public class Course {
     private List<Student> students;
     private List<Quiz> quizzes;
     private int InstructorId;
+    private int studentCount;
+    private int quizCount;
 
     public Course(String code, String courseName, String level, String major, String lectureTime, List<Student> students, List<Quiz> quizzes, int instructorId) {
         this.code = code;
@@ -21,6 +23,8 @@ public class Course {
         this.students = students;
         this.quizzes = quizzes;
         InstructorId = instructorId;
+        this.studentCount = 0;
+        this.quizCount = 0;
     }
 
     public String getCode() {
@@ -53,6 +57,22 @@ public class Course {
 
     public int getInstructorId() {
         return InstructorId;
+    }
+
+    public int getStudentCount() {
+        return studentCount;
+    }
+
+    public void setStudentCount(int studentCount) {
+        this.studentCount = studentCount;
+    }
+
+    public int getQuizCount() {
+        return quizCount;
+    }
+
+    public void setQuizCount(int quizCount) {
+        this.quizCount = quizCount;
     }
 
 }

@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -25,32 +26,38 @@ public class StudentController {
 
     // Available Courses Tab
     @FXML private TableView<Course> availableCoursesTable;
-    @FXML private TableColumn<Course, Integer> availCourseIdColumn;
-    @FXML private TableColumn<Course, String> availCourseNameColumn;
     @FXML private TableColumn<Course, String> availCourseCodeColumn;
-    @FXML private TableColumn<Course, Integer> availCreditsColumn;
+    @FXML private TableColumn<Course, String> availCourseNameColumn;
+    @FXML private TableColumn<Course, String> availCourseLevelColumn;
+    @FXML private TableColumn<Course, String> availCourseMajorColumn;
+    @FXML private TableColumn<Course, String> availCourseInstructorColumn;
+    @FXML private TableColumn<Course, String> availCourseLectureTimeColumn;
 
     // My Courses Tab
     @FXML private TableView<Course> myCoursesTable;
-    @FXML private TableColumn<Course, Integer> myCourseIdColumn;
-    @FXML private TableColumn<Course, String> myCourseNameColumn;
     @FXML private TableColumn<Course, String> myCourseCodeColumn;
-    @FXML private TableColumn<Course, Integer> myCreditsColumn;
+    @FXML private TableColumn<Course, String> myCourseNameColumn;
+    @FXML private TableColumn<Course, String> myCourseLevelColumn;
+    @FXML private TableColumn<Course, String> myCourseMajorColumn;
+    @FXML private TableColumn<Course, String> myCourseInstructorColumn;
+    @FXML private TableColumn<Course, String> myCourseLectureTimeColumn;
 
     // Quizzes Tab
     @FXML private ComboBox<Course> quizCourseCombo;
     @FXML private TableView<Quiz> quizzesTable;
     @FXML private TableColumn<Quiz, Integer> quizIdColumn;
     @FXML private TableColumn<Quiz, String> quizTitleColumn;
-    @FXML private TableColumn<Quiz, Integer> quizCourseColumn;
+    @FXML private TableColumn<Quiz, String> quizCourseColumn;
+    @FXML private TableColumn<Quiz, String> quizCourseNameColumn;
     @FXML private TableColumn<Quiz, Integer> quizQuestionsColumn;
 
     // My Grades Tab
     @FXML private TableView<QuizResult> gradesTable;
-    @FXML private TableColumn<QuizResult, Integer> gradeIdColumn;
-    @FXML private TableColumn<QuizResult, Integer> gradeQuizColumn;
-    @FXML private TableColumn<QuizResult, Double> gradeScoreColumn;
-    @FXML private TableColumn<QuizResult, String> gradeDateColumn;
+    @FXML private TableColumn<QuizResult, String> gradeQuizTitleColumn;
+    @FXML private TableColumn<QuizResult, String> gradeCourseColumn;
+    @FXML private TableColumn<QuizResult, Integer> gradeScoreColumn;
+    @FXML private TableColumn<QuizResult, Integer> gradeTotalQuestionsColumn;
+    @FXML private TableColumn<QuizResult, Integer> gradeAnswersColumn;
     @FXML private Label averageScoreLabel;
 
     // Services
@@ -60,6 +67,7 @@ public class StudentController {
     private QuizService quizService;
     private QuizResultService quizResultService;
     private EnrollmentDAO enrollmentDAO;
+    private com.ums.system.utils.ReportGenerator reportGenerator;
 
     /**
      * Initialize method
@@ -100,23 +108,75 @@ public class StudentController {
      * Setup tables
      */
     private void setupAvailableCoursesTable() {
-        availCourseIdColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        availCourseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
         availCourseCodeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        availCreditsColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        availCourseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
+        availCourseLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        availCourseMajorColumn.setCellValueFactory(new PropertyValueFactory<>("major"));
+        availCourseLectureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("lectureTime"));
+
+        // Custom cell value factory for instructor name instead of ID
+        availCourseInstructorColumn.setCellValueFactory(cellData -> {
+            Course course = cellData.getValue();
+            int instructorId = course.getInstructorId();
+
+            // Fetch instructor name
+            try {
+                InstructorService instructorService = ServiceLocator.getInstance().getInstructorService();
+                Instructor instructor = instructorService.getInstructorById(instructorId);
+                if (instructor != null) {
+                    return new javafx.beans.property.SimpleStringProperty(instructor.getName());
+                } else {
+                    return new javafx.beans.property.SimpleStringProperty("N/A");
+                }
+            } catch (Exception e) {
+                return new javafx.beans.property.SimpleStringProperty("Error");
+            }
+        });
     }
 
     private void setupMyCoursesTable() {
-        myCourseIdColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        myCourseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
         myCourseCodeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        myCreditsColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        myCourseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
+        myCourseLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        myCourseMajorColumn.setCellValueFactory(new PropertyValueFactory<>("major"));
+        myCourseLectureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("lectureTime"));
+
+        // Custom cell value factory for instructor name instead of ID
+        myCourseInstructorColumn.setCellValueFactory(cellData -> {
+            Course course = cellData.getValue();
+            int instructorId = course.getInstructorId();
+
+            // Fetch instructor name
+            try {
+                InstructorService instructorService = ServiceLocator.getInstance().getInstructorService();
+                Instructor instructor = instructorService.getInstructorById(instructorId);
+                if (instructor != null) {
+                    return new javafx.beans.property.SimpleStringProperty(instructor.getName());
+                } else {
+                    return new javafx.beans.property.SimpleStringProperty("N/A");
+                }
+            } catch (Exception e) {
+                return new javafx.beans.property.SimpleStringProperty("Error");
+            }
+        });
     }
 
     private void setupQuizzesTable() {
         quizIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         quizTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         quizCourseColumn.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
+        quizCourseNameColumn.setCellValueFactory(cellData -> {
+            Quiz quiz = cellData.getValue();
+            String courseCode = quiz.getCourseCode();
+
+            // Fetch course name from course code
+            try {
+                Course course = courseService.getCourseByCode(courseCode);
+                return new javafx.beans.property.SimpleStringProperty(course != null ? course.getCourseName() : "N/A");
+            } catch (Exception e) {
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            }
+        });
         quizQuestionsColumn.setCellValueFactory(cellData -> {
             Quiz quiz = cellData.getValue();
             int count = quiz.getQuestions() != null ? quiz.getQuestions().size() : 0;
@@ -125,22 +185,48 @@ public class StudentController {
     }
 
     private void setupGradesTable() {
-        gradeIdColumn.setCellValueFactory(cellData -> {
+        gradeQuizTitleColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
-            return new javafx.beans.property.SimpleIntegerProperty(result.hashCode()).asObject();
+            Quiz quiz = result.getQuiz();
+            return new javafx.beans.property.SimpleStringProperty(quiz != null ? quiz.getTitle() : "N/A");
         });
-        gradeQuizColumn.setCellValueFactory(cellData -> {
+        gradeCourseColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
-            int id = result.getQuiz() != null ? result.getQuiz().getId() : 0;
-            return new javafx.beans.property.SimpleIntegerProperty(id).asObject();
+            Quiz quiz = result.getQuiz();
+            String courseCode = quiz != null ? quiz.getCourseCode() : null;
+
+            // Try to get course name, fallback to course code
+            try {
+                if (courseCode != null) {
+                    Course course = courseService.getCourseByCode(courseCode);
+                    return new javafx.beans.property.SimpleStringProperty(course != null ? course.getCourseName() : courseCode);
+                }
+            } catch (Exception e) {
+                // Fallback to course code if lookup fails
+            }
+            return new javafx.beans.property.SimpleStringProperty(courseCode != null ? courseCode : "N/A");
         });
         gradeScoreColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
-            return new javafx.beans.property.SimpleDoubleProperty(result.getScore()).asObject();
+            Quiz quiz = result.getQuiz();
+
+            // Calculate percentage: (score * 100 / totalQuestions)
+            int rawScore = result.getScore();
+            int totalQuestions = quiz != null && quiz.getQuestions() != null ? quiz.getQuestions().size() : 0;
+
+            int percentage = (totalQuestions > 0) ? (rawScore * 100 / totalQuestions) : 0;
+            return new javafx.beans.property.SimpleIntegerProperty(percentage).asObject();
         });
-        gradeDateColumn.setCellValueFactory(cellData -> {
-            // QuizResult doesn't have submittedAt - using placeholder
-            return new javafx.beans.property.SimpleStringProperty("N/A");
+        gradeTotalQuestionsColumn.setCellValueFactory(cellData -> {
+            QuizResult result = cellData.getValue();
+            Quiz quiz = result.getQuiz();
+            int totalQuestions = quiz != null && quiz.getQuestions() != null ? quiz.getQuestions().size() : 0;
+            return new javafx.beans.property.SimpleIntegerProperty(totalQuestions).asObject();
+        });
+        gradeAnswersColumn.setCellValueFactory(cellData -> {
+            QuizResult result = cellData.getValue();
+            // This shows the raw score (correct answers count)
+            return new javafx.beans.property.SimpleIntegerProperty(result.getScore()).asObject();
         });
     }
 
@@ -149,10 +235,26 @@ public class StudentController {
     @FXML
     private void loadAvailableCourses() {
         try {
-            List<Course> courses = courseService.getAllCourses();
-            ObservableList<Course> coursesList = FXCollections.observableArrayList(courses);
+            // Get all courses
+            List<Course> allCourses = courseService.getAllCourses();
+
+            // Filter courses by student's level and major
+            List<Course> filteredCourses = allCourses.stream()
+                .filter(course -> {
+                    // Check if course level matches student level
+                    boolean levelMatches = course.getLevel().equals(String.valueOf(currentStudent.getLevel()));
+
+                    // Check if course major matches student major
+                    boolean majorMatches = course.getMajor().equalsIgnoreCase(currentStudent.getMajor());
+
+                    return levelMatches && majorMatches;
+                })
+                .collect(java.util.stream.Collectors.toList());
+
+            ObservableList<Course> coursesList = FXCollections.observableArrayList(filteredCourses);
             availableCoursesTable.setItems(coursesList);
-            System.out.println("Loaded " + courses.size() + " available courses");
+            System.out.println("Loaded " + filteredCourses.size() + " available courses for level "
+                + currentStudent.getLevel() + " and major " + currentStudent.getMajor());
         } catch (Exception e) {
             showError("Error loading courses: " + e.getMessage());
         }
@@ -163,6 +265,21 @@ public class StudentController {
         Course selected = availableCoursesTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showError("Please select a course to enroll!");
+            return;
+        }
+
+        // Check if student is already enrolled in this course
+        try {
+            List<Course> enrolledCourses = enrollmentDAO.getCoursesByStudentId(currentStudent.getId());
+            boolean alreadyEnrolled = enrolledCourses.stream()
+                .anyMatch(course -> course.getCode().equals(selected.getCode()));
+
+            if (alreadyEnrolled) {
+                showError("You are already enrolled in: " + selected.getCourseName());
+                return;
+            }
+        } catch (Exception e) {
+            showError("Error checking enrollment status: " + e.getMessage());
             return;
         }
 
@@ -178,6 +295,7 @@ public class StudentController {
                 enrollmentDAO.enrollStudentInCourse(currentStudent.getId(), selected.getCode());
                 showInfo("Successfully enrolled in: " + selected.getCourseName());
                 loadMyCourses();
+                loadAvailableCourses(); // Refresh available courses
 
             } catch (Exception e) {
                 showError("Error enrolling in course: " + e.getMessage());
@@ -194,8 +312,22 @@ public class StudentController {
             ObservableList<Course> coursesList = FXCollections.observableArrayList(courses);
             myCoursesTable.setItems(coursesList);
 
-            // Update quiz course combo
+            // Update quiz course combo with custom string converter
             quizCourseCombo.setItems(coursesList);
+            quizCourseCombo.setConverter(new javafx.util.StringConverter<Course>() {
+                @Override
+                public String toString(Course course) {
+                    if (course == null) {
+                        return null;
+                    }
+                    return course.getCode() + " - " + course.getCourseName();
+                }
+
+                @Override
+                public Course fromString(String string) {
+                    return null;
+                }
+            });
 
             System.out.println("Loaded " + courses.size() + " enrolled courses");
         } catch (Exception e) {
@@ -257,13 +389,44 @@ public class StudentController {
             return;
         }
 
-        Alert info = new Alert(Alert.AlertType.INFORMATION);
-        info.setTitle("Take Quiz");
-        info.setHeaderText("Quiz: " + selected.getTitle());
-        info.setContentText("Quiz taking feature requires a separate interface with questions.\n" +
-                          "This would be implemented as a new window with question forms.\n\n" +
-                          "For now, this is a placeholder.");
-        info.showAndWait();
+        // Check if quiz has questions
+        if (selected.getQuestions() == null || selected.getQuestions().isEmpty()) {
+            showError("This quiz has no questions!");
+            return;
+        }
+
+        try {
+            // Load the Take Quiz interface
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/view/take_quiz.fxml")
+            );
+            javafx.scene.Parent root = loader.load();
+
+            // Get controller and set quiz data
+            TakeQuizController controller = loader.getController();
+            controller.setQuizData(selected, currentStudent);
+
+            // Create new stage for quiz
+            javafx.stage.Stage quizStage = new javafx.stage.Stage();
+            quizStage.setTitle("Take Quiz - " + selected.getTitle());
+            quizStage.setScene(new javafx.scene.Scene(root));
+            quizStage.setResizable(true);
+            quizStage.setMinWidth(900);
+            quizStage.setMinHeight(700);
+
+            // Make it modal
+            quizStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            quizStage.initOwner(quizzesTable.getScene().getWindow());
+
+            // Refresh grades when quiz window closes
+            quizStage.setOnHidden(event -> loadMyGrades());
+
+            quizStage.show();
+
+        } catch (Exception e) {
+            showError("Error opening quiz: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -294,16 +457,16 @@ public class StudentController {
             ObservableList<QuizResult> resultsList = FXCollections.observableArrayList(results);
             gradesTable.setItems(resultsList);
 
-            // Calculate average score
+            // Calculate average score using the student's overall grade from database (like Main.java)
             if (!results.isEmpty()) {
-                double total = 0;
-                for (QuizResult result : results) {
-                    total += result.getScore();
+                Student updatedStudent = studentService.getStudentById(currentStudent.getId());
+                if (updatedStudent != null) {
+                    averageScoreLabel.setText(String.format("Average Score: %.2f%%", updatedStudent.getGrade()));
+                } else {
+                    averageScoreLabel.setText("Average Score: N/A");
                 }
-                double average = total / results.size();
-                averageScoreLabel.setText(String.format("Average Score: %.2f%%", average));
             } else {
-                averageScoreLabel.setText("Average Score: N/A");
+                averageScoreLabel.setText("Average Score: 0.00%");
             }
 
             System.out.println("Loaded " + results.size() + " quiz results");
@@ -321,21 +484,126 @@ public class StudentController {
         }
 
         try {
-            Quiz quiz = selected.getQuiz();
-
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Grade Details");
-            info.setHeaderText("Quiz Result Details");
-            info.setContentText(
-                "Quiz ID: " + (quiz != null ? quiz.getId() : "N/A") + "\n" +
-                "Quiz Title: " + (quiz != null ? quiz.getTitle() : "N/A") + "\n" +
-                "Score: " + selected.getScore() + "%"
+            // Load the new FXML view
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/view/quiz_result_detail.fxml")
             );
-            info.showAndWait();
+            javafx.scene.Parent root = loader.load();
+
+            // Get the controller and set the data
+            QuizResultDetailController controller = loader.getController();
+            controller.setQuizResult(selected, currentStudent);
+
+            // Create a new stage (window) for the details
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setTitle("Quiz Result Details - " + (selected.getQuiz() != null ? selected.getQuiz().getTitle() : "Quiz"));
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.setResizable(true);
+            stage.show();
 
         } catch (Exception e) {
             showError("Error loading grade details: " + e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * Generate Academic Report (PDF)
+     */
+    @FXML
+    private void handleGenerateReport() {
+        // Show confirmation dialog
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Generate Report");
+        confirm.setHeaderText("Generate Academic Report (PDF)");
+        confirm.setContentText("This will generate a comprehensive PDF report containing:\n\n" +
+                              "• Your personal information\n" +
+                              "• Overall grade and performance\n" +
+                              "• List of registered courses\n" +
+                              "• Grade for each course\n" +
+                              "• Quiz results summary\n\n" +
+                              "Do you want to continue?");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
+            return;
+        }
+
+        // Show progress dialog
+        Alert progressAlert = new Alert(Alert.AlertType.INFORMATION);
+        progressAlert.setTitle("Generating Report");
+        progressAlert.setHeaderText("Please wait...");
+        progressAlert.setContentText("Generating your academic report...");
+        progressAlert.show();
+
+        // Generate report in background thread to avoid UI freeze
+        new Thread(() -> {
+            try {
+                // Get fresh student data
+                Student updatedStudent = studentService.getStudentById(currentStudent.getId());
+                if (updatedStudent == null) {
+                    updatedStudent = currentStudent;
+                }
+
+                // Make it final for use in lambda
+                final Student finalStudent = updatedStudent;
+
+                // Get ReportGenerator from ServiceLocator
+                if (reportGenerator == null) {
+                    reportGenerator = ServiceLocator.getInstance().getReportGenerator();
+                }
+
+                // Generate the report
+                String filename = reportGenerator.generateStudentReport(finalStudent);
+
+                // Update UI on JavaFX Application Thread
+                javafx.application.Platform.runLater(() -> {
+                    progressAlert.close();
+
+                    // Show success dialog with file location
+                    Alert success = new Alert(Alert.AlertType.INFORMATION);
+                    success.setTitle("Report Generated");
+                    success.setHeaderText("Academic Report Generated Successfully!");
+                    success.setContentText("Your academic report has been saved to:\n\n" +
+                                          filename + "\n\n" +
+                                          "The report contains:\n" +
+                                          "  • Your personal information\n" +
+                                          "  • Overall grade: " + String.format("%.2f%%", finalStudent.getGrade()) + "\n" +
+                                          "  • List of registered courses\n" +
+                                          "  • Grade for each course\n" +
+                                          "  • Quiz results summary");
+
+                    // Add button to open the file location
+                    ButtonType openFolderButton = new ButtonType("Open Folder");
+                    ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+                    success.getButtonTypes().setAll(openFolderButton, okButton);
+
+                    Optional<ButtonType> choice = success.showAndWait();
+                    if (choice.isPresent() && choice.get() == openFolderButton) {
+                        try {
+                            // Open the reports folder
+                            java.io.File file = new java.io.File(filename);
+                            if (file.exists()) {
+                                // Open the folder containing the file
+                                if (java.awt.Desktop.isDesktopSupported()) {
+                                    java.awt.Desktop.getDesktop().open(file.getParentFile());
+                                }
+                            }
+                        } catch (Exception e) {
+                            showError("Could not open folder: " + e.getMessage());
+                        }
+                    }
+                });
+
+            } catch (Exception e) {
+                // Update UI on JavaFX Application Thread
+                javafx.application.Platform.runLater(() -> {
+                    progressAlert.close();
+                    showError("Error generating report: " + e.getMessage());
+                });
+            }
+        }).start();
     }
 
     // ==================== UTILITY METHODS ====================

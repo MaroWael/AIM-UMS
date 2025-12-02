@@ -120,12 +120,15 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public List<Course> getByInstructorId(int instructorId) {
         List<Course> courses = new ArrayList<>();
-        String sql = "SELECT * FROM courses WHERE instructor_id = ?";
+        String sql = "SELECT c.*, " +
+                     "(SELECT COUNT(*) FROM student_courses sc WHERE sc.course_code = c.code) as student_count, " +
+                     "(SELECT COUNT(*) FROM quizzes q WHERE q.course_code = c.code) as quiz_count " +
+                     "FROM courses c WHERE c.instructor_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, instructorId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                courses.add(new Course(
+                Course course = new Course(
                         rs.getString("code"),
                         rs.getString("course_name"),
                         rs.getString("level"),
@@ -134,7 +137,10 @@ public class CourseDAOImpl implements CourseDAO {
                         null,
                         null,
                         rs.getInt("instructor_id")
-                ));
+                );
+                course.setStudentCount(rs.getInt("student_count"));
+                course.setQuizCount(rs.getInt("quiz_count"));
+                courses.add(course);
             }
         } catch (SQLException e) {
             e.printStackTrace();

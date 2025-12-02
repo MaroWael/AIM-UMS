@@ -50,15 +50,17 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
                         <Label text="Browse and enroll in available courses" style="-fx-font-size: 12px; -fx-text-fill: #666;"/>
                         <Region HBox.hgrow="ALWAYS"/>
                         <Button text="Refresh" onAction="#loadAvailableCourses" style="-fx-cursor: hand;"/>
-                        <Button text="Enroll in Selected" onAction="#handleEnrollCourse" style="-fx-background-color: #4caf50; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        <Button text="Enroll in Selected" onAction="#handleEnrollCourse" style="-fx-background-color: #4caf50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;"/>
                     </HBox>
 
                     <TableView fx:id="availableCoursesTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="availCourseIdColumn" text="ID" prefWidth="50"/>
-                            <TableColumn fx:id="availCourseNameColumn" text="Course Name" prefWidth="400"/>
-                            <TableColumn fx:id="availCourseCodeColumn" text="Code" prefWidth="150"/>
-                            <TableColumn fx:id="availCreditsColumn" text="Credits" prefWidth="100"/>
+                            <TableColumn fx:id="availCourseCodeColumn" text="Code" prefWidth="100"/>
+                            <TableColumn fx:id="availCourseNameColumn" text="Course Name" prefWidth="250"/>
+                            <TableColumn fx:id="availCourseLevelColumn" text="Level" prefWidth="80"/>
+                            <TableColumn fx:id="availCourseMajorColumn" text="Major" prefWidth="180"/>
+                            <TableColumn fx:id="availCourseInstructorColumn" text="Instructor" prefWidth="150"/>
+                            <TableColumn fx:id="availCourseLectureTimeColumn" text="Lecture Time" prefWidth="150"/>
                         </columns>
                     </TableView>
                 </VBox>
@@ -79,10 +81,12 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
 
                     <TableView fx:id="myCoursesTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="myCourseIdColumn" text="ID" prefWidth="50"/>
-                            <TableColumn fx:id="myCourseNameColumn" text="Course Name" prefWidth="400"/>
-                            <TableColumn fx:id="myCourseCodeColumn" text="Code" prefWidth="150"/>
-                            <TableColumn fx:id="myCreditsColumn" text="Credits" prefWidth="100"/>
+                            <TableColumn fx:id="myCourseCodeColumn" text="Code" prefWidth="100"/>
+                            <TableColumn fx:id="myCourseNameColumn" text="Course Name" prefWidth="250"/>
+                            <TableColumn fx:id="myCourseLevelColumn" text="Level" prefWidth="80"/>
+                            <TableColumn fx:id="myCourseMajorColumn" text="Major" prefWidth="180"/>
+                            <TableColumn fx:id="myCourseInstructorColumn" text="Instructor" prefWidth="150"/>
+                            <TableColumn fx:id="myCourseLectureTimeColumn" text="Lecture Time" prefWidth="150"/>
                         </columns>
                     </TableView>
                 </VBox>
@@ -110,10 +114,11 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
 
                         <TableView fx:id="quizzesTable" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="quizIdColumn" text="ID" prefWidth="50"/>
-                                <TableColumn fx:id="quizTitleColumn" text="Quiz Title" prefWidth="400"/>
-                                <TableColumn fx:id="quizCourseColumn" text="Course ID" prefWidth="100"/>
-                                <TableColumn fx:id="quizQuestionsColumn" text="Questions" prefWidth="100"/>
+                                <TableColumn fx:id="quizIdColumn" text="Quiz ID" prefWidth="80"/>
+                                <TableColumn fx:id="quizTitleColumn" text="Quiz Title" prefWidth="300"/>
+                                <TableColumn fx:id="quizCourseColumn" text="Course Code" prefWidth="120"/>
+                                <TableColumn fx:id="quizCourseNameColumn" text="Course Name" prefWidth="250"/>
+                                <TableColumn fx:id="quizQuestionsColumn" text="Total Questions" prefWidth="130"/>
                             </columns>
                         </TableView>
                     </VBox>
@@ -134,16 +139,18 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
                     <HBox spacing="10">
                         <Label text="All your quiz results and grades" style="-fx-font-size: 12px; -fx-text-fill: #666;"/>
                         <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Generate Report (PDF)" onAction="#handleGenerateReport" style="-fx-background-color: #ff9800; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;"/>
                         <Button text="Refresh" onAction="#loadMyGrades" style="-fx-cursor: hand;"/>
                         <Button text="View Details" onAction="#handleViewGradeDetails" style="-fx-background-color: #2196f3; -fx-text-fill: white; -fx-cursor: hand;"/>
                     </HBox>
 
                     <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="gradeIdColumn" text="Result ID" prefWidth="100"/>
-                            <TableColumn fx:id="gradeQuizColumn" text="Quiz ID" prefWidth="100"/>
+                            <TableColumn fx:id="gradeQuizTitleColumn" text="Quiz Title" prefWidth="250"/>
+                            <TableColumn fx:id="gradeCourseColumn" text="Course" prefWidth="200"/>
                             <TableColumn fx:id="gradeScoreColumn" text="Score (%)" prefWidth="100"/>
-                            <TableColumn fx:id="gradeDateColumn" text="Date Submitted" prefWidth="200"/>
+                            <TableColumn fx:id="gradeTotalQuestionsColumn" text="Total Questions" prefWidth="120"/>
+                            <TableColumn fx:id="gradeAnswersColumn" text="Correct Answers" prefWidth="120"/>
                         </columns>
                     </TableView>
                 </VBox>
@@ -153,4 +160,3 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
     </center>
 
 </BorderPane>
-

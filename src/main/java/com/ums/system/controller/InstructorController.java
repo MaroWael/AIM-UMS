@@ -25,10 +25,13 @@ public class InstructorController {
 
     // My Courses Tab
     @FXML private TableView<Course> myCoursesTable;
-    @FXML private TableColumn<Course, Integer> courseIdColumn;
+    @FXML private TableColumn<Course, String> courseIdColumn;
     @FXML private TableColumn<Course, String> courseNameColumn;
-    @FXML private TableColumn<Course, String> courseCodeColumn;
-    @FXML private TableColumn<Course, Integer> creditsColumn;
+    @FXML private TableColumn<Course, String> courseLevelColumn;
+    @FXML private TableColumn<Course, String> courseMajorColumn;
+    @FXML private TableColumn<Course, String> courseLectureTimeColumn;
+    @FXML private TableColumn<Course, Integer> courseStudentsColumn;
+    @FXML private TableColumn<Course, Integer> courseQuizzesColumn;
 
     // All Courses Tab
     @FXML private TableView<Course> allCoursesTable;
@@ -111,8 +114,11 @@ public class InstructorController {
     private void setupMyCoursesTable() {
         courseIdColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
         courseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
-        courseCodeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        creditsColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        courseLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        courseMajorColumn.setCellValueFactory(new PropertyValueFactory<>("major"));
+        courseLectureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("lectureTime"));
+        courseStudentsColumn.setCellValueFactory(new PropertyValueFactory<>("studentCount"));
+        courseQuizzesColumn.setCellValueFactory(new PropertyValueFactory<>("quizCount"));
     }
 
     private void setupAllCoursesTable() {
@@ -353,4 +359,3 @@ public class InstructorController {
         alert.showAndWait();
     }
 }
-

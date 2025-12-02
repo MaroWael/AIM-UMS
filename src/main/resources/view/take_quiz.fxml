@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+take_quiz.fxml - Quiz Taking Interface
+Provides an interactive interface for students to take quizzes
+-->
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ums.system.controller.TakeQuizController"
+            prefHeight="700" prefWidth="900"
+            styleClass="root"
+            stylesheets="@take_quiz.css">
+
+    <!-- Top: Header with Quiz Info and Timer -->
+    <top>
+        <VBox styleClass="header-section" spacing="10">
+            <padding>
+                <Insets top="20" right="25" bottom="20" left="25"/>
+            </padding>
+
+            <!-- Quiz Title and Course -->
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label fx:id="quizTitleLabel" text="Quiz Title"
+                           styleClass="quiz-title"
+                           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                    <Label fx:id="courseLabel" text="Course: CS101 - Introduction to Computer Science"
+                           styleClass="course-label"
+                           style="-fx-font-size: 14px;"/>
+                </VBox>
+
+                <!-- Timer -->
+                <Label fx:id="timerLabel" text="Time: 30:00"
+                       styleClass="timer-label"
+                       style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <!-- Progress Bar -->
+            <VBox spacing="5">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label fx:id="progressLabel" text="Question 1 of 10"
+                           styleClass="progress-label"
+                           style="-fx-font-size: 13px;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="answeredLabel" text="Answered: 0/10"
+                           styleClass="progress-label"
+                           style="-fx-font-size: 13px;"/>
+                </HBox>
+                <ProgressBar fx:id="questionProgress" progress="0.1"
+                            prefWidth="9999" prefHeight="8"
+                            styleClass="question-progress"/>
+            </VBox>
+        </VBox>
+    </top>
+
+    <!-- Center: Question Display -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                   styleClass="scroll-pane"
+                   style="-fx-background: transparent; -fx-background-color: transparent;">
+            <VBox spacing="20" style="-fx-padding: 25;">
+
+                <!-- Question Card -->
+                <VBox fx:id="questionCard" spacing="20" styleClass="question-card"
+                      style="-fx-padding: 30;">
+
+                    <!-- Question Header -->
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label fx:id="questionNumberLabel" text="Question 1"
+                               styleClass="question-header"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="questionTypeLabel" text="Multiple Choice"
+                               style="-fx-font-size: 12px; -fx-text-fill: #999;"/>
+                    </HBox>
+
+                    <Separator/>
+
+                    <!-- Question Text -->
+                    <Label fx:id="questionTextLabel"
+                           text="What is the capital of France?"
+                           styleClass="question-text"
+                           wrapText="true"
+                           style="-fx-font-size: 18px; -fx-line-spacing: 5px;"/>
+
+                    <!-- Options Label -->
+                    <Label text="Select your answer:"
+                           styleClass="options-header"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
+
+                    <!-- Options Container -->
+                    <VBox fx:id="optionsContainer" spacing="12">
+                        <!-- Options will be dynamically added here -->
+                    </VBox>
+
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+    <!-- Bottom: Navigation Buttons -->
+    <bottom>
+        <HBox styleClass="button-bar" alignment="CENTER" spacing="15"
+              style="-fx-padding: 20;">
+
+            <Button fx:id="previousButton" text="◄ Previous"
+                    styleClass="nav-button"
+                    onAction="#handlePrevious"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button text="Cancel Quiz"
+                    styleClass="cancel-button"
+                    onAction="#handleCancel"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button fx:id="nextButton" text="Next ►"
+                    styleClass="nav-button"
+                    onAction="#handleNext"/>
+
+            <Button fx:id="submitButton" text="Submit Quiz"
+                    styleClass="submit-button"
+                    visible="false"
+                    onAction="#handleSubmit"/>
+
+        </HBox>
+    </bottom>
+
+</BorderPane>
+

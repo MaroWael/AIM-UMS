@@ -54,10 +54,13 @@ Provides tabs for viewing courses, students, managing quizzes and results
 
                     <TableView fx:id="myCoursesTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="courseIdColumn" text="ID" prefWidth="50"/>
-                            <TableColumn fx:id="courseNameColumn" text="Course Name" prefWidth="400"/>
-                            <TableColumn fx:id="courseCodeColumn" text="Code" prefWidth="150"/>
-                            <TableColumn fx:id="creditsColumn" text="Credits" prefWidth="100"/>
+                            <TableColumn fx:id="courseIdColumn" text="Code" prefWidth="100"/>
+                            <TableColumn fx:id="courseNameColumn" text="Course Name" prefWidth="250"/>
+                            <TableColumn fx:id="courseLevelColumn" text="Level" prefWidth="80"/>
+                            <TableColumn fx:id="courseMajorColumn" text="Major" prefWidth="120"/>
+                            <TableColumn fx:id="courseLectureTimeColumn" text="Lecture Time" prefWidth="120"/>
+                            <TableColumn fx:id="courseStudentsColumn" text="Students" prefWidth="80"/>
+                            <TableColumn fx:id="courseQuizzesColumn" text="Quizzes" prefWidth="80"/>
                         </columns>
                     </TableView>
                 </VBox>

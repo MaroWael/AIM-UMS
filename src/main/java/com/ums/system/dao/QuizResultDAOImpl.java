@@ -5,7 +5,10 @@ import com.ums.system.model.Quiz;
 import com.ums.system.model.QuizResult;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Arrays;
 
 public class QuizResultDAOImpl implements QuizResultDAO {
 
@@ -54,9 +57,14 @@ public class QuizResultDAOImpl implements QuizResultDAO {
             ps.setInt(1, studentId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-
+                    int resultId = rs.getInt("id");
                     int quizId = rs.getInt("quiz_id");
-                    List<Question> questions = createEmptyQuestionList(quizId);
+
+                    // Load actual questions from database
+                    List<Question> questions = loadQuestionsByQuizId(quizId);
+
+                    // Load student's answers from database
+                    Map<Question, String> answers = loadAnswersByResultId(resultId, questions);
 
                     Quiz quiz = new Quiz(
                         quizId,
@@ -64,13 +72,70 @@ public class QuizResultDAOImpl implements QuizResultDAO {
                         rs.getString("course_code"),
                         questions
                     );
-                    list.add(new QuizResult(null, quiz, rs.getInt("score"), null));
+                    list.add(new QuizResult(null, quiz, rs.getInt("score"), answers));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    /**
+     * Load all questions for a quiz from the database
+     */
+    private List<Question> loadQuestionsByQuizId(int quizId) {
+        List<Question> questions = new ArrayList<>();
+        String sql = "SELECT * FROM questions WHERE quiz_id = ? ORDER BY id";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, quizId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    questions.add(new Question(
+                        rs.getInt("id"),
+                        rs.getString("text"),
+                        Arrays.asList(
+                            rs.getString("option1"),
+                            rs.getString("option2"),
+                            rs.getString("option3"),
+                            rs.getString("option4")
+                        ),
+                        rs.getInt("correct_option_index")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return questions;
+    }
+
+    /**
+     * Load student's answers for a quiz result from the database
+     */
+    private Map<Question, String> loadAnswersByResultId(int resultId, List<Question> questions) {
+        Map<Question, String> answers = new HashMap<>();
+        String sql = "SELECT question_id, chosen_answer FROM quiz_answers WHERE result_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, resultId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int questionId = rs.getInt("question_id");
+                    String chosenAnswer = rs.getString("chosen_answer");
+
+                    // Find the matching question object
+                    for (Question q : questions) {
+                        if (q.getId() == questionId) {
+                            answers.put(q, chosenAnswer);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return answers;
     }
 
     private List<Question> createEmptyQuestionList(int quizId) {
