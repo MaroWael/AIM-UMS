@@ -16,28 +16,27 @@ Enhanced UI with modern design
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.ums.system.controller.AdminController"
             prefHeight="750" prefWidth="1200"
-            style="-fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);">
+            styleClass="admin-root"
+            stylesheets="@admin.css">
 
     <!-- Top: Header -->
     <top>
-        <VBox style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 3);">
+        <VBox styleClass="admin-header">
             <padding>
                 <Insets top="20" right="30" bottom="20" left="30"/>
             </padding>
 
             <HBox alignment="CENTER_LEFT" spacing="20">
-                <Label fx:id="welcomeLabel" text="🎓 Welcome, Admin!" style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);"/>
+                <Label fx:id="welcomeLabel" text="🎓 Welcome, Admin!" styleClass="admin-welcome-label"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="🚪 Logout" onAction="#handleLogout"
-                        style="-fx-background-color: white; -fx-text-fill: #667eea; -fx-font-weight: bold; -fx-padding: 10 25; -fx-cursor: hand; -fx-background-radius: 25; -fx-font-size: 13px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);">
+                <Button text="🚪 Logout" onAction="#handleLogout" styleClass="admin-logout-button">
                     <font>
                         <Font name="System Bold" size="13"/>
                     </font>
                 </Button>
             </HBox>
 
-            <Label fx:id="userInfoLabel" text="Role: Admin  |  ID: -  |  Email: -"
-                   style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 13px;">
+            <Label fx:id="userInfoLabel" text="Role: Admin  |  ID: -  |  Email: -" styleClass="admin-user-info">
                 <VBox.margin>
                     <Insets top="8"/>
                 </VBox.margin>
@@ -50,22 +49,22 @@ Enhanced UI with modern design
 
     <!-- Center: Tab Pane -->
     <center>
-        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-padding: 15; -fx-background-color: transparent;">
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="admin-tab-pane">
 
             <!-- COURSES TAB -->
             <Tab text="📚 Courses">
-                <VBox spacing="20" style="-fx-padding: 25; -fx-background-color: transparent;">
+                <VBox spacing="20" styleClass="content-section">
 
                     <!-- Title -->
-                    <Label text="📚 Course Management" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2d3748;">
+                    <Label text="📚 Course Management" styleClass="section-title">
                         <font>
                             <Font name="System Bold" size="22"/>
                         </font>
                     </Label>
 
                     <!-- Create Course Form -->
-                    <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);">
-                        <Label text="➕ Create New Course" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #4a5568;">
+                    <VBox spacing="15" styleClass="form-card">
+                        <Label text="➕ Create New Course" styleClass="form-title">
                             <font>
                                 <Font name="System Bold" size="16"/>
                             </font>
@@ -80,26 +79,26 @@ Enhanced UI with modern design
                             </columnConstraints>
 
                             <TextField fx:id="courseCodeField" promptText="Course Code"
-                                       style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                                       styleClass="admin-text-field"
                                        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <TextField fx:id="courseNameField" promptText="Course Name"
-                                       style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                                       styleClass="admin-text-field"
                                        GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                             <ComboBox fx:id="courseMajorCombo" promptText="Select Major"
-                                      style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 5; -fx-font-size: 13px;"
+                                      styleClass="admin-combo-box"
                                       GridPane.columnIndex="2" GridPane.rowIndex="0" maxWidth="Infinity"/>
                             <TextField fx:id="courseLevelField" promptText="Level (1-4)"
-                                       style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                                       styleClass="admin-text-field"
                                        GridPane.columnIndex="3" GridPane.rowIndex="0"/>
 
                             <TextField fx:id="courseLectureTimeField" promptText="Lecture Time"
-                                       style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                                       styleClass="admin-text-field"
                                        GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                             <ComboBox fx:id="courseInstructorCombo" promptText="Select Instructor"
-                                      style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 5; -fx-font-size: 13px;"
+                                      styleClass="admin-combo-box"
                                       prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2" maxWidth="Infinity"/>
                             <Button text="✓ Create Course" onAction="#handleCreateCourse"
-                                    style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 8; -fx-font-size: 13px; -fx-padding: 10 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"
+                                    styleClass="primary-button"
                                     GridPane.columnIndex="3" GridPane.rowIndex="1" maxWidth="Infinity">
                                 <font>
                                     <Font name="System Bold" size="13"/>
@@ -109,32 +108,29 @@ Enhanced UI with modern design
                     </VBox>
 
                     <!-- Courses Table -->
-                    <VBox spacing="12" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);">
+                    <VBox spacing="12" VBox.vgrow="ALWAYS" styleClass="table-card">
                         <HBox spacing="12" alignment="CENTER_LEFT">
-                            <Label text="📋 All Courses" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #4a5568;">
+                            <Label text="📋 All Courses" styleClass="table-header-title">
                                 <font>
                                     <Font name="System Bold" size="16"/>
                                 </font>
                             </Label>
                             <Region HBox.hgrow="ALWAYS"/>
-                            <Button text="🔄 Refresh" onAction="#loadAllCourses"
-                                    style="-fx-background-color: #e2e8f0; -fx-text-fill: #4a5568; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 18; -fx-font-size: 12px; -fx-font-weight: bold;">
+                            <Button text="🔄 Refresh" onAction="#loadAllCourses" styleClass="refresh-button">
                                 <font>
                                     <Font name="System Bold" size="12"/>
                                 </font>
                             </Button>
-                            <Button text="🗑️ Delete Selected" onAction="#handleDeleteCourse"
-                                    style="-fx-background-color: linear-gradient(to right, #f56565, #e53e3e); -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 18; -fx-font-size: 12px; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(245,101,101,0.3), 5, 0, 0, 2);">
+                            <Button text="🗑️ Delete Selected" onAction="#handleDeleteCourse" styleClass="delete-button">
                                 <font>
                                     <Font name="System Bold" size="12"/>
                                 </font>
                             </Button>
                         </HBox>
 
-                        <TableView fx:id="coursesTable" VBox.vgrow="ALWAYS"
-                                   style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-border-width: 1;">
+                        <TableView fx:id="coursesTable" VBox.vgrow="ALWAYS" styleClass="admin-table">
                             <columns>
-                                <TableColumn fx:id="courseCodeColumn" text="Code" prefWidth="80" style="-fx-font-weight: bold;"/>
+                                <TableColumn fx:id="courseCodeColumn" text="Code" prefWidth="80"/>
                                 <TableColumn fx:id="courseNameColumn" text="Course Name" prefWidth="250"/>
                                 <TableColumn fx:id="courseLevelColumn" text="Level" prefWidth="70"/>
                                 <TableColumn fx:id="courseMajorColumn" text="Major" prefWidth="150"/>
@@ -148,17 +144,17 @@ Enhanced UI with modern design
 
             <!-- USERS TAB -->
             <Tab text="👥 Users">
-                <VBox spacing="20" style="-fx-padding: 25; -fx-background-color: transparent;">
+                <VBox spacing="20" styleClass="content-section">
 
-                    <Label text="👥 User Management" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2d3748;">
+                    <Label text="👥 User Management" styleClass="section-title">
                         <font>
                             <Font name="System Bold" size="22"/>
                         </font>
                     </Label>
 
                     <!-- Create User Form -->
-                    <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);">
-                        <Label text="➕ Create New User" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #4a5568;">
+                    <VBox spacing="15" styleClass="form-card">
+                        <Label text="➕ Create New User" styleClass="form-title">
                             <font>
                                 <Font name="System Bold" size="16"/>
                             </font>
@@ -166,13 +162,12 @@ Enhanced UI with modern design
 
                         <!-- User Type Selection -->
                         <HBox spacing="12" alignment="CENTER_LEFT">
-                            <Label text="User Type:" style="-fx-font-size: 13px; -fx-min-width: 90; -fx-text-fill: #4a5568; -fx-font-weight: bold;">
+                            <Label text="User Type:" styleClass="field-label-bold">
                                 <font>
                                     <Font name="System Bold" size="13"/>
                                 </font>
                             </Label>
-                            <ComboBox fx:id="userTypeCombo" prefWidth="150"
-                                      style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 5; -fx-font-size: 13px;"/>
+                            <ComboBox fx:id="userTypeCombo" prefWidth="150" styleClass="admin-combo-box"/>
                         </HBox>
 
                         <!-- Common Fields -->
@@ -184,13 +179,13 @@ Enhanced UI with modern design
                             </columnConstraints>
 
                             <TextField fx:id="userNameField" promptText="Full Name"
-                                       style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                                       styleClass="admin-text-field"
                                        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <TextField fx:id="userEmailField" promptText="Email"
-                                       style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                                       styleClass="admin-text-field"
                                        GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                             <PasswordField fx:id="userPasswordField" promptText="Password"
-                                           style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                                           styleClass="admin-password-field"
                                            GridPane.columnIndex="2" GridPane.rowIndex="0"/>
                         </GridPane>
 
@@ -203,31 +198,30 @@ Enhanced UI with modern design
                             </columnConstraints>
 
                             <TextField fx:id="studentLevelField" promptText="Level (1-4)"
-                                       style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                                       styleClass="admin-text-field"
                                        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <ComboBox fx:id="studentMajorCombo" promptText="Select Major"
-                                      style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 5; -fx-font-size: 13px;"
+                                      styleClass="admin-combo-box"
                                       GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
                             <ComboBox fx:id="studentDepartmentCombo" promptText="Department"
-                                      style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 5; -fx-font-size: 13px;"
+                                      styleClass="admin-combo-box"
                                       GridPane.columnIndex="2" GridPane.rowIndex="0" maxWidth="Infinity"/>
                         </GridPane>
 
                         <!-- Dynamic Fields for Instructor -->
                         <HBox fx:id="instructorFieldsPane" spacing="12" visible="false" managed="false" alignment="CENTER_LEFT">
-                            <Label text="Department:" style="-fx-font-size: 13px; -fx-min-width: 90; -fx-text-fill: #4a5568; -fx-font-weight: bold;">
+                            <Label text="Department:" styleClass="field-label-bold">
                                 <font>
                                     <Font name="System Bold" size="13"/>
                                 </font>
                             </Label>
                             <ComboBox fx:id="instructorDepartmentCombo" promptText="Select Department" prefWidth="250"
-                                      style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-padding: 5; -fx-font-size: 13px;"/>
+                                      styleClass="admin-combo-box"/>
                         </HBox>
 
                         <!-- Create Button -->
                         <HBox spacing="12" alignment="CENTER_RIGHT">
-                            <Button text="✓ Create User" onAction="#handleCreateUser"
-                                    style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 12 35; -fx-background-radius: 8; -fx-font-size: 14px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);">
+                            <Button text="✓ Create User" onAction="#handleCreateUser" styleClass="create-button">
                                 <font>
                                     <Font name="System Bold" size="14"/>
                                 </font>
@@ -236,32 +230,29 @@ Enhanced UI with modern design
                     </VBox>
 
                     <!-- Users Table -->
-                    <VBox spacing="12" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);">
+                    <VBox spacing="12" VBox.vgrow="ALWAYS" styleClass="table-card">
                         <HBox spacing="12" alignment="CENTER_LEFT">
-                            <Label text="📋 All Users" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #4a5568;">
+                            <Label text="📋 All Users" styleClass="table-header-title">
                                 <font>
                                     <Font name="System Bold" size="16"/>
                                 </font>
                             </Label>
                             <Region HBox.hgrow="ALWAYS"/>
-                            <Button text="🔄 Refresh" onAction="#loadAllUsers"
-                                    style="-fx-background-color: #e2e8f0; -fx-text-fill: #4a5568; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 18; -fx-font-size: 12px; -fx-font-weight: bold;">
+                            <Button text="🔄 Refresh" onAction="#loadAllUsers" styleClass="refresh-button">
                                 <font>
                                     <Font name="System Bold" size="12"/>
                                 </font>
                             </Button>
-                            <Button text="🗑️ Delete Selected" onAction="#handleDeleteUser"
-                                    style="-fx-background-color: linear-gradient(to right, #f56565, #e53e3e); -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 18; -fx-font-size: 12px; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(245,101,101,0.3), 5, 0, 0, 2);">
+                            <Button text="🗑️ Delete Selected" onAction="#handleDeleteUser" styleClass="delete-button">
                                 <font>
                                     <Font name="System Bold" size="12"/>
                                 </font>
                             </Button>
                         </HBox>
 
-                        <TableView fx:id="usersTable" VBox.vgrow="ALWAYS"
-                                   style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-border-width: 1;">
+                        <TableView fx:id="usersTable" VBox.vgrow="ALWAYS" styleClass="admin-table">
                             <columns>
-                                <TableColumn fx:id="userIdColumn" text="ID" prefWidth="60" style="-fx-font-weight: bold;"/>
+                                <TableColumn fx:id="userIdColumn" text="ID" prefWidth="60"/>
                                 <TableColumn fx:id="userNameColumn" text="Name" prefWidth="300"/>
                                 <TableColumn fx:id="userEmailColumn" text="Email" prefWidth="400"/>
                                 <TableColumn fx:id="userRoleColumn" text="Role" prefWidth="180"/>
@@ -273,41 +264,38 @@ Enhanced UI with modern design
 
             <!-- STUDENTS TAB -->
             <Tab text="🎓 Students">
-                <VBox spacing="20" style="-fx-padding: 25; -fx-background-color: transparent;">
+                <VBox spacing="20" styleClass="content-section">
 
-                    <Label text="🎓 Student Management" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2d3748;">
+                    <Label text="🎓 Student Management" styleClass="section-title">
                         <font>
                             <Font name="System Bold" size="22"/>
                         </font>
                     </Label>
 
                     <!-- Students Table -->
-                    <VBox spacing="12" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);">
+                    <VBox spacing="12" VBox.vgrow="ALWAYS" styleClass="table-card">
                         <HBox spacing="12" alignment="CENTER_LEFT">
-                            <Label text="📋 All Students" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #4a5568;">
+                            <Label text="📋 All Students" styleClass="table-header-title">
                                 <font>
                                     <Font name="System Bold" size="16"/>
                                 </font>
                             </Label>
                             <Region HBox.hgrow="ALWAYS"/>
-                            <Button text="🔄 Refresh" onAction="#loadAllStudents"
-                                    style="-fx-background-color: #e2e8f0; -fx-text-fill: #4a5568; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 18; -fx-font-size: 12px; -fx-font-weight: bold;">
+                            <Button text="🔄 Refresh" onAction="#loadAllStudents" styleClass="refresh-button">
                                 <font>
                                     <Font name="System Bold" size="12"/>
                                 </font>
                             </Button>
-                            <Button text="📝 Update Level" onAction="#handleUpdateStudentLevel"
-                                    style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 18; -fx-font-size: 12px; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);">
+                            <Button text="📝 Update Level" onAction="#handleUpdateStudentLevel" styleClass="update-button">
                                 <font>
                                     <Font name="System Bold" size="12"/>
                                 </font>
                             </Button>
                         </HBox>
 
-                        <TableView fx:id="studentsTable" VBox.vgrow="ALWAYS"
-                                   style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-border-width: 1;">
+                        <TableView fx:id="studentsTable" VBox.vgrow="ALWAYS" styleClass="admin-table">
                             <columns>
-                                <TableColumn fx:id="studentIdColumn" text="ID" prefWidth="60" style="-fx-font-weight: bold;"/>
+                                <TableColumn fx:id="studentIdColumn" text="ID" prefWidth="60"/>
                                 <TableColumn fx:id="studentNameColumn" text="Name" prefWidth="350"/>
                                 <TableColumn fx:id="studentEmailColumn" text="Email" prefWidth="450"/>
                                 <TableColumn fx:id="studentLevelColumn" text="Level" prefWidth="180"/>
@@ -319,35 +307,33 @@ Enhanced UI with modern design
 
             <!-- INSTRUCTORS TAB -->
             <Tab text="👨‍🏫 Instructors">
-                <VBox spacing="20" style="-fx-padding: 25; -fx-background-color: transparent;">
+                <VBox spacing="20" styleClass="content-section">
 
-                    <Label text="👨‍🏫 Instructor Management" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2d3748;">
+                    <Label text="👨‍🏫 Instructor Management" styleClass="section-title">
                         <font>
                             <Font name="System Bold" size="22"/>
                         </font>
                     </Label>
 
                     <!-- Instructors Table -->
-                    <VBox spacing="12" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);">
+                    <VBox spacing="12" VBox.vgrow="ALWAYS" styleClass="table-card">
                         <HBox spacing="12" alignment="CENTER_LEFT">
-                            <Label text="📋 All Instructors" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #4a5568;">
+                            <Label text="📋 All Instructors" styleClass="table-header-title">
                                 <font>
                                     <Font name="System Bold" size="16"/>
                                 </font>
                             </Label>
                             <Region HBox.hgrow="ALWAYS"/>
-                            <Button text="🔄 Refresh" onAction="#loadAllInstructors"
-                                    style="-fx-background-color: #e2e8f0; -fx-text-fill: #4a5568; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 18; -fx-font-size: 12px; -fx-font-weight: bold;">
+                            <Button text="🔄 Refresh" onAction="#loadAllInstructors" styleClass="refresh-button">
                                 <font>
                                     <Font name="System Bold" size="12"/>
                                 </font>
                             </Button>
                         </HBox>
 
-                        <TableView fx:id="instructorsTable" VBox.vgrow="ALWAYS"
-                                   style="-fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-border-width: 1;">
+                        <TableView fx:id="instructorsTable" VBox.vgrow="ALWAYS" styleClass="admin-table">
                             <columns>
-                                <TableColumn fx:id="instructorIdColumn" text="ID" prefWidth="60" style="-fx-font-weight: bold;"/>
+                                <TableColumn fx:id="instructorIdColumn" text="ID" prefWidth="60"/>
                                 <TableColumn fx:id="instructorNameColumn" text="Name" prefWidth="350"/>
                                 <TableColumn fx:id="instructorEmailColumn" text="Email" prefWidth="450"/>
                                 <TableColumn fx:id="instructorDeptColumn" text="Department" prefWidth="240"/>
@@ -361,4 +347,3 @@ Enhanced UI with modern design
     </center>
 
 </BorderPane>
-

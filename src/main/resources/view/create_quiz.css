@@ -1,0 +1,104 @@
+/*
+ * create_quiz.css - Stylesheet for Create Quiz UI
+ * Modern styling for Quiz Creation Form
+ */
+
+/* Root container */
+.create-quiz-root {
+    -fx-padding: 20;
+}
+
+/* Main title */
+.create-quiz-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Section labels */
+.create-quiz-section-label {
+    -fx-font-weight: bold;
+}
+
+/* Field labels */
+.create-quiz-field-label {
+    -fx-min-width: 100;
+}
+
+/* Text fields */
+.create-quiz-text-field {
+    -fx-background-radius: 6;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 6;
+    -fx-padding: 8;
+}
+
+.create-quiz-text-field:focused {
+    -fx-border-color: #2196F3;
+    -fx-border-width: 2;
+}
+
+/* ComboBox */
+.create-quiz-combo-box {
+    -fx-background-radius: 6;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 6;
+}
+
+/* Spinner */
+.create-quiz-spinner {
+    -fx-pref-width: 100;
+}
+
+/* Generate button */
+.generate-questions-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.generate-questions-button:hover {
+    -fx-background-color: #45a049;
+}
+
+/* ScrollPane */
+.questions-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Questions container */
+.questions-container {
+    -fx-padding: 10;
+}
+
+/* Cancel button */
+.cancel-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #da190b;
+}
+
+/* Create quiz button */
+.create-quiz-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.create-quiz-button:hover {
+    -fx-background-color: #0b7dda;
+}
+

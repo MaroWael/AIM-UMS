@@ -19,41 +19,37 @@ Beautiful and professional login interface for University Management System
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.ums.system.controller.LoginController"
            prefHeight="700" prefWidth="1000"
-           style="-fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);">
+           styleClass="root-container"
+           stylesheets="@login.css">
 
     <VBox alignment="CENTER" spacing="0">
 
         <!-- Main Login Card with Modern Design -->
         <VBox alignment="CENTER" spacing="15"
-              style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 25, 0, 0, 10);"
+              styleClass="login-card"
               maxWidth="420" minWidth="420">
             <padding>
                 <Insets top="30" right="40" bottom="30" left="40"/>
             </padding>
 
             <!-- Logo/Icon Section with gradient background -->
-            <VBox alignment="CENTER" spacing="5"
-                  style="-fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2); -fx-background-radius: 15; -fx-padding: 15;">
-                <Label text="🎓" style="-fx-font-size: 36px;"/>
+            <VBox alignment="CENTER" spacing="5" styleClass="logo-section">
+                <Label text="🎓" styleClass="logo-icon"/>
             </VBox>
 
             <!-- Title Section -->
             <VBox alignment="CENTER" spacing="5">
-                <Label text="Welcome Back!"
-                       style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2d3748;"/>
-                <Label text="University Management System"
-                       style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: 500;"/>
-                <Label text="Sign in to continue your journey"
-                       style="-fx-font-size: 12px; -fx-text-fill: #a0aec0;"/>
+                <Label text="Welcome Back!" styleClass="title-main"/>
+                <Label text="University Management System" styleClass="title-subtitle"/>
+                <Label text="Sign in to continue your journey" styleClass="title-description"/>
             </VBox>
 
             <!-- Email Field with Icon -->
-            <VBox spacing="6" style="-fx-padding: 0;">
-                <Label text="📧 Email Address"
-                       style="-fx-font-weight: bold; -fx-text-fill: #4a5568; -fx-font-size: 12px;"/>
+            <VBox spacing="6" styleClass="input-container">
+                <Label text="📧 Email Address" styleClass="field-label"/>
                 <TextField fx:id="emailField"
                           promptText="Enter your email address"
-                          style="-fx-background-color: #f7fafc; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-border-width: 2; -fx-padding: 10; -fx-font-size: 13px; -fx-prompt-text-fill: #a0aec0;">
+                          styleClass="input-field">
                     <font>
                         <Font size="13"/>
                     </font>
@@ -61,12 +57,11 @@ Beautiful and professional login interface for University Management System
             </VBox>
 
             <!-- Password Field with Icon -->
-            <VBox spacing="6" style="-fx-padding: 0;">
-                <Label text="🔒 Password"
-                       style="-fx-font-weight: bold; -fx-text-fill: #4a5568; -fx-font-size: 12px;"/>
+            <VBox spacing="6" styleClass="input-container">
+                <Label text="🔒 Password" styleClass="field-label"/>
                 <PasswordField fx:id="passwordField"
                               promptText="Enter your password"
-                              style="-fx-background-color: #f7fafc; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-border-width: 2; -fx-padding: 10; -fx-font-size: 13px; -fx-prompt-text-fill: #a0aec0;">
+                              styleClass="input-field">
                     <font>
                         <Font size="13"/>
                     </font>
@@ -76,7 +71,7 @@ Beautiful and professional login interface for University Management System
             <!-- Error Label with better styling -->
             <Label fx:id="errorLabel"
                    text=""
-                   style="-fx-text-fill: #e53e3e; -fx-font-size: 12px; -fx-font-weight: 500; -fx-background-color: #fff5f5; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #feb2b2; -fx-border-radius: 8; -fx-border-width: 1;"
+                   styleClass="error-label"
                    wrapText="true"
                    maxWidth="350"
                    visible="false"/>
@@ -87,7 +82,7 @@ Beautiful and professional login interface for University Management System
                     onAction="#handleLogin"
                     defaultButton="true"
                     maxWidth="Infinity"
-                    style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 12; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 15, 0, 0, 5);">
+                    styleClass="login-button">
                 <font>
                     <Font size="14"/>
                 </font>
@@ -98,45 +93,42 @@ Beautiful and professional login interface for University Management System
                               prefWidth="40"
                               prefHeight="40"
                               visible="false"
-                              style="-fx-progress-color: #667eea;"/>
+                              styleClass="progress-indicator"/>
 
             <!-- Divider -->
-            <HBox alignment="CENTER" spacing="10" style="-fx-padding: 5 0 5 0;">
-                <Region prefHeight="1" prefWidth="80" style="-fx-background-color: #e2e8f0;"/>
-                <Label text="Test Accounts" style="-fx-text-fill: #a0aec0; -fx-font-size: 10px; -fx-font-weight: 600;"/>
-                <Region prefHeight="1" prefWidth="80" style="-fx-background-color: #e2e8f0;"/>
+            <HBox alignment="CENTER" spacing="10" styleClass="divider-container">
+                <Region prefHeight="1" prefWidth="80" styleClass="divider-line"/>
+                <Label text="Test Accounts" styleClass="divider-text"/>
+                <Region prefHeight="1" prefWidth="80" styleClass="divider-line"/>
             </HBox>
 
             <!-- Info Cards for Test Credentials -->
-            <VBox spacing="8" style="-fx-padding: 0;">
+            <VBox spacing="8" styleClass="credentials-container">
 
                 <!-- Admin Card -->
-                <HBox spacing="10" alignment="CENTER_LEFT"
-                      style="-fx-background-color: linear-gradient(to right, #e0e7ff, #f0e7ff); -fx-padding: 8; -fx-background-radius: 8; -fx-border-color: #c7d2fe; -fx-border-radius: 8; -fx-border-width: 1;">
-                    <Label text="👨‍💼" style="-fx-font-size: 20px;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="admin-card">
+                    <Label text="👨‍💼" styleClass="admin-icon"/>
                     <VBox spacing="1">
-                        <Label text="Admin Account" style="-fx-font-weight: bold; -fx-text-fill: #4c51bf; -fx-font-size: 11px;"/>
-                        <Label text="admin@gmail.com" style="-fx-text-fill: #5a67d8; -fx-font-size: 10px;"/>
+                        <Label text="Admin Account" styleClass="admin-title"/>
+                        <Label text="admin@gmail.com" styleClass="admin-email"/>
                     </VBox>
                 </HBox>
 
                 <!-- Student Card -->
-                <HBox spacing="10" alignment="CENTER_LEFT"
-                      style="-fx-background-color: linear-gradient(to right, #dbeafe, #e0f2fe); -fx-padding: 8; -fx-background-radius: 8; -fx-border-color: #bfdbfe; -fx-border-radius: 8; -fx-border-width: 1;">
-                    <Label text="🎓" style="-fx-font-size: 20px;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="student-card">
+                    <Label text="🎓" styleClass="student-icon"/>
                     <VBox spacing="1">
-                        <Label text="Student Account" style="-fx-font-weight: bold; -fx-text-fill: #2563eb; -fx-font-size: 11px;"/>
-                        <Label text="student@gmail.com" style="-fx-text-fill: #3b82f6; -fx-font-size: 10px;"/>
+                        <Label text="Student Account" styleClass="student-title"/>
+                        <Label text="student@gmail.com" styleClass="student-email"/>
                     </VBox>
                 </HBox>
 
                 <!-- Instructor Card -->
-                <HBox spacing="10" alignment="CENTER_LEFT"
-                      style="-fx-background-color: linear-gradient(to right, #d1fae5, #d1f5e4); -fx-padding: 8; -fx-background-radius: 8; -fx-border-color: #a7f3d0; -fx-border-radius: 8; -fx-border-width: 1;">
-                    <Label text="👨‍🏫" style="-fx-font-size: 20px;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="instructor-card">
+                    <Label text="👨‍🏫" styleClass="instructor-icon"/>
                     <VBox spacing="1">
-                        <Label text="Instructor Account" style="-fx-font-weight: bold; -fx-text-fill: #059669; -fx-font-size: 11px;"/>
-                        <Label text="instructor@gmail.com" style="-fx-text-fill: #10b981; -fx-font-size: 10px;"/>
+                        <Label text="Instructor Account" styleClass="instructor-title"/>
+                        <Label text="instructor@gmail.com" styleClass="instructor-email"/>
                     </VBox>
                 </HBox>
 
@@ -145,11 +137,10 @@ Beautiful and professional login interface for University Management System
         </VBox>
 
         <!-- Floating Footer -->
-        <HBox alignment="CENTER" spacing="5" style="-fx-padding: 15 0 0 0;">
-            <Label text="©" style="-fx-text-fill: white; -fx-font-size: 12px;"/>
-            <Label text="2024 University Management System"
-                   style="-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: 600; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);"/>
-            <Label text="• All Rights Reserved" style="-fx-text-fill: rgba(255,255,255,0.8); -fx-font-size: 12px;"/>
+        <HBox alignment="CENTER" spacing="5" styleClass="footer-container">
+            <Label text="©" styleClass="footer-copyright"/>
+            <Label text="2026 University Management System" styleClass="footer-text"/>
+            <Label text="• All Rights Reserved" styleClass="footer-rights"/>
         </HBox>
 
     </VBox>

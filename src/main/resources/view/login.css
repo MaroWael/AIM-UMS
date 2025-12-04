@@ -1,0 +1,231 @@
+/*
+ * login.css - Stylesheet for Login UI
+ * Modern and professional styling for University Management System
+ */
+
+/* Root container with gradient background */
+.root-container {
+    -fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+
+/* Main login card */
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 25, 0, 0, 10);
+}
+
+/* Logo section */
+.logo-section {
+    -fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+}
+
+.logo-icon {
+    -fx-font-size: 36px;
+}
+
+/* Title labels */
+.title-main {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3748;
+}
+
+.title-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #718096;
+    -fx-font-weight: 500;
+}
+
+.title-description {
+    -fx-font-size: 12px;
+    -fx-text-fill: #a0aec0;
+}
+
+/* Input field containers */
+.input-container {
+    -fx-padding: 0;
+}
+
+/* Field labels */
+.field-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a5568;
+    -fx-font-size: 12px;
+}
+
+/* Text fields and password fields */
+.input-field {
+    -fx-background-color: #f7fafc;
+    -fx-background-radius: 10;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-padding: 10;
+    -fx-font-size: 13px;
+    -fx-prompt-text-fill: #a0aec0;
+}
+
+.input-field:focused {
+    -fx-border-color: #667eea;
+}
+
+/* Error label */
+.error-label {
+    -fx-text-fill: #e53e3e;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+    -fx-background-color: #fff5f5;
+    -fx-padding: 10;
+    -fx-background-radius: 8;
+    -fx-border-color: #feb2b2;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+/* Login button */
+.login-button {
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+    -fx-text-fill: white;
+    -fx-background-radius: 12;
+    -fx-padding: 12;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 15, 0, 0, 5);
+}
+
+.login-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.6), 20, 0, 0, 7);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.login-button:pressed {
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 10, 0, 0, 3);
+}
+
+/* Progress indicator */
+.progress-indicator {
+    -fx-progress-color: #667eea;
+}
+
+/* Divider container */
+.divider-container {
+    -fx-padding: 5 0 5 0;
+}
+
+.divider-line {
+    -fx-background-color: #e2e8f0;
+}
+
+.divider-text {
+    -fx-text-fill: #a0aec0;
+    -fx-font-size: 10px;
+    -fx-font-weight: 600;
+}
+
+/* Test credentials container */
+.credentials-container {
+    -fx-padding: 0;
+}
+
+/* Admin card */
+.admin-card {
+    -fx-background-color: linear-gradient(to right, #e0e7ff, #f0e7ff);
+    -fx-padding: 8;
+    -fx-background-radius: 8;
+    -fx-border-color: #c7d2fe;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.admin-icon {
+    -fx-font-size: 20px;
+}
+
+.admin-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #4c51bf;
+    -fx-font-size: 11px;
+}
+
+.admin-email {
+    -fx-text-fill: #5a67d8;
+    -fx-font-size: 10px;
+}
+
+/* Student card */
+.student-card {
+    -fx-background-color: linear-gradient(to right, #dbeafe, #e0f2fe);
+    -fx-padding: 8;
+    -fx-background-radius: 8;
+    -fx-border-color: #bfdbfe;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.student-icon {
+    -fx-font-size: 20px;
+}
+
+.student-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2563eb;
+    -fx-font-size: 11px;
+}
+
+.student-email {
+    -fx-text-fill: #3b82f6;
+    -fx-font-size: 10px;
+}
+
+/* Instructor card */
+.instructor-card {
+    -fx-background-color: linear-gradient(to right, #d1fae5, #d1f5e4);
+    -fx-padding: 8;
+    -fx-background-radius: 8;
+    -fx-border-color: #a7f3d0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.instructor-icon {
+    -fx-font-size: 20px;
+}
+
+.instructor-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #059669;
+    -fx-font-size: 11px;
+}
+
+.instructor-email {
+    -fx-text-fill: #10b981;
+    -fx-font-size: 10px;
+}
+
+/* Footer */
+.footer-container {
+    -fx-padding: 15 0 0 0;
+}
+
+.footer-copyright {
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+}
+
+.footer-text {
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);
+}
+
+.footer-rights {
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+}
+

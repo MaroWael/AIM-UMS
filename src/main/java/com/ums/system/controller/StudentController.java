@@ -238,7 +238,15 @@ public class StudentController {
             // Get all courses
             List<Course> allCourses = courseService.getAllCourses();
 
-            // Filter courses by student's level and major
+            // Get enrolled courses
+            List<Course> enrolledCourses = enrollmentDAO.getCoursesByStudentId(currentStudent.getId());
+
+            // Create a set of enrolled course codes for efficient lookup
+            java.util.Set<String> enrolledCourseCodes = enrolledCourses.stream()
+                .map(Course::getCode)
+                .collect(java.util.stream.Collectors.toSet());
+
+            // Filter courses by student's level and major, and exclude already enrolled courses
             List<Course> filteredCourses = allCourses.stream()
                 .filter(course -> {
                     // Check if course level matches student level
@@ -247,7 +255,10 @@ public class StudentController {
                     // Check if course major matches student major
                     boolean majorMatches = course.getMajor().equalsIgnoreCase(currentStudent.getMajor());
 
-                    return levelMatches && majorMatches;
+                    // Check if student is not already enrolled in this course
+                    boolean notEnrolled = !enrolledCourseCodes.contains(course.getCode());
+
+                    return levelMatches && majorMatches && notEnrolled;
                 })
                 .collect(java.util.stream.Collectors.toList());
 
@@ -255,6 +266,13 @@ public class StudentController {
             availableCoursesTable.setItems(coursesList);
             System.out.println("Loaded " + filteredCourses.size() + " available courses for level "
                 + currentStudent.getLevel() + " and major " + currentStudent.getMajor());
+
+            // Show message if no courses are available
+            if (filteredCourses.isEmpty()) {
+                showInfo("No available courses to enroll.\n\n" +
+                        "All courses for your level (" + currentStudent.getLevel() + ") and major (" +
+                        currentStudent.getMajor() + ") are already enrolled or there are no courses matching your criteria.");
+            }
         } catch (Exception e) {
             showError("Error loading courses: " + e.getMessage());
         }

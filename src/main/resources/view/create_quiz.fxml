@@ -6,30 +6,31 @@
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.ums.system.controller.CreateQuizController"
-      spacing="15" style="-fx-padding: 20;">
+      spacing="15" styleClass="create-quiz-root"
+      stylesheets="@create_quiz.css">
 
-    <Label text="Create New Quiz" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <Label text="Create New Quiz" styleClass="create-quiz-title"/>
 
     <Separator/>
 
     <!-- Quiz Basic Info -->
     <VBox spacing="10">
-        <Label text="Quiz Information" style="-fx-font-weight: bold;"/>
+        <Label text="Quiz Information" styleClass="create-quiz-section-label"/>
 
         <HBox spacing="10" alignment="CENTER_LEFT">
-            <Label text="Quiz Title:" minWidth="100"/>
-            <TextField fx:id="quizTitleField" promptText="Enter quiz title" HBox.hgrow="ALWAYS"/>
+            <Label text="Quiz Title:" styleClass="create-quiz-field-label"/>
+            <TextField fx:id="quizTitleField" promptText="Enter quiz title" styleClass="create-quiz-text-field" HBox.hgrow="ALWAYS"/>
         </HBox>
 
         <HBox spacing="10" alignment="CENTER_LEFT">
-            <Label text="Course:" minWidth="100"/>
-            <ComboBox fx:id="courseCombo" promptText="Select a course" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Label text="Course:" styleClass="create-quiz-field-label"/>
+            <ComboBox fx:id="courseCombo" promptText="Select a course" styleClass="create-quiz-combo-box" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
         </HBox>
 
         <HBox spacing="10" alignment="CENTER_LEFT">
-            <Label text="Number of Questions:" minWidth="100"/>
-            <Spinner fx:id="numQuestionsSpinner" initialValue="1" min="1" max="50" editable="true" prefWidth="100"/>
-            <Button text="Generate Question Forms" onAction="#handleGenerateQuestions" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+            <Label text="Number of Questions:" styleClass="create-quiz-field-label"/>
+            <Spinner fx:id="numQuestionsSpinner" initialValue="1" min="1" max="50" editable="true" styleClass="create-quiz-spinner" prefWidth="100"/>
+            <Button text="Generate Question Forms" onAction="#handleGenerateQuestions" styleClass="generate-questions-button"/>
         </HBox>
     </VBox>
 
@@ -37,10 +38,10 @@
 
     <!-- Questions ScrollPane -->
     <VBox spacing="10" VBox.vgrow="ALWAYS">
-        <Label text="Questions" style="-fx-font-weight: bold;"/>
+        <Label text="Questions" styleClass="create-quiz-section-label"/>
         <ScrollPane fx:id="questionsScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS"
-                    style="-fx-background-color: transparent;" prefHeight="400">
-            <VBox fx:id="questionsContainer" spacing="15" style="-fx-padding: 10;"/>
+                    styleClass="questions-scroll-pane" prefHeight="400">
+            <VBox fx:id="questionsContainer" spacing="15" styleClass="questions-container"/>
         </ScrollPane>
     </VBox>
 
@@ -48,11 +49,8 @@
 
     <!-- Action Buttons -->
     <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button text="Cancel" onAction="#handleCancel" prefWidth="100"
-                style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
-        <Button text="Create Quiz" onAction="#handleCreateQuiz" prefWidth="120"
-                style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+        <Button text="Cancel" onAction="#handleCancel" prefWidth="100" styleClass="cancel-button"/>
+        <Button text="Create Quiz" onAction="#handleCreateQuiz" prefWidth="120" styleClass="create-quiz-button"/>
     </HBox>
 
 </VBox>
-

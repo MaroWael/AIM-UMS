@@ -22,7 +22,7 @@ public class DatabaseConnection {
             String password = env.getProperty("DB_PASSWORD");
 
             String url = String.format(
-                    "jdbc:mariadb://%s:%s/%s?useSSL=true&requireSSL=true&verifyServerCertificate=false",
+                    "jdbc:mariadb://%s:%s/%s?sslMode=trust",
                     host, port, database
             );
 

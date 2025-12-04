@@ -36,7 +36,6 @@ public class AdminController {
     @FXML private TableColumn<Course, String> courseInstructorColumn;
     @FXML private TextField courseNameField;
     @FXML private TextField courseCodeField;
-    @FXML private TextField courseCreditsField;
     @FXML private ComboBox<String> courseMajorCombo;
     @FXML private TextField courseLevelField;
     @FXML private TextField courseLectureTimeField;
@@ -237,7 +236,7 @@ public class AdminController {
      * Setup Users Table
      */
     private void setupUsersTable() {
-        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         userNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         userEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         userRoleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
@@ -247,7 +246,7 @@ public class AdminController {
      * Setup Students Table
      */
     private void setupStudentsTable() {
-        studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         studentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         studentEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         studentLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
@@ -257,7 +256,7 @@ public class AdminController {
      * Setup Instructors Table
      */
     private void setupInstructorsTable() {
-        instructorIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        instructorIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         instructorNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         instructorEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         instructorDeptColumn.setCellValueFactory(new PropertyValueFactory<>("department"));
@@ -293,7 +292,6 @@ public class AdminController {
         clearFieldErrors(courseCodeField, courseNameField, courseLevelField, courseLectureTimeField);
         courseMajorCombo.setStyle("");
         courseInstructorCombo.setStyle("");
-        courseCreditsField.setStyle("");
 
         boolean hasError = false;
         StringBuilder errorMessage = new StringBuilder("Please fix the following errors:\n");
@@ -382,9 +380,6 @@ public class AdminController {
                 courseMajorCombo.getSelectionModel().clearSelection();
                 courseLectureTimeField.clear();
                 courseInstructorCombo.getSelectionModel().clearSelection();
-                if (courseCreditsField != null) {
-                    courseCreditsField.clear();
-                }
 
                 loadAllCourses();
                 loadInstructorsIntoCombo();

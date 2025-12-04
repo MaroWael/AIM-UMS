@@ -1,0 +1,238 @@
+/*
+ * instructor.css - Stylesheet for Instructor UI
+ * Modern styling for University Management System Instructor Panel
+ */
+
+/* Root container */
+.instructor-root {
+    -fx-background-color: linear-gradient(to bottom, #f0f9ff, #e0f2fe);
+}
+
+/* Header section */
+.instructor-header {
+    -fx-background-color: linear-gradient(to right, #0ea5e9 0%, #06b6d4 50%, #14b8a6 100%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 3);
+}
+
+.instructor-welcome-label {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+
+.instructor-logout-button {
+    -fx-background-color: white;
+    -fx-text-fill: #0ea5e9;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+    -fx-background-radius: 25;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.instructor-user-info {
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 13px;
+}
+
+/* Tab pane */
+.instructor-tab-pane {
+    -fx-padding: 15;
+    -fx-background-color: transparent;
+}
+
+/* Content sections */
+.instructor-content-section {
+    -fx-padding: 25;
+    -fx-background-color: transparent;
+}
+
+/* Section titles */
+.instructor-section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+/* Info banner */
+.info-banner {
+    -fx-background-color: linear-gradient(to right, #e0f2fe, #dbeafe);
+    -fx-padding: 15 20;
+    -fx-background-radius: 10;
+    -fx-border-color: #0ea5e9;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.info-banner-icon {
+    -fx-font-size: 20px;
+}
+
+.info-banner-title {
+    -fx-font-size: 13px;
+    -fx-text-fill: #1e40af;
+    -fx-font-weight: bold;
+}
+
+.info-banner-subtitle {
+    -fx-font-size: 11px;
+    -fx-text-fill: #3b82f6;
+}
+
+/* Form cards */
+.instructor-form-card {
+    -fx-background-color: white;
+    -fx-padding: 25;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);
+}
+
+.instructor-form-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #475569;
+}
+
+/* Input fields */
+.instructor-text-field {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-padding: 10;
+    -fx-font-size: 13px;
+}
+
+.instructor-text-field:focused {
+    -fx-border-color: #0ea5e9;
+}
+
+.instructor-combo-box {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-padding: 5;
+    -fx-font-size: 13px;
+}
+
+/* Field labels */
+.instructor-field-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #475569;
+    -fx-font-weight: bold;
+    -fx-min-width: 70;
+}
+
+/* Primary action buttons */
+.instructor-primary-button {
+    -fx-background-color: linear-gradient(to right, #0ea5e9, #06b6d4);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 10 25;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(14,165,233,0.3), 5, 0, 0, 2);
+}
+
+.instructor-primary-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(14,165,233,0.5), 8, 0, 0, 3);
+}
+
+.instructor-refresh-button {
+    -fx-background-color: #0ea5e9;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 8 20;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(14,165,233,0.3), 5, 0, 0, 2);
+}
+
+.instructor-refresh-button:hover {
+    -fx-background-color: #0284c7;
+}
+
+/* Table container */
+.instructor-table-card {
+    -fx-background-color: white;
+    -fx-padding: 25;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);
+}
+
+.instructor-table-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #475569;
+}
+
+/* Table view */
+.instructor-table {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+/* Refresh button (alternate style) */
+.instructor-refresh-alt {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #475569;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.instructor-refresh-alt:hover {
+    -fx-background-color: #cbd5e0;
+}
+
+/* Delete button */
+.instructor-delete-button {
+    -fx-background-color: linear-gradient(to right, #f56565, #e53e3e);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(245,101,101,0.3), 5, 0, 0, 2);
+}
+
+.instructor-delete-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(245,101,101,0.5), 8, 0, 0, 3);
+}
+
+/* Load results button */
+.load-results-button {
+    -fx-background-color: linear-gradient(to right, #0ea5e9, #06b6d4);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 10 22;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(14,165,233,0.3), 5, 0, 0, 2);
+}
+
+/* View all button */
+.view-all-button {
+    -fx-background-color: linear-gradient(to right, #10b981, #059669);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 10 22;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(16,185,129,0.3), 5, 0, 0, 2);
+}
+
+.view-all-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(16,185,129,0.5), 8, 0, 0, 3);
+}
+

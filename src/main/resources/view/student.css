@@ -1,0 +1,328 @@
+/*
+ * student.css - Stylesheet for Student UI
+ * Modern styling for University Management System Student Panel
+ */
+
+/* Root container */
+.student-root {
+    -fx-background-color: linear-gradient(to bottom, #e3f2fd, #f5f5f5);
+}
+
+/* Header section */
+.student-header {
+    -fx-background-color: linear-gradient(to right, #1976d2, #2196f3, #42a5f5);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+.student-welcome-label {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+
+.student-logout-button {
+    -fx-background-color: white;
+    -fx-text-fill: #1976d2;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+    -fx-background-radius: 20;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.student-user-info {
+    -fx-text-fill: #e3f2fd;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+}
+
+/* Tab pane */
+.student-tab-pane {
+    -fx-padding: 15;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Content sections */
+.student-content-section {
+    -fx-padding: 25;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+}
+
+/* Section titles */
+.student-section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1976d2;
+}
+
+/* Info banners */
+.student-info-banner-blue {
+    -fx-background-color: #e3f2fd;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+}
+
+.student-info-banner-orange {
+    -fx-background-color: #fff3e0;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+}
+
+.student-info-banner-purple {
+    -fx-background-color: #f3e5f5;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+}
+
+.student-info-banner-yellow {
+    -fx-background-color: linear-gradient(to right, #fff9c4, #fff59d);
+    -fx-padding: 12;
+    -fx-background-radius: 8;
+}
+
+.student-info-banner-green {
+    -fx-background-color: linear-gradient(to right, #4caf50, #66bb6a);
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 3);
+}
+
+.student-info-banner-green-light {
+    -fx-background-color: #e8f5e9;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+}
+
+.info-text-blue {
+    -fx-font-size: 13px;
+    -fx-text-fill: #0d47a1;
+    -fx-font-weight: 500;
+}
+
+.info-text-orange {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e65100;
+    -fx-font-weight: 500;
+}
+
+.info-text-purple {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-text-fill: #4a148c;
+}
+
+.info-text-yellow {
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-text-fill: #f57f17;
+}
+
+.info-text-green {
+    -fx-font-size: 13px;
+    -fx-text-fill: #1b5e20;
+    -fx-font-weight: 500;
+}
+
+/* Performance card */
+.performance-icon {
+    -fx-font-size: 32px;
+}
+
+.performance-label-title {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e8f5e9;
+    -fx-font-weight: 500;
+}
+
+.performance-label-score {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+
+/* Buttons */
+.student-refresh-button {
+    -fx-background-color: #90caf9;
+    -fx-text-fill: #0d47a1;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);
+}
+
+.student-refresh-button:hover {
+    -fx-background-color: #64b5f6;
+}
+
+.student-refresh-button-orange {
+    -fx-background-color: #ffcc80;
+    -fx-text-fill: #e65100;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);
+}
+
+.student-refresh-button-orange:hover {
+    -fx-background-color: #ffb74d;
+}
+
+.student-refresh-button-green {
+    -fx-background-color: #a5d6a7;
+    -fx-text-fill: #1b5e20;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);
+}
+
+.student-refresh-button-green:hover {
+    -fx-background-color: #81c784;
+}
+
+.student-enroll-button {
+    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.student-enroll-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.student-drop-button {
+    -fx-background-color: linear-gradient(to bottom, #f44336, #d32f2f);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.student-drop-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.student-load-quiz-button {
+    -fx-background-color: linear-gradient(to bottom, #9c27b0, #7b1fa2);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.student-load-quiz-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.student-view-all-button {
+    -fx-background-color: linear-gradient(to bottom, #2196f3, #1976d2);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.student-view-all-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.student-take-quiz-button {
+    -fx-background-color: linear-gradient(to bottom, #ff9800, #f57c00);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12 28;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0, 0, 2);
+}
+
+.student-take-quiz-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 10, 0, 0, 4);
+}
+
+.student-generate-report-button {
+    -fx-background-color: linear-gradient(to bottom, #ff9800, #f57c00);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.student-generate-report-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.student-view-details-button {
+    -fx-background-color: linear-gradient(to bottom, #2196f3, #1976d2);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.student-view-details-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+/* ComboBox */
+.student-combo-box {
+    -fx-background-color: white;
+    -fx-background-radius: 6;
+    -fx-border-color: #ce93d8;
+    -fx-border-radius: 6;
+    -fx-padding: 8;
+}
+
+/* Table view */
+.student-table {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+
+.student-table-blue {
+    -fx-border-color: #bbdefb;
+}
+
+.student-table-orange {
+    -fx-border-color: #ffe0b2;
+}
+
+.student-table-purple {
+    -fx-border-color: #e1bee7;
+}
+
+.student-table-green {
+    -fx-border-color: #c8e6c9;
+}
+
+.student-table .table-column {
+    -fx-alignment: CENTER_LEFT;
+}
+

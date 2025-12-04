@@ -1,0 +1,217 @@
+/*
+ * admin.css - Stylesheet for Admin UI
+ * Modern styling for University Management System Admin Panel
+ */
+
+/* Root container */
+.admin-root {
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+/* Header section */
+.admin-header {
+    -fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 3);
+}
+
+.admin-welcome-label {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+
+.admin-logout-button {
+    -fx-background-color: white;
+    -fx-text-fill: #667eea;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+    -fx-background-radius: 25;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.admin-user-info {
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 13px;
+}
+
+/* Tab pane */
+.admin-tab-pane {
+    -fx-padding: 15;
+    -fx-background-color: transparent;
+}
+
+/* Content sections */
+.content-section {
+    -fx-padding: 25;
+    -fx-background-color: transparent;
+}
+
+/* Section titles */
+.section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3748;
+}
+
+/* Form cards */
+.form-card {
+    -fx-background-color: white;
+    -fx-padding: 25;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);
+}
+
+.form-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #4a5568;
+}
+
+/* Input fields */
+.admin-text-field {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-padding: 10;
+    -fx-font-size: 13px;
+}
+
+.admin-text-field:focused {
+    -fx-border-color: #667eea;
+}
+
+.admin-combo-box {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-padding: 5;
+    -fx-font-size: 13px;
+}
+
+.admin-password-field {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-padding: 10;
+    -fx-font-size: 13px;
+}
+
+.admin-password-field:focused {
+    -fx-border-color: #667eea;
+}
+
+/* Field labels */
+.field-label-bold {
+    -fx-font-size: 13px;
+    -fx-min-width: 90;
+    -fx-text-fill: #4a5568;
+    -fx-font-weight: bold;
+}
+
+/* Primary action button */
+.primary-button {
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.primary-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.create-button {
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 12 35;
+    -fx-background-radius: 8;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+/* Table container */
+.table-card {
+    -fx-background-color: white;
+    -fx-padding: 25;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);
+}
+
+.table-header-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #4a5568;
+}
+
+/* Refresh button */
+.refresh-button {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #4a5568;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.refresh-button:hover {
+    -fx-background-color: #cbd5e0;
+}
+
+/* Delete button */
+.delete-button {
+    -fx-background-color: linear-gradient(to right, #f56565, #e53e3e);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(245,101,101,0.3), 5, 0, 0, 2);
+}
+
+.delete-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(245,101,101,0.5), 8, 0, 0, 3);
+}
+
+/* Table view */
+.admin-table {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.admin-table .table-column {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.admin-table .table-column:first-child {
+    -fx-font-weight: bold;
+}
+
+/* Update button */
+.update-button {
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.update-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
