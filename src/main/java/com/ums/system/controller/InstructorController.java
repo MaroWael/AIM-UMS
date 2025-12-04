@@ -54,8 +54,6 @@ public class InstructorController {
     @FXML private TableColumn<Quiz, String> quizTitleColumn;
     @FXML private TableColumn<Quiz, Integer> quizCourseColumn;
     @FXML private TableColumn<Quiz, Integer> quizQuestionsColumn;
-    @FXML private TextField quizTitleField;
-    @FXML private ComboBox<Course> quizCourseCombo;
 
     // Quiz Results Tab
     @FXML private TableView<QuizResult> resultsTable;
@@ -116,31 +114,6 @@ public class InstructorController {
         });
 
         courseCombo.setButtonCell(new ListCell<Course>() {
-            @Override
-            protected void updateItem(Course course, boolean empty) {
-                super.updateItem(course, empty);
-                if (empty || course == null) {
-                    setText(null);
-                } else {
-                    setText(course.getCode() + " - " + course.getCourseName());
-                }
-            }
-        });
-
-        // Setup quizCourseCombo (Quizzes Tab)
-        quizCourseCombo.setCellFactory(param -> new ListCell<Course>() {
-            @Override
-            protected void updateItem(Course course, boolean empty) {
-                super.updateItem(course, empty);
-                if (empty || course == null) {
-                    setText(null);
-                } else {
-                    setText(course.getCode() + " - " + course.getCourseName());
-                }
-            }
-        });
-
-        quizCourseCombo.setButtonCell(new ListCell<Course>() {
             @Override
             protected void updateItem(Course course, boolean empty) {
                 super.updateItem(course, empty);
@@ -275,9 +248,8 @@ public class InstructorController {
             ObservableList<Course> coursesList = FXCollections.observableArrayList(courses);
             myCoursesTable.setItems(coursesList);
 
-            // Update combo boxes
+            // Update combo box
             courseCombo.setItems(coursesList);
-            quizCourseCombo.setItems(coursesList);
 
             System.out.println("Loaded " + courses.size() + " courses for instructor");
         } catch (Exception e) {
@@ -338,7 +310,7 @@ public class InstructorController {
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Create New Quiz");
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(quizTitleField.getScene().getWindow());
+            dialogStage.initOwner(quizzesTable.getScene().getWindow());
             dialogStage.setScene(new Scene(root));
             dialogStage.setResizable(true);
             dialogStage.setMinWidth(700);

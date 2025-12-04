@@ -267,11 +267,17 @@ public class StudentController {
             System.out.println("Loaded " + filteredCourses.size() + " available courses for level "
                 + currentStudent.getLevel() + " and major " + currentStudent.getMajor());
 
-            // Show message if no courses are available
+            // Set placeholder message if no courses are available
             if (filteredCourses.isEmpty()) {
-                showInfo("No available courses to enroll.\n\n" +
+                Label placeholder = new Label("No available courses to enroll.\n\n" +
                         "All courses for your level (" + currentStudent.getLevel() + ") and major (" +
                         currentStudent.getMajor() + ") are already enrolled or there are no courses matching your criteria.");
+                placeholder.setStyle("-fx-text-fill: #666; -fx-font-size: 14px; -fx-text-alignment: center;");
+                placeholder.setWrapText(true);
+                placeholder.setMaxWidth(600);
+                availableCoursesTable.setPlaceholder(placeholder);
+            } else {
+                availableCoursesTable.setPlaceholder(new Label("No courses available"));
             }
         } catch (Exception e) {
             showError("Error loading courses: " + e.getMessage());

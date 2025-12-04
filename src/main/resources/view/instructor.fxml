@@ -179,12 +179,6 @@ Enhanced UI with modern design
                         </Label>
 
                         <HBox spacing="15" alignment="CENTER_LEFT">
-                            <TextField fx:id="quizTitleField" promptText="Enter quiz title..." prefWidth="350"
-                                       styleClass="instructor-text-field"
-                                       HBox.hgrow="SOMETIMES"/>
-                            <ComboBox fx:id="quizCourseCombo" promptText="Select Course" prefWidth="300"
-                                      styleClass="instructor-combo-box"
-                                      HBox.hgrow="SOMETIMES" maxWidth="Infinity"/>
                             <Button text="✓ Create Quiz" onAction="#handleCreateQuiz" styleClass="instructor-primary-button">
                                 <font>
                                     <Font name="System Bold" size="13"/>
