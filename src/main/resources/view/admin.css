@@ -195,10 +195,6 @@
     -fx-alignment: CENTER_LEFT;
 }
 
-.admin-table .table-column:first-child {
-    -fx-font-weight: bold;
-}
-
 /* Update button */
 .update-button {
     -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
@@ -214,4 +210,3 @@
 .update-button:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 3);
 }
-

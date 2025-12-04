@@ -5,7 +5,7 @@
 
 /* Root container with gradient background */
 .root-container {
-    -fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    -fx-background-color: linear-gradient(to bottom right, #667eea 0%, #764ba2 50%, #f093fb 100%);
 }
 
 /* Main login card */
@@ -228,4 +228,3 @@
     -fx-text-fill: black;
     -fx-font-size: 12px;
 }
-
