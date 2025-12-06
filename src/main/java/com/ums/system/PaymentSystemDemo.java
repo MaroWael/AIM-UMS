@@ -18,17 +18,14 @@ public class PaymentSystemDemo {
         System.out.println("  UMS LEVEL FEE PAYMENT SYSTEM - DEMO");
         System.out.println("=================================================\n");
 
-        // Initialize connection and service
         Connection conn = DatabaseConnection.getInstance().getConnection();
         PaymentService paymentService = new PaymentServiceImpl(conn);
 
-        // Demo student info
         int studentId = 12;
-        int studentLevel = 2;  // Sophomore
+        int studentLevel = 2;
 
         try {
-            // 1. Display Fee Structure
-            System.out.println("📋 LEVEL FEE STRUCTURE:");
+            System.out.println("LEVEL FEE STRUCTURE:");
             System.out.println("─────────────────────────────────────────────");
             for (int level = 1; level <= 4; level++) {
                 double fee = paymentService.calculateLevelFee(level);
@@ -37,8 +34,7 @@ public class PaymentSystemDemo {
             }
             System.out.println();
 
-            // 2. Check Payment Status
-            System.out.println("🔍 CHECKING PAYMENT STATUS:");
+            System.out.println("CHECKING PAYMENT STATUS:");
             System.out.println("─────────────────────────────────────────────");
             System.out.println("Student ID: " + studentId);
             System.out.println("Current Level: " + studentLevel + " (" + getYearName(studentLevel) + ")");
@@ -46,13 +42,12 @@ public class PaymentSystemDemo {
             boolean hasPaid = paymentService.hasUserPaidForLevel(studentId, studentLevel);
 
             if (hasPaid) {
-                System.out.println("Status: ✅ PAID");
-                System.out.println("\nℹ️  Student has already paid for this level.");
+                System.out.println("Status: PAID");
+                System.out.println("\nStudent has already paid for this level.");
             } else {
-                System.out.println("Status: ⚠️  NOT PAID");
-                System.out.println("\n💰 Processing payment...\n");
+                System.out.println("Status: NOT PAID");
+                System.out.println("\nProcessing payment...\n");
 
-                // 3. Process Payment
                 double levelFee = paymentService.calculateLevelFee(studentLevel);
 
                 PaymentRequest request = new PaymentRequest(
@@ -68,15 +63,15 @@ public class PaymentSystemDemo {
                 System.out.println("  Amount: $" + levelFee);
                 System.out.println("  Method: CARD");
                 System.out.println("  Description: " + request.getDescription());
-                System.out.println("\n⏳ Connecting to payment gateway...");
+                System.out.println("\nConnecting to payment gateway...");
 
                 Payment payment = paymentService.processPayment(request);
 
-                System.out.println("\n📄 PAYMENT RESULT:");
+                System.out.println("\nPAYMENT RESULT:");
                 System.out.println("─────────────────────────────────────────────");
 
                 if ("SUCCESS".equals(payment.getStatus())) {
-                    System.out.println("✅ PAYMENT SUCCESSFUL!");
+                    System.out.println("PAYMENT SUCCESSFUL!");
                     System.out.println();
                     System.out.println("Payment ID: " + payment.getId());
                     System.out.println("Transaction ID: " + payment.getTransactionId());
@@ -84,14 +79,13 @@ public class PaymentSystemDemo {
                     System.out.println("Level: " + payment.getLevel());
                     System.out.println("Date: " + payment.getCreatedAt());
                 } else {
-                    System.out.println("❌ PAYMENT FAILED");
+                    System.out.println("PAYMENT FAILED");
                     System.out.println("Status: " + payment.getStatus());
-                    System.out.println("\nℹ️  Please try again or contact administration.");
+                    System.out.println("\nPlease try again or contact administration.");
                 }
             }
 
-            // 4. Display Payment History
-            System.out.println("\n\n📜 PAYMENT HISTORY:");
+            System.out.println("\n\nPAYMENT HISTORY:");
             System.out.println("─────────────────────────────────────────────");
             List<Payment> paymentHistory = paymentService.getPaymentsByUserId(studentId);
 
@@ -113,8 +107,7 @@ public class PaymentSystemDemo {
                 }
             }
 
-            // 5. Revenue Statistics
-            System.out.println("\n\n💵 REVENUE STATISTICS:");
+            System.out.println("\n\nREVENUE STATISTICS:");
             System.out.println("─────────────────────────────────────────────");
 
             double totalRevenue = paymentService.getTotalRevenue();
@@ -127,11 +120,11 @@ public class PaymentSystemDemo {
             }
 
             System.out.println("\n=================================================");
-            System.out.println("  DEMO COMPLETED SUCCESSFULLY ✅");
+            System.out.println("  DEMO COMPLETED SUCCESSFULLY ");
             System.out.println("=================================================");
 
         } catch (Exception e) {
-            System.err.println("\n❌ ERROR: " + e.getMessage());
+            System.err.println("\nERROR: " + e.getMessage());
             e.printStackTrace();
         }
     }

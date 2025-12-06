@@ -15,10 +15,6 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-/**
- * TakeQuizController - Handles the quiz-taking interface
- * Provides interactive quiz taking with timer, navigation, and answer tracking
- */
 public class TakeQuizController {
 
     @FXML private Label quizTitleLabel;
@@ -36,7 +32,6 @@ public class TakeQuizController {
     @FXML private Button nextButton;
     @FXML private Button submitButton;
 
-    // Data
     private Quiz quiz;
     private Student currentStudent;
     private Course course;
@@ -45,18 +40,13 @@ public class TakeQuizController {
     private int currentQuestionIndex;
     private ToggleGroup optionsGroup;
 
-    // Timer
     private Timeline timeline;
     private int remainingSeconds;
     private static final int QUIZ_TIME_MINUTES = 30;
 
-    // Services
     private QuizResultService quizResultService;
     private CourseService courseService;
 
-    /**
-     * Initialize method
-     */
     @FXML
     public void initialize() {
         ServiceLocator serviceLocator = ServiceLocator.getInstance();
@@ -67,22 +57,17 @@ public class TakeQuizController {
         currentQuestionIndex = 0;
     }
 
-    /**
-     * Set up the quiz for taking
-     */
     public void setQuizData(Quiz quiz, Student student) {
         this.quiz = quiz;
         this.currentStudent = student;
         this.questions = quiz.getQuestions();
 
-        // Load course information
         try {
             course = courseService.getCourseByCode(quiz.getCourseCode());
         } catch (Exception e) {
             course = null;
         }
 
-        // Initialize UI
         quizTitleLabel.setText(quiz.getTitle());
         if (course != null) {
             courseLabel.setText("Course: " + course.getCode() + " - " + course.getCourseName());
@@ -90,17 +75,12 @@ public class TakeQuizController {
             courseLabel.setText("Course: " + quiz.getCourseCode());
         }
 
-        // Initialize timer
         remainingSeconds = QUIZ_TIME_MINUTES * 60;
         startTimer();
 
-        // Load first question
         loadQuestion(0);
     }
 
-    /**
-     * Start the quiz timer
-     */
     private void startTimer() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             remainingSeconds--;
@@ -109,7 +89,6 @@ public class TakeQuizController {
             int seconds = remainingSeconds % 60;
             timerLabel.setText(String.format("Time: %02d:%02d", minutes, seconds));
 
-            // Change timer color when time is running out
             if (remainingSeconds <= 300) { // 5 minutes
                 timerLabel.setStyle("-fx-text-fill: #ff4444; -fx-background-color: rgba(255, 68, 68, 0.2); " +
                                    "-fx-background-radius: 8; -fx-padding: 8 15 8 15; -fx-font-size: 18px; -fx-font-weight: bold;");
@@ -124,9 +103,7 @@ public class TakeQuizController {
         timeline.play();
     }
 
-    /**
-     * Load a specific question
-     */
+
     private void loadQuestion(int index) {
         if (index < 0 || index >= questions.size()) {
             return;
@@ -135,23 +112,18 @@ public class TakeQuizController {
         currentQuestionIndex = index;
         Question question = questions.get(index);
 
-        // Update question info
         questionNumberLabel.setText("Question " + (index + 1));
         questionTextLabel.setText(question.getText());
 
-        // Update progress
         progressLabel.setText("Question " + (index + 1) + " of " + questions.size());
         questionProgress.setProgress((double) (index + 1) / questions.size());
 
-        // Update answered count
         int answeredCount = answers.size();
         answeredLabel.setText("Answered: " + answeredCount + "/" + questions.size());
 
-        // Clear previous options
         optionsContainer.getChildren().clear();
         optionsGroup = new ToggleGroup();
 
-        // Create option buttons
         List<String> options = question.getOptions();
         String[] optionLetters = {"A", "B", "C", "D", "E", "F"};
 
@@ -159,23 +131,19 @@ public class TakeQuizController {
             String optionText = options.get(i);
             String optionLetter = optionLetters[i];
 
-            // Create option container
             HBox optionBox = new HBox(15);
             optionBox.getStyleClass().add("option-box");
             optionBox.setPadding(new Insets(15, 20, 15, 20));
 
-            // Create radio button
             RadioButton radio = new RadioButton();
             radio.setToggleGroup(optionsGroup);
             radio.getStyleClass().add("option-radio");
             radio.setUserData(optionText);
 
-            // Create option label with letter
             Label letterLabel = new Label(optionLetter + ".");
             letterLabel.getStyleClass().add("option-letter");
             letterLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #667eea; -fx-min-width: 25px;");
 
-            // Create option text label
             Label textLabel = new Label(optionText);
             textLabel.getStyleClass().add("option-text");
             textLabel.setStyle("-fx-font-size: 15px; -fx-text-fill: #2c3e50;");
@@ -185,13 +153,11 @@ public class TakeQuizController {
 
             optionBox.getChildren().addAll(radio, letterLabel, textLabel);
 
-            // Add click handler to the entire box
             optionBox.setOnMouseClicked(event -> {
                 radio.setSelected(true);
                 updateOptionStyles();
             });
 
-            // Restore previous answer if exists
             String previousAnswer = answers.get(question);
             if (previousAnswer != null && previousAnswer.equals(optionText)) {
                 radio.setSelected(true);
@@ -200,10 +166,8 @@ public class TakeQuizController {
             optionsContainer.getChildren().add(optionBox);
         }
 
-        // Update option styles initially
         updateOptionStyles();
 
-        // Save answer when selection changes
         optionsGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 String selectedAnswer = (String) newVal.getUserData();
@@ -212,13 +176,9 @@ public class TakeQuizController {
             }
         });
 
-        // Update navigation buttons
         updateNavigationButtons();
     }
 
-    /**
-     * Update the visual style of option boxes based on selection
-     */
     private void updateOptionStyles() {
         for (int i = 0; i < optionsContainer.getChildren().size(); i++) {
             HBox optionBox = (HBox) optionsContainer.getChildren().get(i);
@@ -236,30 +196,19 @@ public class TakeQuizController {
         }
     }
 
-    /**
-     * Update answered count label
-     */
     private void updateAnsweredCount() {
         int answeredCount = answers.size();
         answeredLabel.setText("Answered: " + answeredCount + "/" + questions.size());
     }
 
-    /**
-     * Update navigation buttons visibility and state
-     */
     private void updateNavigationButtons() {
-        // Previous button
         previousButton.setDisable(currentQuestionIndex == 0);
 
-        // Next/Submit button
         boolean isLastQuestion = currentQuestionIndex == questions.size() - 1;
         nextButton.setVisible(!isLastQuestion);
         submitButton.setVisible(isLastQuestion);
     }
 
-    /**
-     * Handle Previous button
-     */
     @FXML
     private void handlePrevious() {
         if (currentQuestionIndex > 0) {
@@ -267,9 +216,6 @@ public class TakeQuizController {
         }
     }
 
-    /**
-     * Handle Next button
-     */
     @FXML
     private void handleNext() {
         if (currentQuestionIndex < questions.size() - 1) {
@@ -277,9 +223,6 @@ public class TakeQuizController {
         }
     }
 
-    /**
-     * Handle Cancel button
-     */
     @FXML
     private void handleCancel() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -296,12 +239,9 @@ public class TakeQuizController {
         }
     }
 
-    /**
-     * Handle Submit button
-     */
+
     @FXML
     private void handleSubmit() {
-        // Check if all questions are answered
         int answeredCount = answers.size();
         int totalQuestions = questions.size();
         int unansweredCount = totalQuestions - answeredCount;
@@ -333,15 +273,11 @@ public class TakeQuizController {
         submitQuiz();
     }
 
-    /**
-     * Submit the quiz and calculate score
-     */
     private void submitQuiz() {
         if (timeline != null) {
             timeline.stop();
         }
 
-        // Calculate score
         int correctAnswers = 0;
         for (Question question : questions) {
             String studentAnswer = answers.get(question);
@@ -354,7 +290,6 @@ public class TakeQuizController {
             }
         }
 
-        // Create and save quiz result
         QuizResult result = new QuizResult(currentStudent, quiz, correctAnswers, answers);
         try {
             quizResultService.saveResult(result);
@@ -363,13 +298,10 @@ public class TakeQuizController {
             return;
         }
 
-        // Show result summary
         showResultSummary(correctAnswers, questions.size());
     }
 
-    /**
-     * Auto-submit quiz when time runs out
-     */
+
     private void autoSubmitQuiz() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Time's Up!");
@@ -380,9 +312,7 @@ public class TakeQuizController {
         submitQuiz();
     }
 
-    /**
-     * Show result summary dialog
-     */
+
     private void showResultSummary(int correctAnswers, int totalQuestions) {
         int percentage = (totalQuestions > 0) ? (correctAnswers * 100 / totalQuestions) : 0;
 
@@ -401,17 +331,12 @@ public class TakeQuizController {
         closeQuizWindow();
     }
 
-    /**
-     * Close the quiz window
-     */
+
     private void closeQuizWindow() {
         Stage stage = (Stage) quizTitleLabel.getScene().getWindow();
         stage.close();
     }
 
-    /**
-     * Show error alert
-     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -420,9 +345,7 @@ public class TakeQuizController {
         alert.showAndWait();
     }
 
-    /**
-     * Show info alert
-     */
+
     private void showInfo(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");

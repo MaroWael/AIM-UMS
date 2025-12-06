@@ -28,7 +28,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment processPayment(PaymentRequest request) {
-        // Validate request
         if (request.getAmount() <= 0) {
             throw new IllegalArgumentException("Payment amount must be greater than zero");
         }
@@ -37,12 +36,10 @@ public class PaymentServiceImpl implements PaymentService {
             throw new IllegalArgumentException("Invalid level. Level must be between 1 and 4");
         }
 
-        // Check if user already paid for this level
         if (paymentDAO.hasUserPaidForLevel(request.getUserId(), request.getLevel())) {
             throw new IllegalArgumentException("You have already paid for Level " + request.getLevel());
         }
 
-        // Create payment record with PENDING status
         Payment payment = new Payment(
             request.getUserId(),
             request.getLevel(),
@@ -53,14 +50,11 @@ public class PaymentServiceImpl implements PaymentService {
         );
         payment.setStatus("PENDING");
 
-        // Process payment through gateway
         PaymentResult result = paymentGateway.processPayment(request);
 
-        // Update payment with result
         payment.setTransactionId(result.getTransactionId());
         payment.setStatus(result.getStatus());
 
-        // Save to database
         if (paymentDAO.save(payment)) {
             return payment;
         } else {

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Payment {
     private int id;
     private int userId;
-    private int level;  // Student's level (1, 2, 3, 4)
+    private int level;
     private double amount;
     private String currency;
     private String description;
@@ -14,7 +14,6 @@ public class Payment {
     private String status; // SUCCESS, FAILED, PENDING, REFUNDED
     private LocalDateTime createdAt;
 
-    // Constructor for creating new payment
     public Payment(int userId, int level, double amount, String currency,
                    String description, String paymentMethod) {
         this.userId = userId;
@@ -43,7 +42,6 @@ public class Payment {
         this.createdAt = createdAt;
     }
 
-    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

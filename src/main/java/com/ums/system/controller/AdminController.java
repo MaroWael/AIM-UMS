@@ -17,16 +17,12 @@ import javafx.scene.layout.HBox;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * AdminController - Handles Admin panel functionality
- * Provides access to all admin features from CLI
- */
+
 public class AdminController {
 
     @FXML private Label welcomeLabel;
     @FXML private Label userInfoLabel;
 
-    // Courses Tab
     @FXML private TableView<Course> coursesTable;
     @FXML private TableColumn<Course, String> courseCodeColumn;
     @FXML private TableColumn<Course, String> courseNameColumn;
@@ -41,7 +37,6 @@ public class AdminController {
     @FXML private TextField courseLectureTimeField;
     @FXML private ComboBox<Instructor> courseInstructorCombo;
 
-    // Users Tab
     @FXML private TableView<User> usersTable;
     @FXML private TableColumn<User, Integer> userIdColumn;
     @FXML private TableColumn<User, String> userNameColumn;
@@ -52,7 +47,6 @@ public class AdminController {
     @FXML private TextField userEmailField;
     @FXML private PasswordField userPasswordField;
 
-    // Dynamic User Creation Fields
     @FXML private GridPane studentFieldsPane;
     @FXML private TextField studentLevelField;
     @FXML private ComboBox<String> studentMajorCombo;
@@ -60,21 +54,18 @@ public class AdminController {
     @FXML private HBox instructorFieldsPane;
     @FXML private ComboBox<Department> instructorDepartmentCombo;
 
-    // Students Tab
     @FXML private TableView<Student> studentsTable;
     @FXML private TableColumn<Student, Integer> studentIdColumn;
     @FXML private TableColumn<Student, String> studentNameColumn;
     @FXML private TableColumn<Student, String> studentEmailColumn;
     @FXML private TableColumn<Student, String> studentLevelColumn;
 
-    // Instructors Tab
     @FXML private TableView<Instructor> instructorsTable;
     @FXML private TableColumn<Instructor, Integer> instructorIdColumn;
     @FXML private TableColumn<Instructor, String> instructorNameColumn;
     @FXML private TableColumn<Instructor, String> instructorEmailColumn;
     @FXML private TableColumn<Instructor, String> instructorDeptColumn;
 
-    // Revenue Tab
     @FXML private Label totalRevenueLabel;
     @FXML private Label totalPaymentsLabel;
     @FXML private Label level1RevenueLabel;
@@ -97,7 +88,6 @@ public class AdminController {
     @FXML private ComboBox<String> paymentStatusFilterCombo;
     @FXML private ComboBox<String> paymentLevelFilterCombo;
 
-    // Services
     private Admin currentAdmin;
     private CourseService courseService;
     private AdminService adminService;
@@ -105,12 +95,9 @@ public class AdminController {
     private StudentService studentService;
     private PaymentService paymentService;
 
-    /**
-     * Initialize method
-     */
+
     @FXML
     public void initialize() {
-        // Get services from ServiceLocator
         ServiceLocator serviceLocator = ServiceLocator.getInstance();
         courseService = serviceLocator.getCourseService();
         adminService = serviceLocator.getAdminService();
@@ -118,55 +105,44 @@ public class AdminController {
         studentService = serviceLocator.getStudentService();
         paymentService = new PaymentServiceImpl(serviceLocator.getConnection());
 
-        // Set up tables
         setupCoursesTable();
         setupUsersTable();
         setupStudentsTable();
         setupInstructorsTable();
         setupPaymentsTable();
 
-        // Setup filter combos
         setupPaymentFilters();
 
-        // Set up major dropdowns with available majors
         ObservableList<String> majors = FXCollections.observableArrayList(
             "Computer Science", "Information Systems", "Information Technology", "Artificial Intelligence"
         );
         courseMajorCombo.setItems(majors);
         studentMajorCombo.setItems(majors);
 
-        // Set up department dropdowns
         ObservableList<Department> departments = FXCollections.observableArrayList(Department.values());
         studentDepartmentCombo.setItems(departments);
         instructorDepartmentCombo.setItems(departments);
 
-        // Set up user type combo
         userTypeCombo.setItems(FXCollections.observableArrayList("Admin", "Instructor", "Student"));
         userTypeCombo.setValue("Admin");
 
-        // Add listener to user type combo to show/hide dynamic fields
         userTypeCombo.valueProperty().addListener((obs, oldVal, newVal) -> {
             handleUserTypeChange(newVal);
         });
 
-        // Initially hide all dynamic fields
         studentFieldsPane.setVisible(false);
         studentFieldsPane.setManaged(false);
         instructorFieldsPane.setVisible(false);
         instructorFieldsPane.setManaged(false);
     }
 
-    /**
-     * Handle user type change - show/hide appropriate fields
-     */
+
     private void handleUserTypeChange(String userType) {
-        // Hide all dynamic fields first
         studentFieldsPane.setVisible(false);
         studentFieldsPane.setManaged(false);
         instructorFieldsPane.setVisible(false);
         instructorFieldsPane.setManaged(false);
 
-        // Show appropriate fields based on user type
         switch (userType) {
             case "Student":
                 studentFieldsPane.setVisible(true);
@@ -177,23 +153,17 @@ public class AdminController {
                 instructorFieldsPane.setManaged(true);
                 break;
             case "Admin":
-                // No additional fields needed
                 break;
         }
     }
 
-    /**
-     * Set current admin user
-     */
     public void setUser(Admin admin) {
         this.currentAdmin = admin;
         welcomeLabel.setText("Welcome, " + admin.getName() + "!");
         userInfoLabel.setText("Role: Admin | ID: " + admin.getId() + " | Email: " + admin.getEmail());
 
-        // Load available instructors into combo box - matching CLI pattern
         loadInstructorsIntoCombo();
 
-        // Load initial data
         loadAllCourses();
         loadAllUsers();
         loadAllStudents();
@@ -202,9 +172,7 @@ public class AdminController {
         updateRevenueStatistics();
     }
 
-    /**
-     * Load instructors into combo box for course creation - matches CLI createCourse()
-     */
+
     private void loadInstructorsIntoCombo() {
         try {
             List<Instructor> instructors = instructorService.getAllInstructors();
@@ -213,7 +181,6 @@ public class AdminController {
                 System.out.println("No instructors available. Please create an instructor first.");
             }
 
-            // Create a custom string converter to display instructor info
             courseInstructorCombo.setItems(FXCollections.observableArrayList(instructors));
             courseInstructorCombo.setConverter(new javafx.util.StringConverter<Instructor>() {
                 @Override
@@ -234,9 +201,7 @@ public class AdminController {
         }
     }
 
-    /**
-     * Setup Courses Table - with instructor name lookup
-     */
+
     private void setupCoursesTable() {
         courseCodeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
         courseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
@@ -244,12 +209,10 @@ public class AdminController {
         courseMajorColumn.setCellValueFactory(new PropertyValueFactory<>("major"));
         courseLectureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("lectureTime"));
 
-        // Custom cell value factory for instructor name instead of ID
         courseInstructorColumn.setCellValueFactory(cellData -> {
             Course course = cellData.getValue();
             int instructorId = course.getInstructorId();
 
-            // Fetch instructor name
             try {
                 Instructor instructor = instructorService.getInstructorById(instructorId);
                 if (instructor != null) {
@@ -263,9 +226,7 @@ public class AdminController {
         });
     }
 
-    /**
-     * Setup Users Table
-     */
+
     private void setupUsersTable() {
         userIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         userNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -273,9 +234,7 @@ public class AdminController {
         userRoleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
     }
 
-    /**
-     * Setup Students Table
-     */
+
     private void setupStudentsTable() {
         studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         studentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -283,9 +242,7 @@ public class AdminController {
         studentLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
     }
 
-    /**
-     * Setup Instructors Table
-     */
+
     private void setupInstructorsTable() {
         instructorIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         instructorNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -307,9 +264,7 @@ public class AdminController {
         }
     }
 
-    /**
-     * Handle Create Course - matches CLI createCourse() method with ComboBox for major
-     */
+
     @FXML
     private void handleCreateCourse() {
         String code = courseCodeField.getText().trim();
@@ -319,7 +274,6 @@ public class AdminController {
         String lectureTime = courseLectureTimeField.getText().trim();
         Instructor instructor = courseInstructorCombo.getValue();
 
-        // Clear previous error styles
         clearFieldErrors(courseCodeField, courseNameField, courseLevelField, courseLectureTimeField);
         courseMajorCombo.setStyle("");
         courseInstructorCombo.setStyle("");
@@ -327,7 +281,6 @@ public class AdminController {
         boolean hasError = false;
         StringBuilder errorMessage = new StringBuilder("Please fix the following errors:\n");
 
-        // Validate course code
         if (code.isEmpty()) {
             setFieldError(courseCodeField, "Course Code is required");
             errorMessage.append("- Course Code is required\n");
@@ -338,7 +291,6 @@ public class AdminController {
             hasError = true;
         }
 
-        // Validate course name
         if (name.isEmpty()) {
             setFieldError(courseNameField, "Course Name is required");
             errorMessage.append("- Course Name is required\n");
@@ -349,7 +301,6 @@ public class AdminController {
             hasError = true;
         }
 
-        // Validate level
         if (level.isEmpty()) {
             setFieldError(courseLevelField, "Level is required");
             errorMessage.append("- Level is required\n");
@@ -369,21 +320,18 @@ public class AdminController {
             }
         }
 
-        // Validate major
         if (major == null || major.isEmpty()) {
             setComboBoxError(courseMajorCombo);
             errorMessage.append("- Major is required\n");
             hasError = true;
         }
 
-        // Validate lecture time
         if (lectureTime.isEmpty()) {
             setFieldError(courseLectureTimeField, "Lecture Time is required");
             errorMessage.append("- Lecture Time is required\n");
             hasError = true;
         }
 
-        // Validate instructor
         if (instructor == null) {
             setComboBoxError(courseInstructorCombo);
             errorMessage.append("- Instructor is required\n");
@@ -396,7 +344,6 @@ public class AdminController {
         }
 
         try {
-            // Create course with constructor matching CLI pattern
             Course course = new Course(code, name, level, major, lectureTime, null, null, instructor.getId());
 
             boolean success = courseService.addCourse(course);
@@ -447,14 +394,11 @@ public class AdminController {
         }
     }
 
-    // ==================== USERS TAB ACTIONS ====================
-
     @FXML
     private void loadAllUsers() {
         try {
             ObservableList<User> allUsers = FXCollections.observableArrayList();
 
-            // Load all types of users
             List<Admin> admins = adminService.getAllAdmins();
             List<Instructor> instructors = instructorService.getAllInstructors();
             List<Student> students = studentService.getAllStudents();
@@ -470,9 +414,7 @@ public class AdminController {
         }
     }
 
-    /**
-     * Handle Create User - with dynamic fields based on user type
-     */
+
     @FXML
     private void handleCreateUser() {
         String name = userNameField.getText().trim();
@@ -480,7 +422,6 @@ public class AdminController {
         String password = userPasswordField.getText().trim();
         String userType = userTypeCombo.getValue();
 
-        // Clear previous error styles
         userNameField.setStyle("");
         userEmailField.setStyle("");
         userPasswordField.setStyle("");
@@ -492,7 +433,6 @@ public class AdminController {
         boolean hasError = false;
         StringBuilder errorMessage = new StringBuilder("Please fix the following errors:\n");
 
-        // Validate name
         if (name.isEmpty()) {
             setFieldError(userNameField, "Name is required");
             errorMessage.append("- Name is required\n");
@@ -503,7 +443,6 @@ public class AdminController {
             hasError = true;
         }
 
-        // Validate email using ValidationUtil
         String emailError = ValidationUtil.validateEmail(email);
         if (emailError != null) {
             setFieldError(userEmailField, emailError);
@@ -511,7 +450,6 @@ public class AdminController {
             hasError = true;
         }
 
-        // Validate password using ValidationUtil
         String passwordError = ValidationUtil.validatePassword(password);
         if (passwordError != null) {
             setFieldError(userPasswordField, passwordError);
@@ -519,7 +457,6 @@ public class AdminController {
             hasError = true;
         }
 
-        // Validate user type specific fields
         switch (userType) {
             case "Student":
                 String levelStr = studentLevelField.getText().trim();
@@ -569,7 +506,6 @@ public class AdminController {
         }
 
         if (hasError) {
-            // Add password requirements to error message if password validation failed
             if (passwordError != null) {
                 errorMessage.append("\n").append(ValidationUtil.getPasswordRequirements());
             }
@@ -582,25 +518,21 @@ public class AdminController {
 
             switch (userType) {
                 case "Admin":
-                    // Admin: Only common fields needed
                     Admin admin = new Admin(0, name, email, hashedPassword, Role.ADMIN);
                     adminService.addAdmin(admin);
                     showInfo("Admin created successfully!");
                     break;
 
                 case "Instructor":
-                    // Instructor: Need department
                     Department instructorDept = instructorDepartmentCombo.getValue();
                     Instructor instructor = new Instructor(0, name, email, hashedPassword, Role.INSTRUCTOR, instructorDept);
                     instructorService.addInstructor(instructor);
                     showInfo("Instructor created successfully!");
 
-                    // Refresh instructor combo in courses tab
                     loadInstructorsIntoCombo();
                     break;
 
                 case "Student":
-                    // Student: Need level, major, and department
                     String levelStr = studentLevelField.getText().trim();
                     String studentMajor = studentMajorCombo.getValue();
                     Department studentDept = studentDepartmentCombo.getValue();
@@ -614,7 +546,6 @@ public class AdminController {
                     break;
             }
 
-            // Clear all fields and reload
             userNameField.clear();
             userEmailField.clear();
             userPasswordField.clear();
@@ -667,8 +598,6 @@ public class AdminController {
         }
     }
 
-    // ==================== STUDENTS TAB ACTIONS ====================
-
     @FXML
     private void loadAllStudents() {
         try {
@@ -690,22 +619,17 @@ public class AdminController {
         }
 
         try {
-            // Load student details FXML
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
                 getClass().getResource("/view/student_details.fxml")
             );
             javafx.scene.Parent root = loader.load();
 
-            // Get controller and set student data
             StudentDetailsController controller = loader.getController();
 
-            // Get current stage
             javafx.stage.Stage currentStage = (javafx.stage.Stage) welcomeLabel.getScene().getWindow();
 
-            // Pass selected student and stage to details controller
             controller.setStudent(selected, currentStage);
 
-            // Create new stage for details
             javafx.stage.Stage detailsStage = new javafx.stage.Stage();
             detailsStage.setTitle("Student Details - " + selected.getName());
             detailsStage.setScene(new javafx.scene.Scene(root));
@@ -713,10 +637,8 @@ public class AdminController {
             detailsStage.setMinWidth(1000);
             detailsStage.setMinHeight(750);
 
-            // Hide current window
             currentStage.hide();
 
-            // Show details window
             detailsStage.show();
 
         } catch (Exception e) {
@@ -733,7 +655,6 @@ public class AdminController {
             return;
         }
 
-        // Check if student has paid for their current level
         try {
             int currentLevel = selected.getLevel();
             boolean hasPaid = paymentService.hasUserPaidForLevel(selected.getId(), currentLevel);
@@ -777,8 +698,6 @@ public class AdminController {
         }
     }
 
-    // ==================== INSTRUCTORS TAB ACTIONS ====================
-
     @FXML
     private void loadAllInstructors() {
         try {
@@ -802,7 +721,6 @@ public class AdminController {
         paymentStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         paymentTransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
 
-        // Custom cell for student name
         paymentUserNameColumn.setCellValueFactory(cellData -> {
             Payment payment = cellData.getValue();
             try {
@@ -816,7 +734,6 @@ public class AdminController {
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
 
-        // Format date column
         paymentDateColumn.setCellValueFactory(cellData -> {
             Payment payment = cellData.getValue();
             if (payment.getCreatedAt() != null) {
@@ -829,7 +746,6 @@ public class AdminController {
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
 
-        // Style status column
         paymentStatusColumn.setCellFactory(column -> new TableCell<Payment, String>() {
             @Override
             protected void updateItem(String status, boolean empty) {
@@ -852,11 +768,9 @@ public class AdminController {
     }
 
     private void setupPaymentFilters() {
-        // Setup status filter
         paymentStatusFilterCombo.getItems().addAll("All", "SUCCESS", "FAILED", "PENDING");
         paymentStatusFilterCombo.setValue("All");
 
-        // Setup level filter
         paymentLevelFilterCombo.getItems().addAll("All", "1", "2", "3", "4");
         paymentLevelFilterCombo.setValue("All");
     }
@@ -869,7 +783,6 @@ public class AdminController {
             paymentsTable.setItems(paymentsList);
             System.out.println("Loaded " + payments.size() + " payments");
 
-            // Update statistics
             updateRevenueStatistics();
         } catch (Exception e) {
             showError("Error loading payments: " + e.getMessage());
@@ -884,7 +797,6 @@ public class AdminController {
 
             List<Payment> payments = paymentService.getAllPayments();
 
-            // Apply filters
             if (!"All".equals(statusFilter)) {
                 payments = payments.stream()
                     .filter(p -> statusFilter.equals(p.getStatus()))
@@ -909,15 +821,12 @@ public class AdminController {
 
     private void updateRevenueStatistics() {
         try {
-            // Total revenue
             double totalRevenue = paymentService.getTotalRevenue();
             totalRevenueLabel.setText(String.format("%.2f EGP", totalRevenue));
 
-            // Total payments count
             List<Payment> allPayments = paymentService.getAllPayments();
             totalPaymentsLabel.setText(allPayments.size() + " payments");
 
-            // Revenue by level
             level1RevenueLabel.setText(String.format("%.2f EGP",
                 paymentService.getTotalRevenueByLevel(1)));
             level2RevenueLabel.setText(String.format("%.2f EGP",
@@ -927,7 +836,6 @@ public class AdminController {
             level4RevenueLabel.setText(String.format("%.2f EGP",
                 paymentService.getTotalRevenueByLevel(4)));
 
-            // Payment status counts
             long successCount = allPayments.stream()
                 .filter(p -> "SUCCESS".equals(p.getStatus()))
                 .count();
@@ -949,36 +857,22 @@ public class AdminController {
         }
     }
 
-    // ==================== UTILITY METHODS ====================
-
-    /**
-     * Set visual error indicator on a text field
-     */
     private void setFieldError(TextField field) {
         field.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
     }
 
-    /**
-     * Set visual error indicator on a text field with custom message
-     */
     private void setFieldError(TextField field, String message) {
         field.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
         Tooltip tooltip = new Tooltip(message);
         Tooltip.install(field, tooltip);
     }
 
-    /**
-     * Set visual error indicator on a ComboBox
-     */
     private void setComboBoxError(ComboBox<?> comboBox) {
         comboBox.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
         Tooltip tooltip = new Tooltip("This field is required");
         Tooltip.install(comboBox, tooltip);
     }
 
-    /**
-     * Clear error styles from multiple fields
-     */
     private void clearFieldErrors(TextField... fields) {
         for (TextField field : fields) {
             field.setStyle("");
@@ -988,22 +882,17 @@ public class AdminController {
     @FXML
     private void handleProfile() {
         try {
-            // Load profile FXML
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
                 getClass().getResource("/view/profile.fxml")
             );
             javafx.scene.Parent root = loader.load();
 
-            // Get controller and set user data
             ProfileController profileController = loader.getController();
 
-            // Get current stage
             javafx.stage.Stage currentStage = (javafx.stage.Stage) welcomeLabel.getScene().getWindow();
 
-            // Pass current admin user and stage to profile controller
             profileController.setUser(currentAdmin, currentStage);
 
-            // Create new stage for profile
             javafx.stage.Stage profileStage = new javafx.stage.Stage();
             profileStage.setTitle("My Profile - " + currentAdmin.getName());
             profileStage.setScene(new javafx.scene.Scene(root));
@@ -1011,10 +900,8 @@ public class AdminController {
             profileStage.setMinWidth(900);
             profileStage.setMinHeight(700);
 
-            // Hide current window
             currentStage.hide();
 
-            // Show profile window
             profileStage.show();
 
         } catch (Exception e) {
@@ -1026,19 +913,15 @@ public class AdminController {
     @FXML
     private void handleRefresh() {
         try {
-            // Show a brief loading indicator
             System.out.println("Refreshing admin dashboard...");
 
-            // Reload user info
             if (currentAdmin != null) {
                 welcomeLabel.setText("Welcome, " + currentAdmin.getName() + "!");
                 userInfoLabel.setText("Role: Admin | ID: " + currentAdmin.getId() + " | Email: " + currentAdmin.getEmail());
             }
 
-            // Reload instructors combo
             loadInstructorsIntoCombo();
 
-            // Reload all data
             loadAllCourses();
             loadAllUsers();
             loadAllStudents();

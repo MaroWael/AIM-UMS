@@ -19,16 +19,11 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * InstructorController - Handles Instructor panel functionality
- * Provides access to instructor features from CLI
- */
 public class InstructorController {
 
     @FXML private Label welcomeLabel;
     @FXML private Label userInfoLabel;
 
-    // My Courses Tab
     @FXML private TableView<Course> myCoursesTable;
     @FXML private TableColumn<Course, String> courseIdColumn;
     @FXML private TableColumn<Course, String> courseNameColumn;
@@ -38,7 +33,6 @@ public class InstructorController {
     @FXML private TableColumn<Course, Integer> courseStudentsColumn;
     @FXML private TableColumn<Course, Integer> courseQuizzesColumn;
 
-    // Students Tab
     @FXML private ComboBox<Course> courseCombo;
     @FXML private TableView<Student> studentsTable;
     @FXML private TableColumn<Student, Integer> studentIdColumn;
@@ -48,14 +42,12 @@ public class InstructorController {
     @FXML private TableColumn<Student, String> studentMajorColumn;
     @FXML private TableColumn<Student, String> studentDepartmentColumn;
 
-    // Quizzes Tab
     @FXML private TableView<Quiz> quizzesTable;
     @FXML private TableColumn<Quiz, Integer> quizIdColumn;
     @FXML private TableColumn<Quiz, String> quizTitleColumn;
     @FXML private TableColumn<Quiz, Integer> quizCourseColumn;
     @FXML private TableColumn<Quiz, Integer> quizQuestionsColumn;
 
-    // Quiz Results Tab
     @FXML private TableView<QuizResult> resultsTable;
     @FXML private TableColumn<QuizResult, Integer> resultStudentIdColumn;
     @FXML private TableColumn<QuizResult, String> resultStudentNameColumn;
@@ -65,7 +57,6 @@ public class InstructorController {
     @FXML private TableColumn<QuizResult, Integer> resultScoreColumn;
     @FXML private ComboBox<Quiz> resultQuizCombo;
 
-    // Services
     private Instructor currentInstructor;
     private CourseService courseService;
     private StudentService studentService;
@@ -73,12 +64,8 @@ public class InstructorController {
     private QuizResultService quizResultService;
     private EnrollmentDAO enrollmentDAO;
 
-    /**
-     * Initialize method
-     */
     @FXML
     public void initialize() {
-        // Get services from ServiceLocator
         ServiceLocator serviceLocator = ServiceLocator.getInstance();
         courseService = serviceLocator.getCourseService();
         studentService = serviceLocator.getStudentService();
@@ -86,21 +73,15 @@ public class InstructorController {
         quizResultService = serviceLocator.getQuizResultService();
         enrollmentDAO = serviceLocator.getEnrollmentDAO();
 
-        // Set up tables
         setupMyCoursesTable();
         setupStudentsTable();
         setupQuizzesTable();
         setupResultsTable();
 
-        // Set up combo boxes with custom display
         setupCourseComboBoxes();
     }
 
-    /**
-     * Setup combo boxes to display course code and name
-     */
     private void setupCourseComboBoxes() {
-        // Setup courseCombo (Students Tab)
         courseCombo.setCellFactory(param -> new ListCell<Course>() {
             @Override
             protected void updateItem(Course course, boolean empty) {
@@ -125,7 +106,6 @@ public class InstructorController {
             }
         });
 
-        // Setup resultQuizCombo (Quiz Results Tab)
         resultQuizCombo.setCellFactory(param -> new ListCell<Quiz>() {
             @Override
             protected void updateItem(Quiz quiz, boolean empty) {
@@ -151,23 +131,16 @@ public class InstructorController {
         });
     }
 
-    /**
-     * Set current instructor user
-     */
     public void setUser(Instructor instructor) {
         this.currentInstructor = instructor;
         welcomeLabel.setText("Welcome, " + instructor.getName() + "!");
         userInfoLabel.setText("Role: Instructor | ID: " + instructor.getId() +
                             " | Department: " + instructor.getDepartment());
 
-        // Load initial data
         loadMyCourses();
         loadMyQuizzes();
     }
 
-    /**
-     * Setup tables
-     */
     private void setupMyCoursesTable() {
         courseIdColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
         courseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
@@ -185,7 +158,6 @@ public class InstructorController {
         studentLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
         studentMajorColumn.setCellValueFactory(new PropertyValueFactory<>("major"));
 
-        // Department is an object, need to extract the name
         studentDepartmentColumn.setCellValueFactory(cellData -> {
             Student student = cellData.getValue();
             Department dept = student.getDepartmentName();
@@ -198,7 +170,7 @@ public class InstructorController {
         quizIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         quizTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         quizCourseColumn.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
-        // Note: Quiz doesn't have totalQuestions property - using questions list size
+
         quizQuestionsColumn.setCellValueFactory(cellData -> {
             Quiz quiz = cellData.getValue();
             int count = quiz.getQuestions() != null ? quiz.getQuestions().size() : 0;
@@ -239,8 +211,6 @@ public class InstructorController {
         });
     }
 
-    // ==================== MY COURSES TAB ====================
-
     @FXML
     private void loadMyCourses() {
         try {
@@ -248,7 +218,6 @@ public class InstructorController {
             ObservableList<Course> coursesList = FXCollections.observableArrayList(courses);
             myCoursesTable.setItems(coursesList);
 
-            // Update combo box
             courseCombo.setItems(coursesList);
 
             System.out.println("Loaded " + courses.size() + " courses for instructor");
@@ -286,7 +255,6 @@ public class InstructorController {
             ObservableList<Quiz> quizzesList = FXCollections.observableArrayList(quizzes);
             quizzesTable.setItems(quizzesList);
 
-            // Update results combo
             resultQuizCombo.setItems(quizzesList);
 
             System.out.println("Loaded " + quizzes.size() + " quizzes");
@@ -298,15 +266,12 @@ public class InstructorController {
     @FXML
     private void handleCreateQuiz() {
         try {
-            // Load the create quiz dialog
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/create_quiz.fxml"));
             Parent root = loader.load();
 
-            // Get controller and set instructor
             CreateQuizController controller = loader.getController();
             controller.setInstructor(currentInstructor);
 
-            // Create and show dialog
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Create New Quiz");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -316,10 +281,8 @@ public class InstructorController {
             dialogStage.setMinWidth(700);
             dialogStage.setMinHeight(600);
 
-            // Show and wait
             dialogStage.showAndWait();
 
-            // Refresh quiz list if quiz was created
             if (controller.isQuizCreated()) {
                 loadMyQuizzes();
             }
@@ -355,8 +318,6 @@ public class InstructorController {
         }
     }
 
-    // ==================== QUIZ RESULTS TAB ====================
-
     @FXML
     private void handleLoadResults() {
         Quiz selectedQuiz = resultQuizCombo.getValue();
@@ -370,7 +331,6 @@ public class InstructorController {
             ObservableList<QuizResult> resultsList = FXCollections.observableArrayList(results);
             resultsTable.setItems(resultsList);
 
-            // Debug logging
             System.out.println("Loaded " + results.size() + " results for quiz: " + selectedQuiz.getTitle());
             for (QuizResult result : results) {
                 System.out.println("Result - Student: " +
@@ -387,7 +347,6 @@ public class InstructorController {
     @FXML
     private void handleViewAllResults() {
         try {
-            // Get all results for instructor's quizzes
             List<Quiz> myQuizzes = quizService.getQuizzesByInstructor(currentInstructor.getId());
             ObservableList<QuizResult> allResults = FXCollections.observableArrayList();
 
@@ -398,7 +357,6 @@ public class InstructorController {
 
             resultsTable.setItems(allResults);
 
-            // Debug logging
             System.out.println("Loaded " + allResults.size() + " total results");
             for (QuizResult result : allResults) {
                 System.out.println("Result - Student: " +
@@ -417,22 +375,17 @@ public class InstructorController {
     @FXML
     private void handleProfile() {
         try {
-            // Load profile FXML
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
                 getClass().getResource("/view/profile.fxml")
             );
             javafx.scene.Parent root = loader.load();
 
-            // Get controller and set user data
             ProfileController profileController = loader.getController();
 
-            // Get current stage
             javafx.stage.Stage currentStage = (javafx.stage.Stage) welcomeLabel.getScene().getWindow();
 
-            // Pass current instructor user and stage to profile controller
             profileController.setUser(currentInstructor, currentStage);
 
-            // Create new stage for profile
             javafx.stage.Stage profileStage = new javafx.stage.Stage();
             profileStage.setTitle("My Profile - " + currentInstructor.getName());
             profileStage.setScene(new javafx.scene.Scene(root));
@@ -440,10 +393,8 @@ public class InstructorController {
             profileStage.setMinWidth(900);
             profileStage.setMinHeight(700);
 
-            // Hide current window
             currentStage.hide();
 
-            // Show profile window
             profileStage.show();
 
         } catch (Exception e) {
@@ -455,17 +406,14 @@ public class InstructorController {
     @FXML
     private void handleRefresh() {
         try {
-            // Show a brief loading indicator
             System.out.println("Refreshing instructor dashboard...");
 
-            // Reload user info
             if (currentInstructor != null) {
                 welcomeLabel.setText("Welcome, " + currentInstructor.getName() + "!");
                 userInfoLabel.setText("Role: Instructor | ID: " + currentInstructor.getId() +
                             " | Department: " + currentInstructor.getDepartment());
             }
 
-            // Reload all data
             loadMyCourses();
             loadMyQuizzes();
 

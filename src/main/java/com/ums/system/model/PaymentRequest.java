@@ -18,7 +18,6 @@ public class PaymentRequest {
         this.paymentMethod = paymentMethod;
     }
 
-    // Getters and Setters
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
 

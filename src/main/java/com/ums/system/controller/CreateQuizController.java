@@ -15,9 +15,6 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * CreateQuizController - Handles quiz creation dialog
- */
 public class CreateQuizController {
 
     @FXML private TextField quizTitleField;
@@ -34,23 +31,17 @@ public class CreateQuizController {
 
     @FXML
     public void initialize() {
-        // Get services
         ServiceLocator serviceLocator = ServiceLocator.getInstance();
         courseService = serviceLocator.getCourseService();
         quizService = serviceLocator.getQuizService();
 
-        // Setup course combo box
         setupCourseCombo();
 
-        // Configure spinner
         SpinnerValueFactory<Integer> valueFactory =
             new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 1);
         numQuestionsSpinner.setValueFactory(valueFactory);
     }
 
-    /**
-     * Setup course combo box to display course code and name
-     */
     private void setupCourseCombo() {
         courseCombo.setCellFactory(param -> new ListCell<Course>() {
             @Override
@@ -77,17 +68,11 @@ public class CreateQuizController {
         });
     }
 
-    /**
-     * Set the current instructor and load their courses
-     */
     public void setInstructor(Instructor instructor) {
         this.currentInstructor = instructor;
         loadInstructorCourses();
     }
 
-    /**
-     * Load courses assigned to the instructor
-     */
     private void loadInstructorCourses() {
         try {
             List<Course> courses = courseService.getCoursesByInstructorId(currentInstructor.getId());
@@ -99,7 +84,6 @@ public class CreateQuizController {
             ObservableList<Course> coursesList = FXCollections.observableArrayList(courses);
             courseCombo.setItems(coursesList);
 
-            // Select first course by default
             if (!courses.isEmpty()) {
                 courseCombo.getSelectionModel().selectFirst();
             }
@@ -108,9 +92,6 @@ public class CreateQuizController {
         }
     }
 
-    /**
-     * Generate question input forms
-     */
     @FXML
     private void handleGenerateQuestions() {
         int numQuestions = numQuestionsSpinner.getValue();
@@ -126,12 +107,8 @@ public class CreateQuizController {
         showInfo("Generated " + numQuestions + " question forms. Please fill them out.");
     }
 
-    /**
-     * Handle create quiz button
-     */
     @FXML
     private void handleCreateQuiz() {
-        // Validate inputs
         String title = quizTitleField.getText().trim();
         Course selectedCourse = courseCombo.getValue();
 
@@ -150,7 +127,6 @@ public class CreateQuizController {
             return;
         }
 
-        // Validate and collect questions
         List<Question> questions = new ArrayList<>();
         for (QuestionForm form : questionForms) {
             try {
@@ -162,7 +138,6 @@ public class CreateQuizController {
             }
         }
 
-        // Create quiz
         try {
             Quiz quiz = new Quiz(0, title, selectedCourse.getCode(), questions);
             boolean success = quizService.createQuiz(quiz, currentInstructor.getId());
@@ -180,32 +155,20 @@ public class CreateQuizController {
         }
     }
 
-    /**
-     * Handle cancel button
-     */
     @FXML
     private void handleCancel() {
         closeDialog();
     }
 
-    /**
-     * Check if quiz was created
-     */
     public boolean isQuizCreated() {
         return quizCreated;
     }
 
-    /**
-     * Close the dialog
-     */
     private void closeDialog() {
         Stage stage = (Stage) quizTitleField.getScene().getWindow();
         stage.close();
     }
 
-    /**
-     * Show error alert
-     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -214,9 +177,6 @@ public class CreateQuizController {
         alert.showAndWait();
     }
 
-    /**
-     * Show info alert
-     */
     private void showInfo(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
@@ -225,9 +185,6 @@ public class CreateQuizController {
         alert.showAndWait();
     }
 
-    /**
-     * Inner class to represent a question input form
-     */
     private class QuestionForm {
         private int questionNumber;
         private VBox container;
@@ -247,18 +204,15 @@ public class CreateQuizController {
                              "-fx-border-radius: 5; -fx-background-color: #f9f9f9; " +
                              "-fx-padding: 15;");
 
-            // Question header
             Label headerLabel = new Label("Question " + questionNumber);
             headerLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
 
-            // Question text
             Label questionLabel = new Label("Question Text:");
             questionTextArea = new TextArea();
             questionTextArea.setPromptText("Enter the question text...");
             questionTextArea.setPrefRowCount(2);
             questionTextArea.setWrapText(true);
 
-            // Choices
             Label choicesLabel = new Label("Choices:");
             choicesLabel.setStyle("-fx-font-weight: bold;");
 
@@ -285,7 +239,6 @@ public class CreateQuizController {
                 choicesBox.getChildren().add(choiceBox);
             }
 
-            // Select first radio by default
             correctAnswerRadios[0].setSelected(true);
 
             container.getChildren().addAll(

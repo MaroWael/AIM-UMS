@@ -188,9 +188,6 @@ public class PaymentDAOImpl implements PaymentDAO {
         return false;
     }
 
-    /**
-     * Helper method to extract Payment object from ResultSet
-     */
     private Payment extractPaymentFromResultSet(ResultSet rs) throws SQLException {
         return new Payment(
             rs.getInt("id"),

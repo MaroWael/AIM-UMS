@@ -13,10 +13,6 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-/**
- * StudentDetailsController - Shows detailed student information
- * Displays personal info, enrolled courses, and quiz results
- */
 public class StudentDetailsController {
 
     @FXML private Label studentNameLabel;
@@ -31,7 +27,6 @@ public class StudentDetailsController {
     @FXML private Label coursesCountLabel;
     @FXML private Label averageScoreLabel;
 
-    // Courses table
     @FXML private TableView<Course> coursesTable;
     @FXML private TableColumn<Course, String> courseCodeColumn;
     @FXML private TableColumn<Course, String> courseNameColumn;
@@ -39,7 +34,6 @@ public class StudentDetailsController {
     @FXML private TableColumn<Course, String> courseMajorColumn;
     @FXML private TableColumn<Course, String> courseInstructorColumn;
 
-    // Quiz results table
     @FXML private TableView<QuizResult> quizResultsTable;
     @FXML private TableColumn<QuizResult, String> quizTitleColumn;
     @FXML private TableColumn<QuizResult, String> quizCourseColumn;
@@ -48,23 +42,17 @@ public class StudentDetailsController {
     @FXML private TableColumn<QuizResult, Integer> quizTotalColumn;
     @FXML private TableColumn<QuizResult, String> quizDateColumn;
 
-    // Services
     private StudentService studentService;
     private InstructorService instructorService;
     private EnrollmentDAO enrollmentDAO;
     private QuizResultService quizResultService;
     private PaymentService paymentService;
 
-    // Current student and previous stage
     private Student currentStudent;
     private Stage previousStage;
 
-    /**
-     * Initialize method
-     */
     @FXML
     public void initialize() {
-        // Get services from ServiceLocator
         ServiceLocator serviceLocator = ServiceLocator.getInstance();
         studentService = serviceLocator.getStudentService();
         instructorService = serviceLocator.getInstructorService();
@@ -72,30 +60,22 @@ public class StudentDetailsController {
         quizResultService = serviceLocator.getQuizResultService();
         paymentService = new PaymentServiceImpl(serviceLocator.getConnection());
 
-        // Setup tables
         setupCoursesTable();
         setupQuizResultsTable();
     }
 
-    /**
-     * Set student data and load information
-     */
     public void setStudent(Student student, Stage previousStage) {
         this.currentStudent = student;
         this.previousStage = previousStage;
         loadStudentData();
     }
 
-    /**
-     * Setup courses table
-     */
     private void setupCoursesTable() {
         courseCodeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
         courseNameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
         courseLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
         courseMajorColumn.setCellValueFactory(new PropertyValueFactory<>("major"));
 
-        // Custom cell for instructor name
         courseInstructorColumn.setCellValueFactory(cellData -> {
             Course course = cellData.getValue();
             int instructorId = course.getInstructorId();
@@ -112,9 +92,6 @@ public class StudentDetailsController {
         });
     }
 
-    /**
-     * Setup quiz results table
-     */
     private void setupQuizResultsTable() {
         // Quiz title
         quizTitleColumn.setCellValueFactory(cellData -> {
@@ -125,7 +102,6 @@ public class StudentDetailsController {
             );
         });
 
-        // Course name
         quizCourseColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
             Quiz quiz = result.getQuiz();
@@ -135,7 +111,6 @@ public class StudentDetailsController {
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
 
-        // Score percentage
         quizScoreColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
             Quiz quiz = result.getQuiz();
@@ -146,13 +121,11 @@ public class StudentDetailsController {
             return new javafx.beans.property.SimpleIntegerProperty(percentage).asObject();
         });
 
-        // Correct answers
         quizCorrectColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
             return new javafx.beans.property.SimpleIntegerProperty(result.getScore()).asObject();
         });
 
-        // Total questions
         quizTotalColumn.setCellValueFactory(cellData -> {
             QuizResult result = cellData.getValue();
             Quiz quiz = result.getQuiz();
@@ -161,28 +134,22 @@ public class StudentDetailsController {
             return new javafx.beans.property.SimpleIntegerProperty(totalQuestions).asObject();
         });
 
-        // Date (if available - using createdAt from quiz)
         quizDateColumn.setCellValueFactory(cellData -> {
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
     }
 
-    /**
-     * Load all student data
-     */
     private void loadStudentData() {
         if (currentStudent == null) {
             return;
         }
 
         try {
-            // Refresh student data from database
             Student student = studentService.getStudentById(currentStudent.getId());
             if (student != null) {
                 this.currentStudent = student;
             }
 
-            // Personal Information
             studentNameLabel.setText(currentStudent.getName());
             studentIdLabel.setText(String.valueOf(currentStudent.getId()));
             fullNameLabel.setText(currentStudent.getName());
@@ -193,7 +160,6 @@ public class StudentDetailsController {
                 currentStudent.getDepartmentName().toString() : "N/A");
             gradeLabel.setText(String.format("%.2f%%", currentStudent.getGrade()));
 
-            // Payment Status
             boolean hasPaid = paymentService.hasUserPaidForLevel(
                 currentStudent.getId(),
                 currentStudent.getLevel()
@@ -206,18 +172,15 @@ public class StudentDetailsController {
                 paymentStatusLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
             }
 
-            // Load enrolled courses
             List<Course> courses = enrollmentDAO.getCoursesByStudentId(currentStudent.getId());
             ObservableList<Course> coursesList = FXCollections.observableArrayList(courses);
             coursesTable.setItems(coursesList);
             coursesCountLabel.setText(String.valueOf(courses.size()) + " courses");
 
-            // Load quiz results
             List<QuizResult> results = quizResultService.getResultsByStudentId(currentStudent.getId());
             ObservableList<QuizResult> resultsList = FXCollections.observableArrayList(results);
             quizResultsTable.setItems(resultsList);
 
-            // Calculate and display average
             averageScoreLabel.setText(String.format("Average: %.2f%%", currentStudent.getGrade()));
 
             System.out.println("Loaded details for student: " + currentStudent.getName());
@@ -228,9 +191,6 @@ public class StudentDetailsController {
         }
     }
 
-    /**
-     * Get level name from number
-     */
     private String getLevelName(int level) {
         switch (level) {
             case 1: return "Freshman";
@@ -241,19 +201,13 @@ public class StudentDetailsController {
         }
     }
 
-    /**
-     * Handle back button
-     */
     @FXML
     private void handleBack() {
         try {
-            // Get current stage
             Stage currentStage = (Stage) studentNameLabel.getScene().getWindow();
 
-            // Close details window
             currentStage.close();
 
-            // Show previous stage if available
             if (previousStage != null) {
                 previousStage.show();
             }
@@ -263,9 +217,6 @@ public class StudentDetailsController {
         }
     }
 
-    /**
-     * Show error message
-     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

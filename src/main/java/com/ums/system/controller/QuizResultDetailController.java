@@ -47,7 +47,6 @@ public class QuizResultDetailController {
         this.quizResult = result;
         this.student = student;
 
-        // Clear any previous data first
         questionsContainer.getChildren().clear();
 
         populateData();
@@ -56,10 +55,8 @@ public class QuizResultDetailController {
     private void populateData() {
         Quiz quiz = quizResult.getQuiz();
 
-        // Set quiz information
         quizTitleLabel.setText(quiz != null ? quiz.getTitle() : "N/A");
 
-        // Set course information
         if (quiz != null) {
             try {
                 Course course = courseService.getCourseByCode(quiz.getCourseCode());
@@ -71,28 +68,22 @@ public class QuizResultDetailController {
             courseLabel.setText("N/A");
         }
 
-        // Set student information
         studentLabel.setText(student.getName() + " (ID: " + student.getId() + ")");
 
-        // Set date
         dateLabel.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM dd, yyyy")));
 
-        // Calculate scores
         int rawScore = quizResult.getScore();
         int totalQuestions = quiz != null && quiz.getQuestions() != null ? quiz.getQuestions().size() : 0;
         int percentage = (totalQuestions > 0) ? (rawScore * 100 / totalQuestions) : 0;
 
-        // Set performance summary
         percentageLabel.setText(percentage + "%");
         correctAnswersLabel.setText(rawScore + " out of " + totalQuestions);
         scoreProgressBar.setProgress(percentage / 100.0);
 
-        // Set grade with color
         String grade = getGradeString(percentage);
         gradeLabel.setText(grade);
         setGradeColor(percentage);
 
-        // Populate questions
         if (quiz != null && quiz.getQuestions() != null) {
             populateQuestions(quiz.getQuestions(), quizResult.getAnswers());
         }
@@ -116,7 +107,6 @@ public class QuizResultDetailController {
         card.getStyleClass().add("question-card");
         card.setPadding(new Insets(0));
 
-        // Determine if answer is correct
         String correctAnswer = null;
         List<String> options = question.getOptions();
         int correctIndex = question.getCorrectOptionIndex();
@@ -128,7 +118,6 @@ public class QuizResultDetailController {
                            studentAnswer.trim().equals(correctAnswer.trim());
         boolean isUnanswered = studentAnswer == null || studentAnswer.trim().isEmpty();
 
-        // Add appropriate style class
         if (isCorrect) {
             card.getStyleClass().add("question-card-correct");
         } else if (isUnanswered) {
@@ -137,7 +126,6 @@ public class QuizResultDetailController {
             card.getStyleClass().add("question-card-incorrect");
         }
 
-        // Question Header
         HBox header = new HBox(10);
         header.getStyleClass().add("question-header");
         header.setPadding(new Insets(15, 20, 15, 20));
@@ -149,18 +137,15 @@ public class QuizResultDetailController {
 
         header.getChildren().add(questionNumberLabel);
 
-        // Question Body
         VBox body = new VBox(15);
         body.setPadding(new Insets(20));
 
-        // Question Text
         Label questionTextLabel = new Label(question.getText());
         questionTextLabel.getStyleClass().add("question-text");
         questionTextLabel.setWrapText(true);
         questionTextLabel.setFont(Font.font(15));
         body.getChildren().add(questionTextLabel);
 
-        // Options
         if (options != null && !options.isEmpty()) {
             VBox optionsBox = new VBox(10);
 
@@ -176,7 +161,6 @@ public class QuizResultDetailController {
             body.getChildren().add(optionsBox);
         }
 
-        // Result Indicator - only show for answered questions
         if (!isUnanswered) {
             HBox resultBox = new HBox(10);
             resultBox.setAlignment(Pos.CENTER_LEFT);
@@ -219,7 +203,6 @@ public class QuizResultDetailController {
         box.setPadding(new Insets(12, 15, 12, 15));
         box.setAlignment(Pos.CENTER_LEFT);
 
-        // Highlight correct answer in green, student's wrong answer in red
         if (correctAnswer != null && optionText.trim().equals(correctAnswer.trim())) {
             box.getStyleClass().add("option-correct");
         } else if (studentAnswer != null && optionText.trim().equals(studentAnswer.trim()) &&
@@ -264,7 +247,6 @@ public class QuizResultDetailController {
 
     @FXML
     private void handlePrint() {
-        // Placeholder for print functionality
         System.out.println("Print functionality would be implemented here");
     }
 
