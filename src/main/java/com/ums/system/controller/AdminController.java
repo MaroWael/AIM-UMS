@@ -682,6 +682,50 @@ public class AdminController {
     }
 
     @FXML
+    private void handleViewStudentDetails() {
+        Student selected = studentsTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showError("Please select a student to view details!");
+            return;
+        }
+
+        try {
+            // Load student details FXML
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/view/student_details.fxml")
+            );
+            javafx.scene.Parent root = loader.load();
+
+            // Get controller and set student data
+            StudentDetailsController controller = loader.getController();
+
+            // Get current stage
+            javafx.stage.Stage currentStage = (javafx.stage.Stage) welcomeLabel.getScene().getWindow();
+
+            // Pass selected student and stage to details controller
+            controller.setStudent(selected, currentStage);
+
+            // Create new stage for details
+            javafx.stage.Stage detailsStage = new javafx.stage.Stage();
+            detailsStage.setTitle("Student Details - " + selected.getName());
+            detailsStage.setScene(new javafx.scene.Scene(root));
+            detailsStage.setResizable(true);
+            detailsStage.setMinWidth(1000);
+            detailsStage.setMinHeight(750);
+
+            // Hide current window
+            currentStage.hide();
+
+            // Show details window
+            detailsStage.show();
+
+        } catch (Exception e) {
+            showError("Error opening student details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleUpdateStudentLevel() {
         Student selected = studentsTable.getSelectionModel().getSelectedItem();
         if (selected == null) {

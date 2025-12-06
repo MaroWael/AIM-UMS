@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<!--
+student_details.fxml - Student Details View for Admin
+Shows complete student information, courses, and quiz results
+-->
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ums.system.controller.StudentDetailsController"
+            prefHeight="750" prefWidth="1000"
+            styleClass="details-root"
+            stylesheets="@student_details.css">
+
+    <!-- Top: Header -->
+    <top>
+        <VBox styleClass="details-header">
+            <padding>
+                <Insets top="20" right="30" bottom="20" left="30"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <Label text="🎓 Student Details" styleClass="details-title">
+                    <font>
+                        <Font name="System Bold" size="26"/>
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="🔙 Back" onAction="#handleBack" styleClass="back-button">
+                    <font>
+                        <Font name="System Bold" size="13"/>
+                    </font>
+                </Button>
+            </HBox>
+
+            <Label fx:id="studentNameLabel" text="Student Name" styleClass="details-subtitle">
+                <VBox.margin>
+                    <Insets top="8"/>
+                </VBox.margin>
+                <font>
+                    <Font name="System" size="16"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+
+    <!-- Center: Content -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="details-scroll">
+            <VBox spacing="25" styleClass="details-content">
+                <padding>
+                    <Insets top="30" right="40" bottom="30" left="40"/>
+                </padding>
+
+                <!-- Personal Information Card -->
+                <VBox spacing="20" styleClass="details-card">
+                    <Label text="📋 Personal Information" styleClass="section-title">
+                        <font>
+                            <Font name="System Bold" size="18"/>
+                        </font>
+                    </Label>
+
+                    <GridPane hgap="30" vgap="20">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="33"/>
+                            <ColumnConstraints percentWidth="33"/>
+                            <ColumnConstraints percentWidth="33"/>
+                        </columnConstraints>
+
+                        <!-- Row 0 -->
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="Student ID" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="studentIdLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="Full Name" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="fullNameLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <Label text="Email" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="emailLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Row 1 -->
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="Level" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="levelLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="Major" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="majorLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <Label text="Department" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="departmentLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Row 2 -->
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <Label text="Overall Grade" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="gradeLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <Label text="Payment Status" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="paymentStatusLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <VBox spacing="5" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                            <Label text="Enrolled Courses" styleClass="info-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="coursesCountLabel" text="-" styleClass="info-value">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </Label>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- Enrolled Courses Card -->
+                <VBox spacing="15" styleClass="details-card">
+                    <Label text="📚 Enrolled Courses" styleClass="section-title">
+                        <font>
+                            <Font name="System Bold" size="18"/>
+                        </font>
+                    </Label>
+
+                    <TableView fx:id="coursesTable" prefHeight="250" styleClass="details-table">
+                        <columns>
+                            <TableColumn fx:id="courseCodeColumn" text="Code" prefWidth="100"/>
+                            <TableColumn fx:id="courseNameColumn" text="Course Name" prefWidth="300"/>
+                            <TableColumn fx:id="courseLevelColumn" text="Level" prefWidth="80"/>
+                            <TableColumn fx:id="courseMajorColumn" text="Major" prefWidth="200"/>
+                            <TableColumn fx:id="courseInstructorColumn" text="Instructor" prefWidth="250"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <!-- Quiz Results Card -->
+                <VBox spacing="15" styleClass="details-card">
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label text="📝 Quiz Results" styleClass="section-title">
+                            <font>
+                                <Font name="System Bold" size="18"/>
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="averageScoreLabel" text="Average: 0.00%" styleClass="average-label">
+                            <font>
+                                <Font name="System Bold" size="14"/>
+                            </font>
+                        </Label>
+                    </HBox>
+
+                    <TableView fx:id="quizResultsTable" prefHeight="300" styleClass="details-table">
+                        <columns>
+                            <TableColumn fx:id="quizTitleColumn" text="Quiz Title" prefWidth="300"/>
+                            <TableColumn fx:id="quizCourseColumn" text="Course" prefWidth="200"/>
+                            <TableColumn fx:id="quizScoreColumn" text="Score (%)" prefWidth="100"/>
+                            <TableColumn fx:id="quizCorrectColumn" text="Correct" prefWidth="100"/>
+                            <TableColumn fx:id="quizTotalColumn" text="Total" prefWidth="100"/>
+                            <TableColumn fx:id="quizDateColumn" text="Date" prefWidth="150"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
+

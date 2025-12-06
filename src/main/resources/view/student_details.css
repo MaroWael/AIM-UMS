@@ -1,0 +1,121 @@
+/*
+ * student_details.css - Stylesheet for Student Details View
+ * Modern styling for viewing complete student information
+ */
+
+/* Root container */
+.details-root {
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+/* Header section */
+.details-header {
+    -fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 3);
+}
+
+.details-title {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+
+.details-subtitle {
+    -fx-text-fill: rgba(255,255,255,0.95);
+    -fx-font-size: 16px;
+    -fx-font-weight: 500;
+}
+
+/* Back button */
+.back-button {
+    -fx-background-color: white;
+    -fx-text-fill: #667eea;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+    -fx-background-radius: 25;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.back-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 3);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Scroll pane */
+.details-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.details-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Content area */
+.details-content {
+    -fx-background-color: transparent;
+}
+
+/* Details cards */
+.details-card {
+    -fx-background-color: white;
+    -fx-padding: 30;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);
+}
+
+/* Section titles */
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3748;
+}
+
+/* Info labels */
+.info-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #718096;
+    -fx-padding: 0 0 2 0;
+}
+
+.info-value {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2d3748;
+    -fx-font-weight: 500;
+}
+
+/* Average label */
+.average-label {
+    -fx-text-fill: #667eea;
+    -fx-background-color: #e0e7ff;
+    -fx-padding: 8 15;
+    -fx-background-radius: 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Tables */
+.details-table {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.details-table .table-column {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.details-table .table-row-cell:selected {
+    -fx-background-color: #e0e7ff;
+}
+
+.details-table .table-row-cell:hover {
+    -fx-background-color: #f7fafc;
+}
+

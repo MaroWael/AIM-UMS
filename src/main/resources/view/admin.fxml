@@ -291,6 +291,11 @@ Enhanced UI with modern design
                                     <Font name="System Bold" size="12"/>
                                 </font>
                             </Button>
+                            <Button text="👁️ View Details" onAction="#handleViewStudentDetails" styleClass="primary-button">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Button>
                             <Button text="📝 Update Level" onAction="#handleUpdateStudentLevel" styleClass="update-button">
                                 <font>
                                     <Font name="System Bold" size="12"/>

@@ -51,7 +51,10 @@ public class LoginController {
 
         // Hide progress indicator initially
         progressIndicator.setVisible(false);
+
+        // Hide and clear error label
         errorLabel.setText("");
+        errorLabel.setVisible(false);
 
         // Set up Enter key handler
         passwordField.setOnAction(event -> handleLogin());
@@ -65,6 +68,9 @@ public class LoginController {
         String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
 
+        // Clear previous error
+        clearError();
+
         // Validate input
         if (email.isEmpty() || password.isEmpty()) {
             showError("Please enter both email and password");
@@ -74,7 +80,6 @@ public class LoginController {
         // Show loading
         progressIndicator.setVisible(true);
         loginButton.setDisable(true);
-        errorLabel.setText("");
 
         // Perform login in background thread
         new Thread(() -> {
@@ -189,7 +194,16 @@ public class LoginController {
      */
     private void showError(String message) {
         errorLabel.setText(message);
-        errorLabel.setStyle("-fx-text-fill: red;");
+        errorLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        errorLabel.setVisible(true);
+    }
+
+    /**
+     * Clear error message
+     */
+    private void clearError() {
+        errorLabel.setText("");
+        errorLabel.setVisible(false);
     }
 }
 
