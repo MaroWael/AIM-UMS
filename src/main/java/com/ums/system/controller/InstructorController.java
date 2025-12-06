@@ -453,6 +453,29 @@ public class InstructorController {
     }
 
     @FXML
+    private void handleRefresh() {
+        try {
+            // Show a brief loading indicator
+            System.out.println("Refreshing instructor dashboard...");
+
+            // Reload user info
+            if (currentInstructor != null) {
+                welcomeLabel.setText("Welcome, " + currentInstructor.getName() + "!");
+                userInfoLabel.setText("Role: Instructor | ID: " + currentInstructor.getId() +
+                            " | Department: " + currentInstructor.getDepartment());
+            }
+
+            // Reload all data
+            loadMyCourses();
+            loadMyQuizzes();
+
+            showInfo("Dashboard refreshed successfully!");
+        } catch (Exception e) {
+            showError("Error refreshing dashboard: " + e.getMessage());
+        }
+    }
+
+    @FXML
     private void handleLogout() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Logout");

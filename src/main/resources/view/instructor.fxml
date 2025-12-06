@@ -29,6 +29,11 @@ Enhanced UI with modern design
             <HBox alignment="CENTER_LEFT" spacing="20">
                 <Label fx:id="welcomeLabel" text="👨‍🏫 Welcome, Instructor!" styleClass="instructor-welcome-label"/>
                 <Region HBox.hgrow="ALWAYS"/>
+                <Button text="🔄 Refresh" onAction="#handleRefresh" styleClass="instructor-profile-button">
+                    <font>
+                        <Font name="System Bold" size="13"/>
+                    </font>
+                </Button>
                 <Button text="👤 Profile" onAction="#handleProfile" styleClass="instructor-profile-button">
                     <font>
                         <Font name="System Bold" size="13"/>

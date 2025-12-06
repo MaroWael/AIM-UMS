@@ -1024,6 +1024,35 @@ public class AdminController {
     }
 
     @FXML
+    private void handleRefresh() {
+        try {
+            // Show a brief loading indicator
+            System.out.println("Refreshing admin dashboard...");
+
+            // Reload user info
+            if (currentAdmin != null) {
+                welcomeLabel.setText("Welcome, " + currentAdmin.getName() + "!");
+                userInfoLabel.setText("Role: Admin | ID: " + currentAdmin.getId() + " | Email: " + currentAdmin.getEmail());
+            }
+
+            // Reload instructors combo
+            loadInstructorsIntoCombo();
+
+            // Reload all data
+            loadAllCourses();
+            loadAllUsers();
+            loadAllStudents();
+            loadAllInstructors();
+            loadAllPayments();
+            updateRevenueStatistics();
+
+            showInfo("Dashboard refreshed successfully!");
+        } catch (Exception e) {
+            showError("Error refreshing dashboard: " + e.getMessage());
+        }
+    }
+
+    @FXML
     private void handleLogout() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Logout");

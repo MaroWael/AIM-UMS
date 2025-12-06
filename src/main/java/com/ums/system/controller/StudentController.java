@@ -1026,6 +1026,33 @@ public class StudentController {
     }
 
     @FXML
+    private void handleRefresh() {
+        try {
+            // Show a brief loading indicator
+            System.out.println("Refreshing student dashboard...");
+
+            // Reload user info
+            if (currentStudent != null) {
+                welcomeLabel.setText("Welcome, " + currentStudent.getName() + "!");
+                userInfoLabel.setText("Role: Student | ID: " + currentStudent.getId() +
+                            " | Level: " + currentStudent.getLevel());
+            }
+
+            // Reload all data
+            updateDashboardStatistics();
+            checkPaymentStatus();
+            loadPaymentHistory();
+            loadAvailableCourses();
+            loadMyCourses();
+            loadMyGrades();
+
+            showInfo("Dashboard refreshed successfully!");
+        } catch (Exception e) {
+            showError("Error refreshing dashboard: " + e.getMessage());
+        }
+    }
+
+    @FXML
     private void handleLogout() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Logout");

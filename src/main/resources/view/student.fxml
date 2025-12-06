@@ -15,6 +15,7 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.ums.system.controller.StudentController"
@@ -32,6 +33,7 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
             <HBox alignment="CENTER_LEFT" spacing="20">
                 <Label fx:id="welcomeLabel" text="Welcome, Student!" styleClass="student-welcome-label"/>
                 <Region HBox.hgrow="ALWAYS"/>
+                <Button text="🔄 Refresh" onAction="#handleRefresh" styleClass="student-profile-button"/>
                 <Button text="👤 Profile" onAction="#handleProfile" styleClass="student-profile-button"/>
                 <Button text="🚪 Logout" onAction="#handleLogout" styleClass="student-logout-button"/>
             </HBox>
@@ -46,216 +48,221 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
 
     <!-- Center: Dashboard Stats + Tab Pane -->
     <center>
-        <VBox spacing="0">
-            <!-- Dashboard Statistics Cards -->
-            <VBox spacing="15" styleClass="dashboard-stats-container">
-                <padding>
-                    <Insets top="20" right="25" bottom="10" left="25"/>
-                </padding>
+        <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="student-scroll-pane">
+            <content>
+                <VBox spacing="0">
+                    <!-- Dashboard Statistics Cards -->
+                    <VBox spacing="15" styleClass="dashboard-stats-container">
+                        <padding>
+                            <Insets top="20" right="25" bottom="10" left="25"/>
+                        </padding>
 
-                <Label text="📊 Dashboard Overview" styleClass="dashboard-title"/>
+                        <Label text="📊 Dashboard Overview" styleClass="dashboard-title"/>
 
-                <HBox spacing="15" alignment="CENTER">
-                    <!-- Total Courses Card -->
-                    <VBox spacing="10" styleClass="stat-card-blue" alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Label text="📚" styleClass="stat-icon"/>
-                        <Label fx:id="totalCoursesLabel" text="0" styleClass="stat-value"/>
-                        <Label text="Enrolled Courses" styleClass="stat-label"/>
-                    </VBox>
-
-                    <!-- Completed Quizzes Card -->
-                    <VBox spacing="10" styleClass="stat-card-green" alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Label text="✅" styleClass="stat-icon"/>
-                        <Label fx:id="completedQuizzesLabel" text="0/0" styleClass="stat-value"/>
-                        <Label text="Completed Quizzes" styleClass="stat-label"/>
-                    </VBox>
-
-                    <!-- Average Grade Card -->
-                    <VBox spacing="10" styleClass="stat-card-orange" alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Label text="⭐" styleClass="stat-icon"/>
-                        <Label fx:id="averageGradeLabel" text="0.00%" styleClass="stat-value"/>
-                        <Label text="Average Grade" styleClass="stat-label"/>
-                    </VBox>
-
-                    <!-- Payment Status Card -->
-                    <VBox spacing="10" styleClass="stat-card-purple" alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Label text="💰" styleClass="stat-icon"/>
-                        <Label fx:id="paymentStatusShortLabel" text="NOT PAID" styleClass="stat-value"/>
-                        <Label text="Payment Status" styleClass="stat-label"/>
-                    </VBox>
-                </HBox>
-            </VBox>
-
-            <!-- Tab Pane -->
-            <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="student-tab-pane" VBox.vgrow="ALWAYS">
-
-            <!-- AVAILABLE COURSES TAB -->
-            <Tab text="📚 Available Courses">
-                <VBox spacing="20" styleClass="student-content-section">
-
-                    <Label text="📚 Available Courses" styleClass="student-section-title"/>
-
-                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-blue">
-                        <Label text="💡 Browse and enroll in available courses" styleClass="info-text-blue"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="🔄 Refresh" onAction="#loadAvailableCourses" styleClass="student-refresh-button"/>
-                        <Button text="✅ Enroll in Selected" onAction="#handleEnrollCourse" styleClass="student-enroll-button"/>
-                    </HBox>
-
-                    <TableView fx:id="availableCoursesTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-blue">
-                        <columns>
-                            <TableColumn fx:id="availCourseCodeColumn" text="Code" prefWidth="100"/>
-                            <TableColumn fx:id="availCourseNameColumn" text="Course Name" prefWidth="250"/>
-                            <TableColumn fx:id="availCourseLevelColumn" text="Level" prefWidth="80"/>
-                            <TableColumn fx:id="availCourseMajorColumn" text="Major" prefWidth="180"/>
-                            <TableColumn fx:id="availCourseInstructorColumn" text="Instructor" prefWidth="150"/>
-                            <TableColumn fx:id="availCourseLectureTimeColumn" text="Lecture Time" prefWidth="150"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
-
-            <!-- MY COURSES TAB -->
-            <Tab text="📖 My Courses">
-                <VBox spacing="20" styleClass="student-content-section">
-
-                    <Label text="📖 My Enrolled Courses" styleClass="student-section-title"/>
-
-                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-orange">
-                        <Label text="📋 Courses you are currently enrolled in" styleClass="info-text-orange"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="🔄 Refresh" onAction="#loadMyCourses" styleClass="student-refresh-button-orange"/>
-                        <Button text="❌ Drop Selected" onAction="#handleDropCourse" styleClass="student-drop-button"/>
-                    </HBox>
-
-                    <TableView fx:id="myCoursesTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-orange">
-                        <columns>
-                            <TableColumn fx:id="myCourseCodeColumn" text="Code" prefWidth="100"/>
-                            <TableColumn fx:id="myCourseNameColumn" text="Course Name" prefWidth="250"/>
-                            <TableColumn fx:id="myCourseLevelColumn" text="Level" prefWidth="80"/>
-                            <TableColumn fx:id="myCourseMajorColumn" text="Major" prefWidth="180"/>
-                            <TableColumn fx:id="myCourseInstructorColumn" text="Instructor" prefWidth="150"/>
-                            <TableColumn fx:id="myCourseLectureTimeColumn" text="Lecture Time" prefWidth="150"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
-
-            <!-- PAYMENT TAB -->
-            <Tab text="💳 Payment">
-                <VBox spacing="20" styleClass="student-content-section">
-
-                    <Label text="💳 Level Fee Payment" styleClass="student-section-title"/>
-
-                    <!-- Payment Status Card -->
-                    <VBox spacing="15" styleClass="student-info-banner-blue">
-                        <HBox spacing="15" alignment="CENTER_LEFT">
-                            <Label text="💰" styleClass="payment-icon" style="-fx-font-size: 32px;"/>
-                            <VBox spacing="5">
-                                <Label fx:id="paymentStatusLabel" text="Payment Status: Checking..." styleClass="payment-status-label" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                                <Label fx:id="paymentAmountLabel" text="Level Fee: Calculating..." styleClass="payment-amount-label" style="-fx-font-size: 14px;"/>
+                        <HBox spacing="15" alignment="CENTER">
+                            <!-- Total Courses Card -->
+                            <VBox spacing="10" styleClass="stat-card-blue" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                <Label text="📚" styleClass="stat-icon"/>
+                                <Label fx:id="totalCoursesLabel" text="0" styleClass="stat-value"/>
+                                <Label text="Enrolled Courses" styleClass="stat-label"/>
                             </VBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Button fx:id="payLevelFeeButton" text="💳 Pay Level Fee" onAction="#handlePayLevelFee" styleClass="student-enroll-button" prefWidth="150"/>
+
+                            <!-- Completed Quizzes Card -->
+                            <VBox spacing="10" styleClass="stat-card-green" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                <Label text="✅" styleClass="stat-icon"/>
+                                <Label fx:id="completedQuizzesLabel" text="0/0" styleClass="stat-value"/>
+                                <Label text="Completed Quizzes" styleClass="stat-label"/>
+                            </VBox>
+
+                            <!-- Average Grade Card -->
+                            <VBox spacing="10" styleClass="stat-card-orange" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                <Label text="⭐" styleClass="stat-icon"/>
+                                <Label fx:id="averageGradeLabel" text="0.00%" styleClass="stat-value"/>
+                                <Label text="Average Grade" styleClass="stat-label"/>
+                            </VBox>
+
+                            <!-- Payment Status Card -->
+                            <VBox spacing="10" styleClass="stat-card-purple" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                <Label text="💰" styleClass="stat-icon"/>
+                                <Label fx:id="paymentStatusShortLabel" text="NOT PAID" styleClass="stat-value"/>
+                                <Label text="Payment Status" styleClass="stat-label"/>
+                            </VBox>
                         </HBox>
                     </VBox>
 
-                    <!-- Payment Information -->
-                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-yellow">
-                        <Label text="ℹ️ Students must pay their level fee to access quizzes and other features" styleClass="info-text-yellow"/>
-                    </HBox>
+                    <!-- Tab Pane -->
+                    <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="student-tab-pane" VBox.vgrow="ALWAYS">
 
-                    <!-- Payment History -->
-                    <Label text="📜 Payment History" styleClass="student-section-title" style="-fx-font-size: 16px;"/>
+                        <!-- AVAILABLE COURSES TAB -->
+                        <Tab text="📚 Available Courses">
+                            <VBox spacing="20" styleClass="student-content-section">
 
-                    <HBox spacing="12" alignment="CENTER_LEFT">
-                        <Button text="🔄 Refresh" onAction="#loadPaymentHistory" styleClass="student-refresh-button"/>
-                    </HBox>
+                                <Label text="📚 Available Courses" styleClass="student-section-title"/>
 
-                    <TableView fx:id="paymentHistoryTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-blue">
-                        <columns>
-                            <TableColumn fx:id="paymentIdColumn" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="paymentLevelColumn" text="Level" prefWidth="80"/>
-                            <TableColumn fx:id="paymentAmountColumn" text="Amount (EGP)" prefWidth="120"/>
-                            <TableColumn fx:id="paymentMethodColumn" text="Method" prefWidth="120"/>
-                            <TableColumn fx:id="paymentStatusColumn" text="Status" prefWidth="100"/>
-                            <TableColumn fx:id="paymentTransactionColumn" text="Transaction ID" prefWidth="200"/>
-                            <TableColumn fx:id="paymentDateColumn" text="Date" prefWidth="180"/>
-                        </columns>
-                    </TableView>
+                                <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-blue">
+                                    <Label text="💡 Browse and enroll in available courses" styleClass="info-text-blue"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="🔄 Refresh" onAction="#loadAvailableCourses" styleClass="student-refresh-button"/>
+                                    <Button text="✅ Enroll in Selected" onAction="#handleEnrollCourse" styleClass="student-enroll-button"/>
+                                </HBox>
+
+                                <TableView fx:id="availableCoursesTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-blue">
+                                    <columns>
+                                        <TableColumn fx:id="availCourseCodeColumn" text="Code" prefWidth="100"/>
+                                        <TableColumn fx:id="availCourseNameColumn" text="Course Name" prefWidth="250"/>
+                                        <TableColumn fx:id="availCourseLevelColumn" text="Level" prefWidth="80"/>
+                                        <TableColumn fx:id="availCourseMajorColumn" text="Major" prefWidth="180"/>
+                                        <TableColumn fx:id="availCourseInstructorColumn" text="Instructor" prefWidth="150"/>
+                                        <TableColumn fx:id="availCourseLectureTimeColumn" text="Lecture Time" prefWidth="150"/>
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </Tab>
+
+                        <!-- MY COURSES TAB -->
+                        <Tab text="📖 My Courses">
+                            <VBox spacing="20" styleClass="student-content-section">
+
+                                <Label text="📖 My Enrolled Courses" styleClass="student-section-title"/>
+
+                                <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-orange">
+                                    <Label text="📋 Courses you are currently enrolled in" styleClass="info-text-orange"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="🔄 Refresh" onAction="#loadMyCourses" styleClass="student-refresh-button-orange"/>
+                                    <Button text="❌ Drop Selected" onAction="#handleDropCourse" styleClass="student-drop-button"/>
+                                </HBox>
+
+                                <TableView fx:id="myCoursesTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-orange">
+                                    <columns>
+                                        <TableColumn fx:id="myCourseCodeColumn" text="Code" prefWidth="100"/>
+                                        <TableColumn fx:id="myCourseNameColumn" text="Course Name" prefWidth="250"/>
+                                        <TableColumn fx:id="myCourseLevelColumn" text="Level" prefWidth="80"/>
+                                        <TableColumn fx:id="myCourseMajorColumn" text="Major" prefWidth="180"/>
+                                        <TableColumn fx:id="myCourseInstructorColumn" text="Instructor" prefWidth="150"/>
+                                        <TableColumn fx:id="myCourseLectureTimeColumn" text="Lecture Time" prefWidth="150"/>
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </Tab>
+
+                        <!-- PAYMENT TAB -->
+                        <Tab text="💳 Payment">
+                            <VBox spacing="20" styleClass="student-content-section">
+
+                                <Label text="💳 Level Fee Payment" styleClass="student-section-title"/>
+
+                                <!-- Payment Status Card -->
+                                <VBox spacing="15" styleClass="student-info-banner-blue">
+                                    <HBox spacing="15" alignment="CENTER_LEFT">
+                                        <Label text="💰" styleClass="payment-icon" style="-fx-font-size: 32px;"/>
+                                        <VBox spacing="5">
+                                            <Label fx:id="paymentStatusLabel" text="Payment Status: Checking..." styleClass="payment-status-label" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                                            <Label fx:id="paymentAmountLabel" text="Level Fee: Calculating..." styleClass="payment-amount-label" style="-fx-font-size: 14px;"/>
+                                        </VBox>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Button fx:id="payLevelFeeButton" text="💳 Pay Level Fee" onAction="#handlePayLevelFee" styleClass="student-enroll-button" prefWidth="150"/>
+                                    </HBox>
+                                </VBox>
+
+                                <!-- Payment Information -->
+                                <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-yellow">
+                                    <Label text="ℹ️ Students must pay their level fee to access quizzes and other features" styleClass="info-text-yellow"/>
+                                </HBox>
+
+                                <!-- Payment History -->
+                                <Label text="📜 Payment History" styleClass="student-section-title" style="-fx-font-size: 16px;"/>
+
+                                <HBox spacing="12" alignment="CENTER_LEFT">
+                                    <Button text="🔄 Refresh" onAction="#loadPaymentHistory" styleClass="student-refresh-button"/>
+                                </HBox>
+
+                                <TableView fx:id="paymentHistoryTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-blue">
+                                    <columns>
+                                        <TableColumn fx:id="paymentIdColumn" text="ID" prefWidth="60"/>
+                                        <TableColumn fx:id="paymentLevelColumn" text="Level" prefWidth="80"/>
+                                        <TableColumn fx:id="paymentAmountColumn" text="Amount (EGP)" prefWidth="120"/>
+                                        <TableColumn fx:id="paymentMethodColumn" text="Method" prefWidth="120"/>
+                                        <TableColumn fx:id="paymentStatusColumn" text="Status" prefWidth="100"/>
+                                        <TableColumn fx:id="paymentTransactionColumn" text="Transaction ID" prefWidth="200"/>
+                                        <TableColumn fx:id="paymentDateColumn" text="Date" prefWidth="180"/>
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </Tab>
+
+                        <!-- QUIZZES TAB -->
+                        <Tab text="📝 Quizzes">
+                            <VBox spacing="20" styleClass="student-content-section">
+
+                                <Label text="📝 Available Quizzes" styleClass="student-section-title"/>
+
+                                <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-purple">
+                                    <Label text="🎯 Select Course:" styleClass="info-text-purple"/>
+                                    <ComboBox fx:id="quizCourseCombo" prefWidth="320" promptText="Choose a course..." styleClass="student-combo-box"/>
+                                    <Button text="🔍 Load Quizzes" onAction="#handleLoadQuizzes" styleClass="student-load-quiz-button"/>
+                                    <Button text="👁️ View All Quizzes" onAction="#handleViewAllQuizzes" styleClass="student-view-all-button"/>
+                                </HBox>
+
+                                <VBox spacing="15" VBox.vgrow="ALWAYS">
+                                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-yellow">
+                                        <Label text="📋 Available Quizzes" styleClass="info-text-yellow"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Button text="🚀 Take Selected Quiz" onAction="#handleTakeQuiz" styleClass="student-take-quiz-button"/>
+                                    </HBox>
+
+                                    <TableView fx:id="quizzesTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-purple">
+                                        <columns>
+                                            <TableColumn fx:id="quizIdColumn" text="Quiz ID" prefWidth="80"/>
+                                            <TableColumn fx:id="quizTitleColumn" text="Quiz Title" prefWidth="300"/>
+                                            <TableColumn fx:id="quizCourseColumn" text="Course Code" prefWidth="120"/>
+                                            <TableColumn fx:id="quizCourseNameColumn" text="Course Name" prefWidth="250"/>
+                                            <TableColumn fx:id="quizQuestionsColumn" text="Total Questions" prefWidth="130"/>
+                                        </columns>
+                                    </TableView>
+                                </VBox>
+                            </VBox>
+                        </Tab>
+
+                        <!-- MY GRADES TAB -->
+                        <Tab text="⭐ My Grades">
+                            <VBox spacing="20" styleClass="student-content-section">
+
+                                <Label text="⭐ My Quiz Results" styleClass="student-section-title"/>
+
+                                <!-- Enhanced Average Score Card -->
+                                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="student-info-banner-green">
+                                    <Label text="📊" styleClass="performance-icon"/>
+                                    <VBox spacing="3">
+                                        <Label text="Your Performance" styleClass="performance-label-title"/>
+                                        <Label fx:id="averageScoreLabel" text="Average Score: N/A" styleClass="performance-label-score"/>
+                                    </VBox>
+                                </HBox>
+
+                                <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-green-light">
+                                    <Label text="📈 All your quiz results and grades" styleClass="info-text-green"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="📄 Generate Report (PDF)" onAction="#handleGenerateReport" styleClass="student-generate-report-button"/>
+                                    <Button text="🔄 Refresh" onAction="#loadMyGrades" styleClass="student-refresh-button-green"/>
+                                    <Button text="🔍 View Details" onAction="#handleViewGradeDetails" styleClass="student-view-details-button"/>
+                                </HBox>
+
+                                <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-green">
+                                    <columns>
+                                        <TableColumn fx:id="gradeQuizTitleColumn" text="Quiz Title" prefWidth="250"/>
+                                        <TableColumn fx:id="gradeCourseColumn" text="Course" prefWidth="200"/>
+                                        <TableColumn fx:id="gradeScoreColumn" text="Score (%)" prefWidth="100"/>
+                                        <TableColumn fx:id="gradeTotalQuestionsColumn" text="Total Questions" prefWidth="120"/>
+                                        <TableColumn fx:id="gradeAnswersColumn" text="Correct Answers" prefWidth="120"/>
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </Tab>
+
+                    </TabPane>
                 </VBox>
-            </Tab>
-
-            <!-- QUIZZES TAB -->
-            <Tab text="📝 Quizzes">
-                <VBox spacing="20" styleClass="student-content-section">
-
-                    <Label text="📝 Available Quizzes" styleClass="student-section-title"/>
-
-                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-purple">
-                        <Label text="🎯 Select Course:" styleClass="info-text-purple"/>
-                        <ComboBox fx:id="quizCourseCombo" prefWidth="320" promptText="Choose a course..." styleClass="student-combo-box"/>
-                        <Button text="🔍 Load Quizzes" onAction="#handleLoadQuizzes" styleClass="student-load-quiz-button"/>
-                        <Button text="👁️ View All Quizzes" onAction="#handleViewAllQuizzes" styleClass="student-view-all-button"/>
-                    </HBox>
-
-                    <VBox spacing="15" VBox.vgrow="ALWAYS">
-                        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-yellow">
-                            <Label text="📋 Available Quizzes" styleClass="info-text-yellow"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Button text="🚀 Take Selected Quiz" onAction="#handleTakeQuiz" styleClass="student-take-quiz-button"/>
-                        </HBox>
-
-                        <TableView fx:id="quizzesTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-purple">
-                            <columns>
-                                <TableColumn fx:id="quizIdColumn" text="Quiz ID" prefWidth="80"/>
-                                <TableColumn fx:id="quizTitleColumn" text="Quiz Title" prefWidth="300"/>
-                                <TableColumn fx:id="quizCourseColumn" text="Course Code" prefWidth="120"/>
-                                <TableColumn fx:id="quizCourseNameColumn" text="Course Name" prefWidth="250"/>
-                                <TableColumn fx:id="quizQuestionsColumn" text="Total Questions" prefWidth="130"/>
-                            </columns>
-                        </TableView>
-                    </VBox>
-                </VBox>
-            </Tab>
-
-            <!-- MY GRADES TAB -->
-            <Tab text="⭐ My Grades">
-                <VBox spacing="20" styleClass="student-content-section">
-
-                    <Label text="⭐ My Quiz Results" styleClass="student-section-title"/>
-
-                    <!-- Enhanced Average Score Card -->
-                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="student-info-banner-green">
-                        <Label text="📊" styleClass="performance-icon"/>
-                        <VBox spacing="3">
-                            <Label text="Your Performance" styleClass="performance-label-title"/>
-                            <Label fx:id="averageScoreLabel" text="Average Score: N/A" styleClass="performance-label-score"/>
-                        </VBox>
-                    </HBox>
-
-                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-green-light">
-                        <Label text="📈 All your quiz results and grades" styleClass="info-text-green"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="📄 Generate Report (PDF)" onAction="#handleGenerateReport" styleClass="student-generate-report-button"/>
-                        <Button text="🔄 Refresh" onAction="#loadMyGrades" styleClass="student-refresh-button-green"/>
-                        <Button text="🔍 View Details" onAction="#handleViewGradeDetails" styleClass="student-view-details-button"/>
-                    </HBox>
-
-                    <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-green">
-                        <columns>
-                            <TableColumn fx:id="gradeQuizTitleColumn" text="Quiz Title" prefWidth="250"/>
-                            <TableColumn fx:id="gradeCourseColumn" text="Course" prefWidth="200"/>
-                            <TableColumn fx:id="gradeScoreColumn" text="Score (%)" prefWidth="100"/>
-                            <TableColumn fx:id="gradeTotalQuestionsColumn" text="Total Questions" prefWidth="120"/>
-                            <TableColumn fx:id="gradeAnswersColumn" text="Correct Answers" prefWidth="120"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
-
-        </TabPane>
-        </VBox>
+            </content>
+        </ScrollPane>
     </center>
 
 </BorderPane>
+
