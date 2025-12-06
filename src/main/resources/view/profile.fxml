@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<!--
+profile.fxml - User Profile Page
+Displays user information and allows updates
+-->
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ums.system.controller.ProfileController"
+            prefHeight="700" prefWidth="900"
+            styleClass="profile-root"
+            stylesheets="@profile.css">
+
+    <!-- Top: Header -->
+    <top>
+        <VBox styleClass="profile-header">
+            <padding>
+                <Insets top="20" right="30" bottom="20" left="30"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <Label text="👤 My Profile" styleClass="profile-title">
+                    <font>
+                        <Font name="System Bold" size="26"/>
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="🔙 Back" onAction="#handleBack" styleClass="back-button">
+                    <font>
+                        <Font name="System Bold" size="13"/>
+                    </font>
+                </Button>
+            </HBox>
+
+            <Label fx:id="roleLabel" text="Role: Student" styleClass="profile-subtitle">
+                <VBox.margin>
+                    <Insets top="8"/>
+                </VBox.margin>
+                <font>
+                    <Font name="System" size="14"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+
+    <!-- Center: Profile Content -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="profile-scroll">
+            <VBox spacing="25" styleClass="profile-content">
+                <padding>
+                    <Insets top="30" right="40" bottom="30" left="40"/>
+                </padding>
+
+                <!-- Profile Card -->
+                <VBox spacing="20" styleClass="profile-card">
+                    <Label text="📋 Personal Information" styleClass="section-title">
+                        <font>
+                            <Font name="System Bold" size="18"/>
+                        </font>
+                    </Label>
+
+                    <GridPane hgap="20" vgap="20">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+
+                        <!-- Row 0: ID and Name -->
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="User ID" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="userIdField" editable="false" styleClass="profile-field-readonly">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </TextField>
+                        </VBox>
+
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="Full Name" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="nameField" promptText="Enter full name" styleClass="profile-field">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </TextField>
+                        </VBox>
+
+                        <!-- Row 1: Email and Role -->
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="Email Address" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="emailField" promptText="Enter email" styleClass="profile-field">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </TextField>
+                        </VBox>
+
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="Role" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="roleField" editable="false" styleClass="profile-field-readonly">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </TextField>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- Student-Specific Fields -->
+                <VBox fx:id="studentFieldsBox" spacing="20" styleClass="profile-card" managed="false" visible="false">
+                    <Label text="🎓 Academic Information" styleClass="section-title">
+                        <font>
+                            <Font name="System Bold" size="18"/>
+                        </font>
+                    </Label>
+
+                    <GridPane hgap="20" vgap="20">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="Level" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="levelField" editable="false" styleClass="profile-field-readonly">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </TextField>
+                        </VBox>
+
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="Major" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="majorField" editable="false" styleClass="profile-field-readonly">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </TextField>
+                        </VBox>
+
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="Department" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="departmentField" editable="false" styleClass="profile-field-readonly">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </TextField>
+                        </VBox>
+
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="Overall Grade" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="gradeField" editable="false" styleClass="profile-field-readonly">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </TextField>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- Instructor-Specific Fields -->
+                <VBox fx:id="instructorFieldsBox" spacing="20" styleClass="profile-card" managed="false" visible="false">
+                    <Label text="👨‍🏫 Professional Information" styleClass="section-title">
+                        <font>
+                            <Font name="System Bold" size="18"/>
+                        </font>
+                    </Label>
+
+                    <VBox spacing="8">
+                        <Label text="Department" styleClass="field-label">
+                            <font>
+                                <Font name="System Bold" size="12"/>
+                            </font>
+                        </Label>
+                        <TextField fx:id="instructorDepartmentField" editable="false" styleClass="profile-field-readonly">
+                            <font>
+                                <Font name="System" size="14"/>
+                            </font>
+                        </TextField>
+                    </VBox>
+                </VBox>
+
+                <!-- Change Password Section -->
+                <VBox spacing="20" styleClass="profile-card">
+                    <Label text="🔒 Change Password" styleClass="section-title">
+                        <font>
+                            <Font name="System Bold" size="18"/>
+                        </font>
+                    </Label>
+
+                    <VBox spacing="15">
+                        <VBox spacing="8">
+                            <Label text="Current Password" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <PasswordField fx:id="currentPasswordField" promptText="Enter current password" styleClass="profile-field">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </PasswordField>
+                        </VBox>
+
+                        <VBox spacing="8">
+                            <Label text="New Password" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <PasswordField fx:id="newPasswordField" promptText="Enter new password" styleClass="profile-field">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </PasswordField>
+                        </VBox>
+
+                        <VBox spacing="8">
+                            <Label text="Confirm New Password" styleClass="field-label">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Label>
+                            <PasswordField fx:id="confirmPasswordField" promptText="Re-enter new password" styleClass="profile-field">
+                                <font>
+                                    <Font name="System" size="14"/>
+                                </font>
+                            </PasswordField>
+                        </VBox>
+
+                        <Button text="🔑 Change Password" onAction="#handleChangePassword" styleClass="change-password-button">
+                            <font>
+                                <Font name="System Bold" size="13"/>
+                            </font>
+                        </Button>
+                    </VBox>
+                </VBox>
+
+                <!-- Action Buttons -->
+                <HBox spacing="15" alignment="CENTER">
+                    <Button text="💾 Save Changes" onAction="#handleSaveProfile" styleClass="save-button">
+                        <font>
+                            <Font name="System Bold" size="14"/>
+                        </font>
+                    </Button>
+                    <Button text="🔄 Reset" onAction="#handleReset" styleClass="reset-button">
+                        <font>
+                            <Font name="System Bold" size="14"/>
+                        </font>
+                    </Button>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
+

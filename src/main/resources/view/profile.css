@@ -1,0 +1,192 @@
+/*
+ * profile.css - Stylesheet for User Profile Page
+ * Modern styling for profile management
+ */
+
+/* Root container */
+.profile-root {
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+/* Header section */
+.profile-header {
+    -fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 3);
+}
+
+.profile-title {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+
+.profile-subtitle {
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 14px;
+}
+
+/* Back button */
+.back-button {
+    -fx-background-color: white;
+    -fx-text-fill: #667eea;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+    -fx-background-radius: 25;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.back-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 3);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Scroll pane */
+.profile-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.profile-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Content area */
+.profile-content {
+    -fx-background-color: transparent;
+}
+
+/* Profile cards */
+.profile-card {
+    -fx-background-color: white;
+    -fx-padding: 30;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 3);
+}
+
+/* Section titles */
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3748;
+}
+
+/* Field labels */
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a5568;
+}
+
+/* Profile input fields */
+.profile-field {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+}
+
+.profile-field:focused {
+    -fx-border-color: #667eea;
+    -fx-effect: dropshadow(three-pass-box, rgba(102,126,234,0.3), 5, 0, 0, 0);
+}
+
+/* Readonly fields */
+.profile-field-readonly {
+    -fx-background-radius: 8;
+    -fx-border-color: #cbd5e0;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-background-color: #f7fafc;
+    -fx-text-fill: #4a5568;
+}
+
+/* Save button */
+.save-button {
+    -fx-background-color: linear-gradient(to right, #48bb78, #38a169);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-font-size: 14px;
+    -fx-padding: 12 35;
+    -fx-effect: dropshadow(three-pass-box, rgba(72,187,120,0.3), 8, 0, 0, 2);
+}
+
+.save-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(72,187,120,0.5), 12, 0, 0, 3);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Reset button */
+.reset-button {
+    -fx-background-color: linear-gradient(to right, #718096, #4a5568);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-font-size: 14px;
+    -fx-padding: 12 35;
+    -fx-effect: dropshadow(three-pass-box, rgba(113,128,150,0.3), 8, 0, 0, 2);
+}
+
+.reset-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(113,128,150,0.5), 12, 0, 0, 3);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Change password button */
+.change-password-button {
+    -fx-background-color: linear-gradient(to right, #ed8936, #dd6b20);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-font-size: 13px;
+    -fx-padding: 10 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(237,137,54,0.3), 8, 0, 0, 2);
+}
+
+.change-password-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(237,137,54,0.5), 12, 0, 0, 3);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+/* Password fields */
+.profile-field.password-field {
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+}
+
+/* Hover effects */
+.profile-field:hover {
+    -fx-border-color: #cbd5e0;
+}
+
+/* Error state */
+.profile-field-error {
+    -fx-border-color: #fc8181;
+    -fx-border-width: 2;
+}
+
+/* Success state */
+.profile-field-success {
+    -fx-border-color: #48bb78;
+    -fx-border-width: 2;
+}
+

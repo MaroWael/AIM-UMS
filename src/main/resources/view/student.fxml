@@ -32,6 +32,7 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
             <HBox alignment="CENTER_LEFT" spacing="20">
                 <Label fx:id="welcomeLabel" text="Welcome, Student!" styleClass="student-welcome-label"/>
                 <Region HBox.hgrow="ALWAYS"/>
+                <Button text="👤 Profile" onAction="#handleProfile" styleClass="student-profile-button"/>
                 <Button text="🚪 Logout" onAction="#handleLogout" styleClass="student-logout-button"/>
             </HBox>
 

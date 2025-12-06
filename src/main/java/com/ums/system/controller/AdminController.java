@@ -942,6 +942,44 @@ public class AdminController {
     }
 
     @FXML
+    private void handleProfile() {
+        try {
+            // Load profile FXML
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/view/profile.fxml")
+            );
+            javafx.scene.Parent root = loader.load();
+
+            // Get controller and set user data
+            ProfileController profileController = loader.getController();
+
+            // Get current stage
+            javafx.stage.Stage currentStage = (javafx.stage.Stage) welcomeLabel.getScene().getWindow();
+
+            // Pass current admin user and stage to profile controller
+            profileController.setUser(currentAdmin, currentStage);
+
+            // Create new stage for profile
+            javafx.stage.Stage profileStage = new javafx.stage.Stage();
+            profileStage.setTitle("My Profile - " + currentAdmin.getName());
+            profileStage.setScene(new javafx.scene.Scene(root));
+            profileStage.setResizable(true);
+            profileStage.setMinWidth(900);
+            profileStage.setMinHeight(700);
+
+            // Hide current window
+            currentStage.hide();
+
+            // Show profile window
+            profileStage.show();
+
+        } catch (Exception e) {
+            showError("Error opening profile: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleLogout() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Logout");
