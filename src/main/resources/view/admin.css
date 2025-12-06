@@ -210,3 +210,66 @@
 .update-button:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 3);
 }
+
+/* Revenue Cards */
+.revenue-card-blue,
+.revenue-card-green,
+.revenue-card-orange,
+.revenue-card-purple,
+.revenue-card-red,
+.revenue-card-teal,
+.revenue-card-pink,
+.revenue-card-yellow {
+    -fx-padding: 20;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);
+    -fx-min-height: 120;
+}
+
+.revenue-card-blue {
+    -fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);
+}
+
+.revenue-card-green {
+    -fx-background-color: linear-gradient(to bottom right, #56ab2f, #a8e063);
+}
+
+.revenue-card-orange {
+    -fx-background-color: linear-gradient(to bottom right, #f2994a, #f2c94c);
+}
+
+.revenue-card-purple {
+    -fx-background-color: linear-gradient(to bottom right, #8e2de2, #4a00e0);
+}
+
+.revenue-card-red {
+    -fx-background-color: linear-gradient(to bottom right, #eb3349, #f45c43);
+}
+
+.revenue-card-teal {
+    -fx-background-color: linear-gradient(to bottom right, #11998e, #38ef7d);
+}
+
+.revenue-card-pink {
+    -fx-background-color: linear-gradient(to bottom right, #ff6b6b, #ee5a6f);
+}
+
+.revenue-card-yellow {
+    -fx-background-color: linear-gradient(to bottom right, #fdbb2d, #22c1c3);
+}
+
+.revenue-card-label {
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 13px;
+}
+
+.revenue-card-value {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.revenue-card-subtext {
+    -fx-text-fill: rgba(255,255,255,0.8);
+    -fx-font-size: 11px;
+}

@@ -343,6 +343,197 @@ Enhanced UI with modern design
                 </VBox>
             </Tab>
 
+            <!-- REVENUE TAB -->
+            <Tab text="💰 Revenue">
+                <VBox spacing="20" styleClass="content-section">
+
+                    <Label text="💰 Revenue Management" styleClass="section-title">
+                        <font>
+                            <Font name="System Bold" size="22"/>
+                        </font>
+                    </Label>
+
+                    <!-- Revenue Summary Cards -->
+                    <GridPane hgap="15" vgap="15">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="25"/>
+                            <ColumnConstraints percentWidth="25"/>
+                            <ColumnConstraints percentWidth="25"/>
+                            <ColumnConstraints percentWidth="25"/>
+                        </columnConstraints>
+
+                        <!-- Total Revenue Card -->
+                        <VBox spacing="8" styleClass="revenue-card-blue" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="💵 Total Revenue" styleClass="revenue-card-label">
+                                <font>
+                                    <Font name="System" size="13"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="totalRevenueLabel" text="0.00 EGP" styleClass="revenue-card-value">
+                                <font>
+                                    <Font name="System Bold" size="24"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="totalPaymentsLabel" text="0 payments" styleClass="revenue-card-subtext">
+                                <font>
+                                    <Font name="System" size="11"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Level 1 Revenue Card -->
+                        <VBox spacing="8" styleClass="revenue-card-green" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="📚 Level 1 (Freshman)" styleClass="revenue-card-label">
+                                <font>
+                                    <Font name="System" size="13"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="level1RevenueLabel" text="0.00 EGP" styleClass="revenue-card-value">
+                                <font>
+                                    <Font name="System Bold" size="20"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Level 2 Revenue Card -->
+                        <VBox spacing="8" styleClass="revenue-card-orange" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <Label text="📚 Level 2 (Sophomore)" styleClass="revenue-card-label">
+                                <font>
+                                    <Font name="System" size="13"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="level2RevenueLabel" text="0.00 EGP" styleClass="revenue-card-value">
+                                <font>
+                                    <Font name="System Bold" size="20"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Level 3 Revenue Card -->
+                        <VBox spacing="8" styleClass="revenue-card-purple" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <Label text="📚 Level 3 (Junior)" styleClass="revenue-card-label">
+                                <font>
+                                    <Font name="System" size="13"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="level3RevenueLabel" text="0.00 EGP" styleClass="revenue-card-value">
+                                <font>
+                                    <Font name="System Bold" size="20"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Level 4 Revenue Card -->
+                        <VBox spacing="8" styleClass="revenue-card-red" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="📚 Level 4 (Senior)" styleClass="revenue-card-label">
+                                <font>
+                                    <Font name="System" size="13"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="level4RevenueLabel" text="0.00 EGP" styleClass="revenue-card-value">
+                                <font>
+                                    <Font name="System Bold" size="20"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Successful Payments Card -->
+                        <VBox spacing="8" styleClass="revenue-card-teal" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="✅ Successful" styleClass="revenue-card-label">
+                                <font>
+                                    <Font name="System" size="13"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="successfulPaymentsLabel" text="0" styleClass="revenue-card-value">
+                                <font>
+                                    <Font name="System Bold" size="20"/>
+                                </font>
+                            </Label>
+                            <Label text="payments" styleClass="revenue-card-subtext">
+                                <font>
+                                    <Font name="System" size="11"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Failed Payments Card -->
+                        <VBox spacing="8" styleClass="revenue-card-pink" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <Label text="❌ Failed" styleClass="revenue-card-label">
+                                <font>
+                                    <Font name="System" size="13"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="failedPaymentsLabel" text="0" styleClass="revenue-card-value">
+                                <font>
+                                    <Font name="System Bold" size="20"/>
+                                </font>
+                            </Label>
+                            <Label text="payments" styleClass="revenue-card-subtext">
+                                <font>
+                                    <Font name="System" size="11"/>
+                                </font>
+                            </Label>
+                        </VBox>
+
+                        <!-- Pending Payments Card -->
+                        <VBox spacing="8" styleClass="revenue-card-yellow" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                            <Label text="⏳ Pending" styleClass="revenue-card-label">
+                                <font>
+                                    <Font name="System" size="13"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="pendingPaymentsLabel" text="0" styleClass="revenue-card-value">
+                                <font>
+                                    <Font name="System Bold" size="20"/>
+                                </font>
+                            </Label>
+                            <Label text="payments" styleClass="revenue-card-subtext">
+                                <font>
+                                    <Font name="System" size="11"/>
+                                </font>
+                            </Label>
+                        </VBox>
+                    </GridPane>
+
+                    <!-- Payments Table -->
+                    <VBox spacing="12" VBox.vgrow="ALWAYS" styleClass="table-card">
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <Label text="📋 All Payments" styleClass="table-header-title">
+                                <font>
+                                    <Font name="System Bold" size="16"/>
+                                </font>
+                            </Label>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <ComboBox fx:id="paymentStatusFilterCombo" promptText="Filter by Status"
+                                      styleClass="admin-combo-box" prefWidth="150"
+                                      onAction="#handleFilterPayments"/>
+                            <ComboBox fx:id="paymentLevelFilterCombo" promptText="Filter by Level"
+                                      styleClass="admin-combo-box" prefWidth="150"
+                                      onAction="#handleFilterPayments"/>
+                            <Button text="🔄 Refresh" onAction="#loadAllPayments" styleClass="refresh-button">
+                                <font>
+                                    <Font name="System Bold" size="12"/>
+                                </font>
+                            </Button>
+                        </HBox>
+
+                        <TableView fx:id="paymentsTable" VBox.vgrow="ALWAYS" styleClass="admin-table">
+                            <columns>
+                                <TableColumn fx:id="paymentIdColumn" text="ID" prefWidth="60"/>
+                                <TableColumn fx:id="paymentUserIdColumn" text="Student ID" prefWidth="100"/>
+                                <TableColumn fx:id="paymentUserNameColumn" text="Student Name" prefWidth="200"/>
+                                <TableColumn fx:id="paymentLevelColumn" text="Level" prefWidth="80"/>
+                                <TableColumn fx:id="paymentAmountColumn" text="Amount (EGP)" prefWidth="120"/>
+                                <TableColumn fx:id="paymentMethodColumn" text="Method" prefWidth="130"/>
+                                <TableColumn fx:id="paymentStatusColumn" text="Status" prefWidth="100"/>
+                                <TableColumn fx:id="paymentTransactionColumn" text="Transaction ID" prefWidth="180"/>
+                                <TableColumn fx:id="paymentDateColumn" text="Date" prefWidth="150"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </VBox>
+            </Tab>
+
         </TabPane>
     </center>
 

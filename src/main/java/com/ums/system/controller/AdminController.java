@@ -74,12 +74,36 @@ public class AdminController {
     @FXML private TableColumn<Instructor, String> instructorEmailColumn;
     @FXML private TableColumn<Instructor, String> instructorDeptColumn;
 
+    // Revenue Tab
+    @FXML private Label totalRevenueLabel;
+    @FXML private Label totalPaymentsLabel;
+    @FXML private Label level1RevenueLabel;
+    @FXML private Label level2RevenueLabel;
+    @FXML private Label level3RevenueLabel;
+    @FXML private Label level4RevenueLabel;
+    @FXML private Label successfulPaymentsLabel;
+    @FXML private Label failedPaymentsLabel;
+    @FXML private Label pendingPaymentsLabel;
+    @FXML private TableView<Payment> paymentsTable;
+    @FXML private TableColumn<Payment, Integer> paymentIdColumn;
+    @FXML private TableColumn<Payment, Integer> paymentUserIdColumn;
+    @FXML private TableColumn<Payment, String> paymentUserNameColumn;
+    @FXML private TableColumn<Payment, Integer> paymentLevelColumn;
+    @FXML private TableColumn<Payment, Double> paymentAmountColumn;
+    @FXML private TableColumn<Payment, String> paymentMethodColumn;
+    @FXML private TableColumn<Payment, String> paymentStatusColumn;
+    @FXML private TableColumn<Payment, String> paymentTransactionColumn;
+    @FXML private TableColumn<Payment, String> paymentDateColumn;
+    @FXML private ComboBox<String> paymentStatusFilterCombo;
+    @FXML private ComboBox<String> paymentLevelFilterCombo;
+
     // Services
     private Admin currentAdmin;
     private CourseService courseService;
     private AdminService adminService;
     private InstructorService instructorService;
     private StudentService studentService;
+    private PaymentService paymentService;
 
     /**
      * Initialize method
@@ -92,12 +116,17 @@ public class AdminController {
         adminService = serviceLocator.getAdminService();
         instructorService = serviceLocator.getInstructorService();
         studentService = serviceLocator.getStudentService();
+        paymentService = new PaymentServiceImpl(serviceLocator.getConnection());
 
         // Set up tables
         setupCoursesTable();
         setupUsersTable();
         setupStudentsTable();
         setupInstructorsTable();
+        setupPaymentsTable();
+
+        // Setup filter combos
+        setupPaymentFilters();
 
         // Set up major dropdowns with available majors
         ObservableList<String> majors = FXCollections.observableArrayList(
@@ -169,6 +198,8 @@ public class AdminController {
         loadAllUsers();
         loadAllStudents();
         loadAllInstructors();
+        loadAllPayments();
+        updateRevenueStatistics();
     }
 
     /**
@@ -687,6 +718,164 @@ public class AdminController {
             System.out.println("Loaded " + instructors.size() + " instructors");
         } catch (Exception e) {
             showError("Error loading instructors: " + e.getMessage());
+        }
+    }
+
+    // ==================== REVENUE TAB ====================
+
+    private void setupPaymentsTable() {
+        paymentIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        paymentUserIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        paymentLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        paymentAmountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        paymentMethodColumn.setCellValueFactory(new PropertyValueFactory<>("paymentMethod"));
+        paymentStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        paymentTransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
+
+        // Custom cell for student name
+        paymentUserNameColumn.setCellValueFactory(cellData -> {
+            Payment payment = cellData.getValue();
+            try {
+                Student student = studentService.getStudentById(payment.getUserId());
+                if (student != null) {
+                    return new javafx.beans.property.SimpleStringProperty(student.getName());
+                }
+            } catch (Exception e) {
+                // Ignore
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
+
+        // Format date column
+        paymentDateColumn.setCellValueFactory(cellData -> {
+            Payment payment = cellData.getValue();
+            if (payment.getCreatedAt() != null) {
+                java.time.format.DateTimeFormatter formatter =
+                    java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                return new javafx.beans.property.SimpleStringProperty(
+                    payment.getCreatedAt().format(formatter)
+                );
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
+
+        // Style status column
+        paymentStatusColumn.setCellFactory(column -> new TableCell<Payment, String>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty || status == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(status);
+                    if ("SUCCESS".equals(status)) {
+                        setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                    } else if ("FAILED".equals(status)) {
+                        setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                    } else if ("PENDING".equals(status)) {
+                        setStyle("-fx-text-fill: orange; -fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
+    }
+
+    private void setupPaymentFilters() {
+        // Setup status filter
+        paymentStatusFilterCombo.getItems().addAll("All", "SUCCESS", "FAILED", "PENDING");
+        paymentStatusFilterCombo.setValue("All");
+
+        // Setup level filter
+        paymentLevelFilterCombo.getItems().addAll("All", "1", "2", "3", "4");
+        paymentLevelFilterCombo.setValue("All");
+    }
+
+    @FXML
+    private void loadAllPayments() {
+        try {
+            List<Payment> payments = paymentService.getAllPayments();
+            ObservableList<Payment> paymentsList = FXCollections.observableArrayList(payments);
+            paymentsTable.setItems(paymentsList);
+            System.out.println("Loaded " + payments.size() + " payments");
+
+            // Update statistics
+            updateRevenueStatistics();
+        } catch (Exception e) {
+            showError("Error loading payments: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleFilterPayments() {
+        try {
+            String statusFilter = paymentStatusFilterCombo.getValue();
+            String levelFilter = paymentLevelFilterCombo.getValue();
+
+            List<Payment> payments = paymentService.getAllPayments();
+
+            // Apply filters
+            if (!"All".equals(statusFilter)) {
+                payments = payments.stream()
+                    .filter(p -> statusFilter.equals(p.getStatus()))
+                    .collect(java.util.stream.Collectors.toList());
+            }
+
+            if (!"All".equals(levelFilter)) {
+                int level = Integer.parseInt(levelFilter);
+                payments = payments.stream()
+                    .filter(p -> p.getLevel() == level)
+                    .collect(java.util.stream.Collectors.toList());
+            }
+
+            ObservableList<Payment> paymentsList = FXCollections.observableArrayList(payments);
+            paymentsTable.setItems(paymentsList);
+            System.out.println("Filtered to " + payments.size() + " payments");
+
+        } catch (Exception e) {
+            showError("Error filtering payments: " + e.getMessage());
+        }
+    }
+
+    private void updateRevenueStatistics() {
+        try {
+            // Total revenue
+            double totalRevenue = paymentService.getTotalRevenue();
+            totalRevenueLabel.setText(String.format("%.2f EGP", totalRevenue));
+
+            // Total payments count
+            List<Payment> allPayments = paymentService.getAllPayments();
+            totalPaymentsLabel.setText(allPayments.size() + " payments");
+
+            // Revenue by level
+            level1RevenueLabel.setText(String.format("%.2f EGP",
+                paymentService.getTotalRevenueByLevel(1)));
+            level2RevenueLabel.setText(String.format("%.2f EGP",
+                paymentService.getTotalRevenueByLevel(2)));
+            level3RevenueLabel.setText(String.format("%.2f EGP",
+                paymentService.getTotalRevenueByLevel(3)));
+            level4RevenueLabel.setText(String.format("%.2f EGP",
+                paymentService.getTotalRevenueByLevel(4)));
+
+            // Payment status counts
+            long successCount = allPayments.stream()
+                .filter(p -> "SUCCESS".equals(p.getStatus()))
+                .count();
+            long failedCount = allPayments.stream()
+                .filter(p -> "FAILED".equals(p.getStatus()))
+                .count();
+            long pendingCount = allPayments.stream()
+                .filter(p -> "PENDING".equals(p.getStatus()))
+                .count();
+
+            successfulPaymentsLabel.setText(String.valueOf(successCount));
+            failedPaymentsLabel.setText(String.valueOf(failedCount));
+            pendingPaymentsLabel.setText(String.valueOf(pendingCount));
+
+            System.out.println("Revenue statistics updated");
+
+        } catch (Exception e) {
+            System.err.println("Error updating revenue statistics: " + e.getMessage());
         }
     }
 

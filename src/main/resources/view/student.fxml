@@ -99,6 +99,51 @@ Provides tabs for viewing courses, enrolling, taking quizzes, and viewing grades
                 </VBox>
             </Tab>
 
+            <!-- PAYMENT TAB -->
+            <Tab text="💳 Payment">
+                <VBox spacing="20" styleClass="student-content-section">
+
+                    <Label text="💳 Level Fee Payment" styleClass="student-section-title"/>
+
+                    <!-- Payment Status Card -->
+                    <VBox spacing="15" styleClass="student-info-banner-blue">
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <Label text="💰" styleClass="payment-icon" style="-fx-font-size: 32px;"/>
+                            <VBox spacing="5">
+                                <Label fx:id="paymentStatusLabel" text="Payment Status: Checking..." styleClass="payment-status-label" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                                <Label fx:id="paymentAmountLabel" text="Level Fee: Calculating..." styleClass="payment-amount-label" style="-fx-font-size: 14px;"/>
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Button fx:id="payLevelFeeButton" text="💳 Pay Level Fee" onAction="#handlePayLevelFee" styleClass="student-enroll-button" prefWidth="150"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Payment Information -->
+                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="student-info-banner-yellow">
+                        <Label text="ℹ️ Students must pay their level fee to access quizzes and other features" styleClass="info-text-yellow"/>
+                    </HBox>
+
+                    <!-- Payment History -->
+                    <Label text="📜 Payment History" styleClass="student-section-title" style="-fx-font-size: 16px;"/>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Button text="🔄 Refresh" onAction="#loadPaymentHistory" styleClass="student-refresh-button"/>
+                    </HBox>
+
+                    <TableView fx:id="paymentHistoryTable" VBox.vgrow="ALWAYS" styleClass="student-table, student-table-blue">
+                        <columns>
+                            <TableColumn fx:id="paymentIdColumn" text="ID" prefWidth="60"/>
+                            <TableColumn fx:id="paymentLevelColumn" text="Level" prefWidth="80"/>
+                            <TableColumn fx:id="paymentAmountColumn" text="Amount (EGP)" prefWidth="120"/>
+                            <TableColumn fx:id="paymentMethodColumn" text="Method" prefWidth="120"/>
+                            <TableColumn fx:id="paymentStatusColumn" text="Status" prefWidth="100"/>
+                            <TableColumn fx:id="paymentTransactionColumn" text="Transaction ID" prefWidth="200"/>
+                            <TableColumn fx:id="paymentDateColumn" text="Date" prefWidth="180"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+
             <!-- QUIZZES TAB -->
             <Tab text="📝 Quizzes">
                 <VBox spacing="20" styleClass="student-content-section">

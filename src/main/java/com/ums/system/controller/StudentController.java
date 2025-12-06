@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,6 +43,19 @@ public class StudentController {
     @FXML private TableColumn<Course, String> myCourseInstructorColumn;
     @FXML private TableColumn<Course, String> myCourseLectureTimeColumn;
 
+    // Payment Tab
+    @FXML private Label paymentStatusLabel;
+    @FXML private Label paymentAmountLabel;
+    @FXML private Button payLevelFeeButton;
+    @FXML private TableView<Payment> paymentHistoryTable;
+    @FXML private TableColumn<Payment, Integer> paymentIdColumn;
+    @FXML private TableColumn<Payment, Integer> paymentLevelColumn;
+    @FXML private TableColumn<Payment, Double> paymentAmountColumn;
+    @FXML private TableColumn<Payment, String> paymentMethodColumn;
+    @FXML private TableColumn<Payment, String> paymentStatusColumn;
+    @FXML private TableColumn<Payment, String> paymentTransactionColumn;
+    @FXML private TableColumn<Payment, String> paymentDateColumn;
+
     // Quizzes Tab
     @FXML private ComboBox<Course> quizCourseCombo;
     @FXML private TableView<Quiz> quizzesTable;
@@ -67,6 +81,7 @@ public class StudentController {
     private QuizService quizService;
     private QuizResultService quizResultService;
     private EnrollmentDAO enrollmentDAO;
+    private PaymentService paymentService;
     private com.ums.system.utils.ReportGenerator reportGenerator;
 
     /**
@@ -81,10 +96,12 @@ public class StudentController {
         quizService = serviceLocator.getQuizService();
         quizResultService = serviceLocator.getQuizResultService();
         enrollmentDAO = serviceLocator.getEnrollmentDAO();
+        paymentService = new PaymentServiceImpl(serviceLocator.getConnection());
 
         // Set up tables
         setupAvailableCoursesTable();
         setupMyCoursesTable();
+        setupPaymentTable();
         setupQuizzesTable();
         setupGradesTable();
     }
@@ -99,6 +116,8 @@ public class StudentController {
                             " | Level: " + student.getLevel());
 
         // Load initial data
+        checkPaymentStatus();
+        loadPaymentHistory();
         loadAvailableCourses();
         loadMyCourses();
         loadMyGrades();
@@ -157,6 +176,48 @@ public class StudentController {
                 }
             } catch (Exception e) {
                 return new javafx.beans.property.SimpleStringProperty("Error");
+            }
+        });
+    }
+
+    private void setupPaymentTable() {
+        paymentIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        paymentLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        paymentAmountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        paymentMethodColumn.setCellValueFactory(new PropertyValueFactory<>("paymentMethod"));
+        paymentStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        paymentTransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
+
+        // Format date column
+        paymentDateColumn.setCellValueFactory(cellData -> {
+            Payment payment = cellData.getValue();
+            if (payment.getCreatedAt() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                return new javafx.beans.property.SimpleStringProperty(
+                    payment.getCreatedAt().format(formatter)
+                );
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
+
+        // Style status column based on payment status
+        paymentStatusColumn.setCellFactory(column -> new TableCell<Payment, String>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty || status == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(status);
+                    if ("SUCCESS".equals(status)) {
+                        setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                    } else if ("FAILED".equals(status)) {
+                        setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                    } else if ("PENDING".equals(status)) {
+                        setStyle("-fx-text-fill: orange; -fx-font-weight: bold;");
+                    }
+                }
             }
         });
     }
@@ -228,6 +289,225 @@ public class StudentController {
             // This shows the raw score (correct answers count)
             return new javafx.beans.property.SimpleIntegerProperty(result.getScore()).asObject();
         });
+    }
+
+    // ==================== PAYMENT TAB ====================
+
+    /**
+     * Check and display payment status for current level
+     */
+    private void checkPaymentStatus() {
+        try {
+            int studentLevel = currentStudent.getLevel();
+            boolean hasPaid = paymentService.hasUserPaidForLevel(currentStudent.getId(), studentLevel);
+            double levelFee = paymentService.calculateLevelFee(studentLevel);
+
+            if (hasPaid) {
+                paymentStatusLabel.setText("✅ Payment Status: PAID for Level " + studentLevel);
+                paymentStatusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 16px; -fx-font-weight: bold;");
+                paymentAmountLabel.setText("Level " + studentLevel + " Fee: " + levelFee + " EGP (Paid)");
+                payLevelFeeButton.setDisable(true);
+                payLevelFeeButton.setText("✅ Already Paid");
+            } else {
+                paymentStatusLabel.setText("⚠️ Payment Status: NOT PAID for Level " + studentLevel);
+                paymentStatusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 16px; -fx-font-weight: bold;");
+                paymentAmountLabel.setText("Level " + studentLevel + " Fee: " + levelFee + " EGP (Due)");
+                payLevelFeeButton.setDisable(false);
+                payLevelFeeButton.setText("💳 Pay Level Fee");
+            }
+        } catch (Exception e) {
+            paymentStatusLabel.setText("❌ Error checking payment status");
+            paymentStatusLabel.setStyle("-fx-text-fill: orange;");
+            showError("Error checking payment status: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Load payment history for current student
+     */
+    @FXML
+    private void loadPaymentHistory() {
+        try {
+            List<Payment> payments = paymentService.getPaymentsByUserId(currentStudent.getId());
+            ObservableList<Payment> paymentsList = FXCollections.observableArrayList(payments);
+            paymentHistoryTable.setItems(paymentsList);
+            System.out.println("Loaded " + payments.size() + " payment records");
+        } catch (Exception e) {
+            showError("Error loading payment history: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Handle pay level fee button click
+     */
+    @FXML
+    private void handlePayLevelFee() {
+        int studentLevel = currentStudent.getLevel();
+
+        // Check if already paid
+        try {
+            if (paymentService.hasUserPaidForLevel(currentStudent.getId(), studentLevel)) {
+                showInfo("You have already paid for Level " + studentLevel);
+                return;
+            }
+        } catch (Exception e) {
+            showError("Error checking payment status: " + e.getMessage());
+            return;
+        }
+
+        double levelFee = paymentService.calculateLevelFee(studentLevel);
+
+        // Show payment method selection dialog
+        Alert paymentDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        paymentDialog.setTitle("Pay Level Fee");
+        paymentDialog.setHeaderText("Level " + studentLevel + " Tuition Fee Payment");
+        paymentDialog.setContentText(
+            "Amount: " + levelFee + " EGP\n\n" +
+            "Select payment method:"
+        );
+
+        // Create payment method choice box
+        ChoiceBox<String> paymentMethodBox = new ChoiceBox<>();
+        paymentMethodBox.getItems().addAll("CARD", "BANK_TRANSFER", "CASH");
+        paymentMethodBox.setValue("CARD");
+        paymentMethodBox.setStyle("-fx-font-size: 14px;");
+
+        paymentDialog.getDialogPane().setContent(paymentMethodBox);
+
+        Optional<ButtonType> result = paymentDialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            processPayment(studentLevel, levelFee, paymentMethodBox.getValue());
+        }
+    }
+
+    /**
+     * Process payment in background thread
+     */
+    private void processPayment(int level, double amount, String method) {
+        // Show processing dialog
+        Alert processingAlert = new Alert(Alert.AlertType.INFORMATION);
+        processingAlert.setTitle("Processing Payment");
+        processingAlert.setHeaderText("Please wait...");
+        processingAlert.setContentText("Processing your level fee payment...\nThis may take a few seconds.");
+        processingAlert.show();
+
+        // Process payment in background thread
+        new Thread(() -> {
+            try {
+                // Create payment request
+                PaymentRequest request = new PaymentRequest(
+                    currentStudent.getId(),
+                    level,
+                    amount,
+                    "EGP",
+                    "Level " + level + " tuition fee",
+                    method
+                );
+
+                // Process payment
+                Payment payment = paymentService.processPayment(request);
+
+                // Update UI on JavaFX thread
+                javafx.application.Platform.runLater(() -> {
+                    processingAlert.close();
+
+                    if ("SUCCESS".equals(payment.getStatus())) {
+                        // Success dialog
+                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                        successAlert.setTitle("Payment Successful");
+                        successAlert.setHeaderText("✅ Level Fee Paid Successfully!");
+                        successAlert.setContentText(
+                            "Transaction ID: " + payment.getTransactionId() + "\n" +
+                            "Amount: " + payment.getAmount() + " EGP\n" +
+                            "Level: " + payment.getLevel() + "\n" +
+                            "Method: " + payment.getPaymentMethod() + "\n\n" +
+                            "You can now access quizzes and all features!"
+                        );
+                        successAlert.showAndWait();
+
+                        // Refresh payment status and history
+                        checkPaymentStatus();
+                        loadPaymentHistory();
+
+                    } else {
+                        // Failed dialog
+                        Alert failAlert = new Alert(Alert.AlertType.ERROR);
+                        failAlert.setTitle("Payment Failed");
+                        failAlert.setHeaderText("❌ Payment Processing Failed");
+                        failAlert.setContentText(
+                            "Status: " + payment.getStatus() + "\n\n" +
+                            "Please try again or contact administration."
+                        );
+                        failAlert.showAndWait();
+                    }
+                });
+
+            } catch (IllegalArgumentException e) {
+                // Already paid or validation error
+                javafx.application.Platform.runLater(() -> {
+                    processingAlert.close();
+                    Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+                    warningAlert.setTitle("Payment Not Allowed");
+                    warningAlert.setHeaderText("Payment Issue");
+                    warningAlert.setContentText(e.getMessage());
+                    warningAlert.showAndWait();
+                    checkPaymentStatus(); // Refresh status
+                });
+            } catch (Exception e) {
+                // Other errors
+                javafx.application.Platform.runLater(() -> {
+                    processingAlert.close();
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText("An error occurred");
+                    errorAlert.setContentText(e.getMessage());
+                    errorAlert.showAndWait();
+                });
+            }
+        }).start();
+    }
+
+    /**
+     * Check if student has paid before allowing quiz access
+     * @return true if paid, false otherwise
+     */
+    private boolean checkPaymentBeforeQuizAccess() {
+        try {
+            int studentLevel = currentStudent.getLevel();
+            boolean hasPaid = paymentService.hasUserPaidForLevel(currentStudent.getId(), studentLevel);
+
+            if (!hasPaid) {
+                double levelFee = paymentService.calculateLevelFee(studentLevel);
+
+                // Show payment required dialog
+                Alert paymentRequired = new Alert(Alert.AlertType.WARNING);
+                paymentRequired.setTitle("Payment Required");
+                paymentRequired.setHeaderText("⚠️ Level Fee Payment Required");
+                paymentRequired.setContentText(
+                    "You must pay your Level " + studentLevel + " fee to access quizzes.\n\n" +
+                    "Fee Amount: " + levelFee + " EGP\n\n" +
+                    "Please go to the Payment tab to complete your payment."
+                );
+
+                ButtonType goToPaymentButton = new ButtonType("Go to Payment Tab");
+                ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+                paymentRequired.getButtonTypes().setAll(goToPaymentButton, cancelButton);
+
+                Optional<ButtonType> result = paymentRequired.showAndWait();
+                if (result.isPresent() && result.get() == goToPaymentButton) {
+                    // Switch to payment tab - you could add code here to switch tabs
+                    showInfo("Please complete your payment in the Payment tab.");
+                }
+
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            showError("Error checking payment status: " + e.getMessage());
+            return false;
+        }
     }
 
     // ==================== AVAILABLE COURSES TAB ====================
@@ -389,6 +669,11 @@ public class StudentController {
 
     @FXML
     private void handleLoadQuizzes() {
+        // Check payment status first
+        if (!checkPaymentBeforeQuizAccess()) {
+            return;
+        }
+
         Course selectedCourse = quizCourseCombo.getValue();
         if (selectedCourse == null) {
             showError("Please select a course first!");
@@ -407,6 +692,11 @@ public class StudentController {
 
     @FXML
     private void handleTakeQuiz() {
+        // Check payment status first
+        if (!checkPaymentBeforeQuizAccess()) {
+            return;
+        }
+
         Quiz selected = quizzesTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showError("Please select a quiz to take!");
@@ -455,6 +745,11 @@ public class StudentController {
 
     @FXML
     private void handleViewAllQuizzes() {
+        // Check payment status first
+        if (!checkPaymentBeforeQuizAccess()) {
+            return;
+        }
+
         try {
             // Get all quizzes for all enrolled courses
             List<Course> myCourses = enrollmentDAO.getCoursesByStudentId(currentStudent.getId());
