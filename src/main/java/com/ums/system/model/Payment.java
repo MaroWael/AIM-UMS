@@ -11,7 +11,7 @@ public class Payment {
     private String description;
     private String paymentMethod; // CARD, BANK_TRANSFER, CASH
     private String transactionId;
-    private String status; // SUCCESS, FAILED, PENDING, REFUNDED
+    private String status; // SUCCESS, FAILED, PENDING
     private LocalDateTime createdAt;
 
     public Payment(int userId, int level, double amount, String currency,

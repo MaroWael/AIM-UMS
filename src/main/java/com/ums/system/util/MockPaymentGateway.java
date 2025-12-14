@@ -25,7 +25,7 @@ public class MockPaymentGateway implements PaymentGateway {
             return result;
         }
 
-        boolean isSuccessful = Math.random() > 0.9;
+        boolean isSuccessful = Math.random() > 0.3;
 
         if (isSuccessful) {
             String transactionId = generateTransactionId();

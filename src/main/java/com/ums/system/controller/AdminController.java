@@ -515,21 +515,31 @@ public class AdminController {
 
         try {
             String hashedPassword = PasswordUtil.hashPassword(password);
+            boolean success = false;
 
             switch (userType) {
                 case "Admin":
                     Admin admin = new Admin(0, name, email, hashedPassword, Role.ADMIN);
-                    adminService.addAdmin(admin);
-                    showInfo("Admin created successfully!");
+                    success = adminService.addAdmin(admin);
+                    if (success) {
+                        showInfo("Admin created successfully!");
+                    } else {
+                        showError("Failed to create Admin. Email might already exist or validation failed.");
+                        return;
+                    }
                     break;
 
                 case "Instructor":
                     Department instructorDept = instructorDepartmentCombo.getValue();
                     Instructor instructor = new Instructor(0, name, email, hashedPassword, Role.INSTRUCTOR, instructorDept);
-                    instructorService.addInstructor(instructor);
-                    showInfo("Instructor created successfully!");
-
-                    loadInstructorsIntoCombo();
+                    success = instructorService.addInstructor(instructor);
+                    if (success) {
+                        showInfo("Instructor created successfully!");
+                        loadInstructorsIntoCombo();
+                    } else {
+                        showError("Failed to create Instructor. Email might already exist or validation failed.");
+                        return;
+                    }
                     break;
 
                 case "Student":
@@ -541,8 +551,13 @@ public class AdminController {
 
                     Student student = new Student(0, name, email, hashedPassword, Role.STUDENT,
                                                  level, studentMajor, null, 0, studentDept, 0.0);
-                    studentService.addStudent(student);
-                    showInfo("Student created successfully!");
+                    success = studentService.addStudent(student);
+                    if (success) {
+                        showInfo("Student created successfully!");
+                    } else {
+                        showError("Failed to create Student. Email might already exist or validation failed.");
+                        return;
+                    }
                     break;
             }
 
